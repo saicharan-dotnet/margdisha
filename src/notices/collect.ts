@@ -2,13 +2,13 @@
 import type { NoticeSource } from './sources';
 import { extractLinks, isOfficialLink, pickNotices, type FoundNotice } from './extract';
 
-export async function fetchPage(url: string, timeoutMs = 25_000, depth = 0): Promise<string> {
+export async function fetchPage(url: string, timeoutMs = 25_000, depth = 0, accept = 'text/html,application/xhtml+xml'): Promise<string> {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs);
   try {
     const res = await fetch(url, { signal: ctrl.signal, redirect: 'follow', headers: {
       'User-Agent': 'Mozilla/5.0 (compatible; MargDishaNoticeBot/1.0; +https://margdisha.com)',
-      'Accept': 'text/html,application/xhtml+xml', 'Accept-Language': 'en-IN,en;q=0.9' } });
+      'Accept': accept, 'Accept-Language': 'en-IN,en;q=0.9' } });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const html = await res.text();
     // Some sites answer with a tiny page that only redirects (<meta http-equiv="refresh" ... URL=...>).
@@ -57,7 +57,7 @@ export async function collectSource(src: NoticeSource, supabaseUrl: string, key:
     if (debug && src.probe) {
       const probes: string[] = [];
       for (const u of src.probe) {
-        try { probes.push(`${u} => ${(await fetchPage(u, 20_000)).replace(/\s+/g, ' ').slice(0, 1500)}`); } catch (e) { probes.push(`${u} => ERROR ${errorText(e)}`); }
+        try { probes.push(`${u} => ${(await fetchPage(u, 20_000, 0, 'application/json, text/plain, */*')).replace(/\s+/g, ' ').slice(0, 1500)}`); } catch (e) { probes.push(`${u} => ERROR ${errorText(e)}`); }
       }
       return { id: src.id, ok: true, found: found.length, fresh: 0, sample: found, debug: { bytes: html.length, head: '', links: [], apis: [...probes, ...(await findApis(html, src.url))] } };
     }
@@ -88,6 +88,7 @@ async function findApis(html: string, base: string): Promise<string[]> {
       // Where the script builds its request addresses (base URL + path).
       for (const m of js.matchAll(/(?:baseURL|apiUrl|API_URL|apiBase|BASE_URL|baseUrl|environment)[^;]{0,160}/g)) { out.add('ctx: ' + m[0].slice(0, 170)); if (out.size > 100) break; }
       for (const m of js.matchAll(/.{0,90}(?:getNotifications|whatsNew|latestNews|notice-board|noticeboard|getLatest).{0,90}/gi)) { out.add('ctx: ' + m[0]); if (out.size > 120) break; }
+      for (const m of js.matchAll(/[A-Za-z_$][A-Za-z0-9_$]{0,3}=["'`](?:https?:\/\/[^"'`\s]{4,80}|\/api[^"'`\s]{0,60})["'`]/g)) { out.add('const: ' + m[0]); if (out.size > 220) break; }
       for (const m of js.matchAll(/.{0,40}(?:fetch\(|axios\.get\(|\.get\(`|\.get\(")[^)]{0,140}/g)) { out.add('call: ' + m[0]); if (out.size > 200) break; }
       for (const m of js.matchAll(/.{0,60}["'`]\/(?:api\/)?[a-z\-]*(?:notice|notification|admission|recruit|latest|news|announcement|circular|tender|vacanc)[a-z\-\/]*["'`].{0,60}/gi)) { out.add('ctx: ' + m[0]); if (out.size > 160) break; }
     } catch { /* skip */ }

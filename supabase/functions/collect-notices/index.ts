@@ -18,12 +18,12 @@ var NOTICE_SOURCES = [
   // Entrance exams
   { id: "nta", name: "National Testing Agency", url: "https://nta.ac.in/", area: "exam" },
   // School admissions
-  { id: "navodaya", india: true, probe: ["https://navodaya.gov.in/api"], name: "Navodaya Vidyalaya Samiti", url: "https://navodaya.gov.in/", area: "school", sector: "Navodaya", keywords: ["jnvst", "lateral"] },
+  { id: "navodaya", india: true, probe: ["https://navodaya.gov.in/api/public/media?page=1&limit=5"], name: "Navodaya Vidyalaya Samiti", url: "https://navodaya.gov.in/", area: "school", sector: "Navodaya", keywords: ["jnvst", "lateral"] },
   { id: "aissee", india: true, name: "AISSEE (Sainik Schools)", url: "https://exams.nta.nic.in/sainik-school-society/", area: "school", sector: "Sainik", keywords: ["aissee", "sainik"] },
   { id: "kvs", name: "Kendriya Vidyalaya Sangathan", url: "https://kvsangathan.nic.in/", area: "school", sector: "Kendriya Vidyalaya", keywords: ["balvatika", "class i"] },
   { id: "rms", name: "Rashtriya Military Schools", url: "https://www.rashtriyamilitaryschools.edu.in/", area: "school", sector: "Military School", keywords: ["cet"] },
   { id: "nests", name: "NESTS (Eklavya schools)", url: "https://nests.tribal.gov.in/", area: "school", sector: "EMRS", keywords: ["emrs", "eklavya"] },
-  { id: "tgcet", india: true, probe: ["https://tgcet.cgg.gov.in/TGCETWEB/api/getNotifications", "https://tgcet.cgg.gov.in/TGCETWEB/getNotifications", "https://tgcet.cgg.gov.in/api/getNotifications"], name: "Telangana Gurukul (TGCET)", url: "https://tgcet.cgg.gov.in/", area: "school", sector: "State residential", keywords: ["tgcet", "gurukul"] },
+  { id: "tgcet", india: true, probe: ["https://tgcet.cgg.gov.in/TGCETWEB/getNotifications"], name: "Telangana Gurukul (TGCET)", url: "https://tgcet.cgg.gov.in/", area: "school", sector: "State residential", keywords: ["tgcet", "gurukul"] },
   // Scholarships
   { id: "nsp", name: "National Scholarship Portal", url: "https://scholarships.gov.in/", area: "scholarship", sector: "School scholarship", keywords: ["scheme", "nmms"] }
 ];
@@ -177,13 +177,13 @@ function isOfficialLink(url, sourceUrl) {
 }
 
 // src/notices/collect.ts
-async function fetchPage(url, timeoutMs = 25e3, depth = 0) {
+async function fetchPage(url, timeoutMs = 25e3, depth = 0, accept = "text/html,application/xhtml+xml") {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs);
   try {
     const res = await fetch(url, { signal: ctrl.signal, redirect: "follow", headers: {
       "User-Agent": "Mozilla/5.0 (compatible; MargDishaNoticeBot/1.0; +https://margdisha.com)",
-      "Accept": "text/html,application/xhtml+xml",
+      "Accept": accept,
       "Accept-Language": "en-IN,en;q=0.9"
     } });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -228,7 +228,7 @@ async function collectSource(src, supabaseUrl, key, debug = false) {
       const probes = [];
       for (const u of src.probe) {
         try {
-          probes.push(`${u} => ${(await fetchPage(u, 2e4)).replace(/\s+/g, " ").slice(0, 1500)}`);
+          probes.push(`${u} => ${(await fetchPage(u, 2e4, 0, "application/json, text/plain, */*")).replace(/\s+/g, " ").slice(0, 1500)}`);
         } catch (e) {
           probes.push(`${u} => ERROR ${errorText(e)}`);
         }
@@ -271,6 +271,10 @@ async function findApis(html, base) {
       for (const m of js.matchAll(/.{0,90}(?:getNotifications|whatsNew|latestNews|notice-board|noticeboard|getLatest).{0,90}/gi)) {
         out.add("ctx: " + m[0]);
         if (out.size > 120) break;
+      }
+      for (const m of js.matchAll(/[A-Za-z_$][A-Za-z0-9_$]{0,3}=["'`](?:https?:\/\/[^"'`\s]{4,80}|\/api[^"'`\s]{0,60})["'`]/g)) {
+        out.add("const: " + m[0]);
+        if (out.size > 220) break;
       }
       for (const m of js.matchAll(/.{0,40}(?:fetch\(|axios\.get\(|\.get\(`|\.get\(")[^)]{0,140}/g)) {
         out.add("call: " + m[0]);
