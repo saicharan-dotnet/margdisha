@@ -52,7 +52,7 @@ export function App() {
       <div className="shell" lang={lang}>
         <header className="top">
           <div className="top-in">
-            <a className="brand" href="#home"><span className="brand-mark" aria-hidden>N</span>{t('appName')}</a>
+            <a className="brand" href="#home"><span className="brand-mark" aria-hidden>M</span>{t('appName')}</a>
             <nav className="nav-desktop" aria-label="Main">
               {NAV.map(([r, k]) => <a key={r} href={'#' + r} className={section(route) === section(r) ? 'on' : ''}>{t(k)}</a>)}
             </nav>

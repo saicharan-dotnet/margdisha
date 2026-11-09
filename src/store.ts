@@ -7,14 +7,14 @@ import { useCallback, useEffect, useState } from 'react';
 export function usePersisted<T>(key: string, initial: T): [T, (v: T | ((p: T) => T)) => void] {
   const [value, setValue] = useState<T>(() => {
     try {
-      const raw = localStorage.getItem('nextstep:' + key);
+      const raw = localStorage.getItem('margdisha:' + key);
       return raw ? (JSON.parse(raw) as T) : initial;
     } catch {
       return initial;
     }
   });
   useEffect(() => {
-    try { localStorage.setItem('nextstep:' + key, JSON.stringify(value)); } catch { /* storage unavailable */ }
+    try { localStorage.setItem('margdisha:' + key, JSON.stringify(value)); } catch { /* storage unavailable */ }
   }, [key, value]);
   return [value, useCallback((v) => setValue(v), [])];
 }

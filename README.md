@@ -1,4 +1,4 @@
-# NextStep — education, career & opportunities platform
+# MargDisha — education, career & opportunities platform
 
 Answers one question for students, graduates and job seekers in India:
 **"I have completed my education. What can I do next?"**
