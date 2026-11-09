@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useApp } from '../app-context';
 
 export function Account() {
-  const { t, user, signIn, signOut, source } = useApp();
+  const { t, user, signIn, signOut, source, isAdmin, go } = useApp();
   const [email, setEmail] = useState('');
   const [msg, setMsg] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -11,7 +11,10 @@ export function Account() {
     return (
       <div className="card account">
         <p>{t('signedInAs')} <b>{user}</b></p>
-        <button className="btn ghost sm" onClick={() => void signOut()}>{t('signOut')}</button>
+        <div className="actions">
+          {isAdmin && <button className="btn sm" onClick={() => go('admin')}>{t('navAdmin')}</button>}
+          <button className="btn ghost sm" onClick={() => void signOut()}>{t('signOut')}</button>
+        </div>
       </div>
     );
   return (

@@ -51,3 +51,9 @@ export async function setSavedRemote(id: string, on: boolean) {
   if (on) await supabase.from('saved_items').upsert({ user_id: data.user.id, opportunity_id: id });
   else await supabase.from('saved_items').delete().eq('opportunity_id', id);
 }
+
+export async function deleteOpportunity(id: string): Promise<string | null> {
+  if (!supabase) return 'Database not available';
+  const { error } = await supabase.from('opportunities').delete().eq('id', id);
+  return error ? error.message : null;
+}

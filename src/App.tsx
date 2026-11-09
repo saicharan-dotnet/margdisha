@@ -2,11 +2,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { Ctx, translator, type AppState } from './app-context';
 import type { Opportunity, OpportunityKind, Profile as P } from './data/types';
 import { SEED_OPPORTUNITIES } from './data/seed';
-import { checkIsAdmin, fetchOpportunities, loadUserData, saveOpportunity, saveProfileRemote, setSavedRemote } from './data/remote';
+import { checkIsAdmin, deleteOpportunity, fetchOpportunities, loadUserData, saveOpportunity, saveProfileRemote, setSavedRemote } from './data/remote';
 import { supabase } from './lib/supabase';
 import { LANG_NAMES, type Key, type Lang } from './i18n/strings';
 import { usePersisted, useHashRoute } from './store';
 import { Icon, type IconName } from './components/Icon';
+import { Logo } from './components/Logo';
 import { Home } from './pages/Home';
 import { Explore } from './pages/Explore';
 import { Profile } from './pages/Profile';
@@ -35,6 +36,7 @@ function page(route: string) {
   }
 }
 const section = (r: string) => r.split('-')[0];
+const upsert = (list: Opportunity[], o: Opportunity) => (list.some((x) => x.id === o.id) ? list.map((x) => (x.id === o.id ? o : x)) : [o, ...list]);
 
 export function App() {
   const [route, go] = useHashRoute();
@@ -90,10 +92,20 @@ export function App() {
       if (source === 'db' && isAdmin) {
         const r = await saveOpportunity(o);
         if (!r.ok) return r.error;
-        setRemoteOpps((list) => (list ?? []).map((x) => (x.id === o.id ? r.opp : x)));
+        setRemoteOpps((list) => upsert(list ?? [], r.opp));
         return null;
       }
-      setLocalOpps((list) => list.map((x) => (x.id === o.id ? o : x)));
+      setLocalOpps((list) => upsert(list, o));
+      return null;
+    },
+    deleteOpp: async (id) => {
+      if (source === 'db' && isAdmin) {
+        const err = await deleteOpportunity(id);
+        if (err) return err;
+        setRemoteOpps((list) => (list ?? []).filter((x) => x.id !== id));
+        return null;
+      }
+      setLocalOpps((list) => list.filter((x) => x.id !== id));
       return null;
     },
     signIn: async (email) => {
@@ -109,12 +121,12 @@ export function App() {
       <div className="shell" lang={lang}>
         <header className="top">
           <div className="top-in">
-            <a className="brand" href="#home"><span className="brand-mark" aria-hidden>M</span>{t('appName')}</a>
+            <a className="brand" href="#home"><Logo />{t('appName')}</a>
             <nav className="nav-desktop" aria-label="Main">
               {NAV.map(([r, k]) => <a key={r} href={'#' + r} className={section(route) === section(r) ? 'on' : ''}>{t(k)}</a>)}
             </nav>
             <div className="top-tools">
-              {isAdmin && <a href="#admin" className={'admin-link ' + (route === 'admin' ? 'on' : '')}>{t('navAdmin')}</a>}
+              {isAdmin && <a href="#admin" className={'admin-link desk-only ' + (route === 'admin' ? 'on' : '')}>{t('navAdmin')}</a>}
               <a href="#profile" className={'admin-link ' + (route === 'profile' ? 'on' : '')}>{user ? t('navProfile') : t('signIn')}</a>
               <select id="lang" aria-label="Language" value={lang} onChange={(e) => setLang(e.target.value as Lang)}>
                 {(Object.keys(LANG_NAMES) as Lang[]).map((l) => <option key={l} value={l}>{LANG_NAMES[l]}</option>)}
@@ -122,9 +134,9 @@ export function App() {
             </div>
           </div>
         </header>
-        <div className="banner" role="note"><div className="banner-in">{t('sampleBanner')}</div></div>
+        {opps.some((o) => o.sample) && <div className="banner" role="note"><div className="banner-in">{t('sampleBanner')}</div></div>}
         <main>{page(route)}</main>
-        <footer className="foot">{t('noGuarantee')}{route !== 'admin' && <> · <a href="#admin">{t('navAdmin')}</a></>}</footer>
+        <footer className="foot">{t('noGuarantee')}</footer>
         <nav className="tabbar" aria-label="Main">
           {NAV.map(([r, k, icon]) => (
             <a key={r} href={'#' + r} className={section(route) === section(r) ? 'on' : ''}>

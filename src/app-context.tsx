@@ -20,6 +20,7 @@ export interface AppState {
   source: 'db' | 'local' | 'loading';
   /** Saves one opportunity: to the database when signed in as admin, otherwise only in this browser. */
   saveOpp: (o: Opportunity) => Promise<string | null>;
+  deleteOpp: (id: string) => Promise<string | null>;
   signIn: (email: string) => Promise<string | null>;
   signOut: () => Promise<void>;
 }
