@@ -44,7 +44,8 @@ for (const src of NOTICE_SOURCES.filter((s) => !only.length || only.includes(s.i
     for (const f of found.slice(0, 5)) console.log(`    · ${f.title}  ${f.url}`);
     lines.push(`| ${src.name} | ok | ${found.length} | ${KEY ? fresh : 'dry run'} |`);
   } catch (e) {
-    const msg = e instanceof Error ? (e.name === 'AbortError' ? 'timed out' : e.message) : String(e);
+    const cause = e instanceof Error && e.cause ? ` (${(e.cause as { code?: string; message?: string }).code ?? ''} ${(e.cause as Error).message ?? ''})` : '';
+    const msg = (e instanceof Error ? (e.name === 'AbortError' ? 'timed out' : e.message) : String(e)) + cause;
     console.log(`✗ ${src.id}: ${msg}`);
     lines.push(`| ${src.name} | failed: ${msg.replace(/\|/g, '/')} | – | – |`);
   }
