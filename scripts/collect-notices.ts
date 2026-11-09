@@ -1,59 +1,59 @@
 // Reads official websites and records new notice links in Supabase (table official_notices).
 // Runs on a schedule in GitHub Actions (.github/workflows/notices.yml).
+// Sites that refuse servers outside India (marked `india: true`) are read through the
+// "collect-notices" Supabase Edge Function in the Mumbai region instead.
 // Without SUPABASE_SECRET_KEY it only prints what it found (dry run).
 import { appendFileSync } from 'node:fs';
-import { NOTICE_SOURCES } from '../src/notices/sources';
-import { extractLinks, isOfficialLink, pickNotices, type FoundNotice } from '../src/notices/extract';
+import { NOTICE_SOURCES, type NoticeSource } from '../src/notices/sources';
+import { collectSource, errorText, type CollectResult } from '../src/notices/collect';
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://rimsuaeqnxntgfmbicyb.supabase.co';
 const KEY = process.env.SUPABASE_SECRET_KEY || '';
 const only = (process.env.ONLY ?? '').split(',').map((s) => s.trim()).filter(Boolean);
+let functionMissing = false;
 
-async function fetchPage(url: string): Promise<string> {
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), 30_000);
-  try {
-    const res = await fetch(url, { signal: ctrl.signal, redirect: 'follow', headers: {
-      'User-Agent': 'Mozilla/5.0 (compatible; MargDishaNoticeBot/1.0; +https://margdisha.com)',
-      'Accept': 'text/html,application/xhtml+xml', 'Accept-Language': 'en-IN,en;q=0.9' } });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.text();
-  } finally { clearTimeout(timer); }
+/** Ask the Mumbai Edge Function to read one site. Falls back to reading it directly if the function is not set up. */
+async function viaMumbai(src: NoticeSource): Promise<CollectResult & { route: string }> {
+  if (KEY && !functionMissing) {
+    try {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/collect-notices`, {
+        method: 'POST', body: JSON.stringify({ only: [src.id] }),
+        headers: { apikey: KEY, 'Content-Type': 'application/json', 'x-region': 'ap-south-1',
+          ...(KEY.startsWith('sb_') ? {} : { Authorization: `Bearer ${KEY}` }) },
+        signal: AbortSignal.timeout(60_000),
+      });
+      if (res.status === 404) functionMissing = true;
+      else if (!res.ok) throw new Error(`function HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);
+      else {
+        const body = (await res.json()) as { results: CollectResult[] };
+        return { ...body.results[0], route: 'Mumbai' };
+      }
+    } catch (e) {
+      return { id: src.id, ok: false, found: 0, fresh: 0, error: errorText(e), route: 'Mumbai' };
+    }
+  }
+  return { ...(await collectSource(src, SUPABASE_URL, KEY)), route: functionMissing ? 'direct (function not deployed)' : 'direct' };
 }
 
-async function save(rows: object[]): Promise<number> {
-  const headers: Record<string, string> = { apikey: KEY, 'Content-Type': 'application/json', Prefer: 'resolution=ignore-duplicates,return=representation' };
-  if (!KEY.startsWith('sb_')) headers.Authorization = `Bearer ${KEY}`; // legacy JWT service_role key
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/official_notices?on_conflict=url&select=id`, { method: 'POST', headers, body: JSON.stringify(rows) });
-  if (!res.ok) throw new Error(`Supabase ${res.status}: ${(await res.text()).slice(0, 300)}`);
-  return ((await res.json()) as unknown[]).length;
-}
-
-const lines: string[] = ['| Source | Status | Notices found | New |', '|---|---|---|---|'];
+const lines: string[] = ['| Source | Read from | Status | Notices found | New |', '|---|---|---|---|---|'];
 let ok = 0, totalNew = 0;
-const run = async (src: (typeof NOTICE_SOURCES)[number]) => {
-  let found: FoundNotice[] = [];
-  try {
-    const html = await fetchPage(src.url);
-    found = pickNotices(extractLinks(html, src.url).filter((l) => isOfficialLink(l.url, src.url)), src);
-    let fresh = 0;
-    if (KEY && found.length)
-      fresh = await save(found.map((f) => ({ url: f.url, title: f.title, source_id: src.id, source_name: src.name, sector: src.sector ?? null, area: src.area })));
-    ok++; totalNew += fresh;
-    console.log(`✓ ${src.id}: ${found.length} notices, ${fresh} new`);
-    for (const f of found.slice(0, 5)) console.log(`    · ${f.title}  ${f.url}`);
-    lines.push(`| ${src.name} | ok | ${found.length} | ${KEY ? fresh : 'dry run'} |`);
-  } catch (e) {
-    const cause = e instanceof Error && e.cause ? ` (${(e.cause as { code?: string; message?: string }).code ?? ''} ${(e.cause as Error).message ?? ''})` : '';
-    const msg = (e instanceof Error ? (e.name === 'AbortError' ? 'timed out' : e.message) : String(e)) + cause;
-    console.log(`✗ ${src.id}: ${msg}`);
-    lines.push(`| ${src.name} | failed: ${msg.replace(/\|/g, '/')} | – | – |`);
+const run = async (src: NoticeSource) => {
+  const r = src.india ? await viaMumbai(src) : { ...(await collectSource(src, SUPABASE_URL, KEY)), route: 'GitHub' };
+  if (r.ok) {
+    ok++; totalNew += r.fresh;
+    console.log(`✓ ${src.id} [${r.route}]: ${r.found} notices, ${r.fresh} new`);
+    for (const f of r.sample ?? []) console.log(`    · ${f.title}  ${f.url}`);
+    lines.push(`| ${src.name} | ${r.route} | ok | ${r.found} | ${KEY ? r.fresh : 'dry run'} |`);
+  } else {
+    console.log(`✗ ${src.id} [${r.route}]: ${r.error}`);
+    lines.push(`| ${src.name} | ${r.route} | failed: ${(r.error ?? '').replace(/\|/g, '/')} | – | – |`);
   }
 };
 // Read a few sites at a time; each site still gets only one request.
 const queue = NOTICE_SOURCES.filter((s) => !only.length || only.includes(s.id));
 await Promise.all(Array.from({ length: 5 }, async () => { for (let s = queue.shift(); s; s = queue.shift()) await run(s); }));
-const summary = `### Notice collector\n${KEY ? `${totalNew} new notices saved.` : 'Dry run: SUPABASE_SECRET_KEY is not set, nothing was saved.'}\n\n${lines.join('\n')}\n`;
+const summary = `### Notice collector\n${KEY ? `${totalNew} new notices saved.` : 'Dry run: SUPABASE_SECRET_KEY is not set, nothing was saved.'}` +
+  `${functionMissing ? '\n\nThe Mumbai function is not deployed yet, so blocked sites were tried directly. See docs/NOTICES.md.' : ''}\n\n${lines.join('\n')}\n`;
 console.log('\n' + summary);
 if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary);
 if (ok === 0) process.exit(1);

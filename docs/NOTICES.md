@@ -20,6 +20,28 @@ notice in the `official_notices` table. The list of sites is in `src/notices/sou
 4. GitHub → Actions → "Collect official notices" → Run workflow. The run summary shows, for each site,
    how many notices were found and how many were new.
 
+## Sites that block servers outside India
+
+UPSC, the RRBs, Navodaya, the Army, the PSCs, TGCET and others time out for GitHub's servers, which are
+outside India. Those sources are marked `india: true` in `src/notices/sources.ts`, and the collector
+asks a Supabase Edge Function (`collect-notices`) to read them from Supabase's Mumbai region
+(`x-region: ap-south-1`). The function keeps no key of its own: it checks that the caller's key can
+write notices, then uses it for the inserts.
+
+One-time setup for the function:
+
+1. Supabase → your account (top right) → Access Tokens → Generate new token. Copy it.
+2. GitHub → margdisha → Settings → Secrets and variables → Actions → New repository secret.
+   Name: `SUPABASE_ACCESS_TOKEN`, value: that token.
+3. GitHub → Actions → "Deploy Supabase function" → Run workflow. It also redeploys by itself whenever
+   `src/notices` changes.
+
+Until the function is deployed, blocked sites are tried directly from GitHub (and usually fail).
+The function's code is built from `src/notices` by `npm run fn:build` into
+`supabase/functions/collect-notices/index.ts`. That single file can also be pasted into the
+Supabase dashboard (Edge Functions → Deploy a new function, name `collect-notices`, turn off
+"Verify JWT").
+
 ## Notes
 
 - Without the secret the job still runs and prints what it found, but saves nothing.
