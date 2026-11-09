@@ -36,7 +36,7 @@ export const NOTICE_SOURCES: NoticeSource[] = [
   // Entrance exams
   { id: 'nta', name: 'National Testing Agency', url: 'https://nta.ac.in/', area: 'exam' },
   // School admissions
-  { id: 'navodaya', india: true, name: 'Navodaya Vidyalaya Samiti', url: 'https://navodaya.gov.in/', area: 'school', sector: 'Navodaya', keywords: ['jnvst', 'lateral'] },
+  { id: 'navodaya', india: true, probe: ['https://navodaya.gov.in/api'], name: 'Navodaya Vidyalaya Samiti', url: 'https://navodaya.gov.in/', area: 'school', sector: 'Navodaya', keywords: ['jnvst', 'lateral'] },
   { id: 'aissee', india: true, name: 'AISSEE (Sainik Schools)', url: 'https://exams.nta.nic.in/sainik-school-society/', area: 'school', sector: 'Sainik', keywords: ['aissee', 'sainik'] },
   { id: 'kvs', name: 'Kendriya Vidyalaya Sangathan', url: 'https://kvsangathan.nic.in/', area: 'school', sector: 'Kendriya Vidyalaya', keywords: ['balvatika', 'class i'] },
   { id: 'rms', name: 'Rashtriya Military Schools', url: 'https://www.rashtriyamilitaryschools.edu.in/', area: 'school', sector: 'Military School', keywords: ['cet'] },

@@ -18,7 +18,7 @@ var NOTICE_SOURCES = [
   // Entrance exams
   { id: "nta", name: "National Testing Agency", url: "https://nta.ac.in/", area: "exam" },
   // School admissions
-  { id: "navodaya", india: true, name: "Navodaya Vidyalaya Samiti", url: "https://navodaya.gov.in/", area: "school", sector: "Navodaya", keywords: ["jnvst", "lateral"] },
+  { id: "navodaya", india: true, probe: ["https://navodaya.gov.in/api"], name: "Navodaya Vidyalaya Samiti", url: "https://navodaya.gov.in/", area: "school", sector: "Navodaya", keywords: ["jnvst", "lateral"] },
   { id: "aissee", india: true, name: "AISSEE (Sainik Schools)", url: "https://exams.nta.nic.in/sainik-school-society/", area: "school", sector: "Sainik", keywords: ["aissee", "sainik"] },
   { id: "kvs", name: "Kendriya Vidyalaya Sangathan", url: "https://kvsangathan.nic.in/", area: "school", sector: "Kendriya Vidyalaya", keywords: ["balvatika", "class i"] },
   { id: "rms", name: "Rashtriya Military Schools", url: "https://www.rashtriyamilitaryschools.edu.in/", area: "school", sector: "Military School", keywords: ["cet"] },
@@ -224,6 +224,17 @@ async function collectSource(src, supabaseUrl, key, debug = false) {
     const html = await fetchPage(src.url);
     const all = extractLinks(html, src.url);
     const found = pickNotices(all.filter((l) => isOfficialLink(l.url, src.url)), src);
+    if (debug && src.probe) {
+      const probes = [];
+      for (const u of src.probe) {
+        try {
+          probes.push(`${u} => ${(await fetchPage(u, 2e4)).replace(/\s+/g, " ").slice(0, 1500)}`);
+        } catch (e) {
+          probes.push(`${u} => ERROR ${errorText(e)}`);
+        }
+      }
+      return { id: src.id, ok: true, found: found.length, fresh: 0, sample: found, debug: { bytes: html.length, head: "", links: [], apis: [...probes, ...await findApis(html, src.url)] } };
+    }
     if (debug) return {
       id: src.id,
       ok: true,
@@ -237,17 +248,6 @@ async function collectSource(src, supabaseUrl, key, debug = false) {
         apis: await findApis(html, src.url)
       }
     };
-    if (debug && src.probe) {
-      const probes = [];
-      for (const u of src.probe) {
-        try {
-          probes.push(`${u} => ${(await fetchPage(u, 2e4)).replace(/\s+/g, " ").slice(0, 1500)}`);
-        } catch (e) {
-          probes.push(`${u} => ERROR ${errorText(e)}`);
-        }
-      }
-      return { id: src.id, ok: true, found: found.length, fresh: 0, sample: found, debug: { bytes: html.length, head: "", links: [], apis: probes } };
-    }
     const fresh = key && found.length ? await saveNotices(supabaseUrl, key, found.map((f) => ({ url: f.url, title: f.title, source_id: src.id, source_name: src.name, sector: src.sector ?? null, area: src.area }))) : 0;
     return { id: src.id, ok: true, found: found.length, fresh, sample: found.slice(0, 5) };
   } catch (e) {
@@ -271,6 +271,10 @@ async function findApis(html, base) {
       for (const m of js.matchAll(/.{0,90}(?:getNotifications|whatsNew|latestNews|notice-board|noticeboard|getLatest).{0,90}/gi)) {
         out.add("ctx: " + m[0]);
         if (out.size > 120) break;
+      }
+      for (const m of js.matchAll(/.{0,40}(?:fetch\(|axios\.get\(|\.get\(`|\.get\(")[^)]{0,140}/g)) {
+        out.add("call: " + m[0]);
+        if (out.size > 200) break;
       }
       for (const m of js.matchAll(/.{0,60}["'`]\/(?:api\/)?[a-z\-]*(?:notice|notification|admission|recruit|latest|news|announcement|circular|tender|vacanc)[a-z\-\/]*["'`].{0,60}/gi)) {
         out.add("ctx: " + m[0]);
