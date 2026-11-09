@@ -17,7 +17,7 @@ export function Admin() {
   const update = (id: string, patch: (o: Opportunity) => Opportunity) => setOpps((all) => all.map((o) => (o.id === id ? patch(o) : o)));
   const shown = opps.filter((o) => filter === 'all' || o.status === filter);
   return (
-    <section>
+    <section className="page">
       <h1>Admin · content verification</h1>
       <div className="notice">Phase 1 demo: no sign-in yet, and changes are stored in this browser only. Real admin access, roles and an audit log come with the backend.</div>
       <div className="chips">

@@ -7,14 +7,14 @@ import { OppCard } from '../components/OppCard';
 const KINDS: (OpportunityKind | 'all')[] = ['all', 'scholarship', 'govt-job', 'private-job', 'internship', 'exam', 'skill', 'abroad'];
 const GROUPS: MatchStatus[] = ['likely', 'verify', 'not'];
 
-export function Matches() {
+export function Matches({ initialKind = 'all' }: { initialKind?: OpportunityKind | 'all' }) {
   const { t, profile, opps } = useApp();
-  const [kind, setKind] = useState<OpportunityKind | 'all'>('all');
+  const [kind, setKind] = useState<OpportunityKind | 'all'>(initialKind);
   const [demo, setDemo] = useState(true);
   const matched = useMemo(() => matchAll(profile, opps, { includeUnverified: demo }), [profile, opps, demo]);
   const shown = matched.filter((m) => kind === 'all' || m.opp.kind === kind);
   return (
-    <section>
+    <section className="page">
       <h1>{t('navMatches')}</h1>
       <p className="muted">{t('noGuarantee')}</p>
       <div className="chips">

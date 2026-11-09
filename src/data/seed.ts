@@ -1,4 +1,5 @@
 import type { Opportunity, Pathway } from './types';
+import { SEED_JOBS } from './seed-jobs';
 
 /**
  * SAMPLE DATA — FOR DEVELOPMENT AND DEMO ONLY.
@@ -9,7 +10,7 @@ import type { Opportunity, Pathway } from './types';
  * All entries start as `draft` / `in-review` with `sample: true` and must go through
  * the admin verification workflow (with a real notification link) before publication.
  */
-export const SEED_OPPORTUNITIES: Opportunity[] = [
+const BASE: Opportunity[] = [
   // ── Scholarships ────────────────────────────────────────────
   {
     id: 'sch-central-postmatric', kind: 'scholarship', scope: 'Central', sample: true, status: 'in-review',
@@ -63,7 +64,7 @@ export const SEED_OPPORTUNITIES: Opportunity[] = [
 
   // ── Government jobs ─────────────────────────────────────────
   {
-    id: 'job-upsc-cse', kind: 'govt-job', scope: 'Central', sample: true, status: 'in-review',
+    id: 'job-upsc-cse', sector: 'UPSC', location: 'All India', vacancies: 'Placeholder', kind: 'govt-job', scope: 'Central', sample: true, status: 'in-review',
     title: 'UPSC Civil Services Examination (sample entry)',
     provider: 'Union Public Service Commission',
     summary: 'Illustrative entry for the civil services exam (IAS, IPS, IFS and allied services).',
@@ -73,7 +74,7 @@ export const SEED_OPPORTUNITIES: Opportunity[] = [
     deadline: '2027-02-18', source: { url: 'https://upsc.gov.in', label: 'UPSC official website' }, tags: ['UPSC', 'civil services'],
   },
   {
-    id: 'job-ssc-cgl', kind: 'govt-job', scope: 'Central', sample: true, status: 'draft',
+    id: 'job-ssc-cgl', sector: 'SSC', location: 'All India', kind: 'govt-job', scope: 'Central', sample: true, status: 'draft',
     title: 'SSC Combined Graduate Level (sample entry)',
     provider: 'Staff Selection Commission',
     summary: 'Illustrative entry for Group B and C posts in central ministries and departments.',
@@ -82,7 +83,7 @@ export const SEED_OPPORTUNITIES: Opportunity[] = [
     deadline: '2027-01-10', source: { url: 'https://ssc.gov.in', label: 'SSC official website' }, tags: ['SSC'],
   },
   {
-    id: 'job-ssc-chsl', kind: 'govt-job', scope: 'Central', sample: true, status: 'draft',
+    id: 'job-ssc-chsl', sector: 'SSC', location: 'All India', kind: 'govt-job', scope: 'Central', sample: true, status: 'draft',
     title: 'SSC CHSL – 12th level posts (sample entry)',
     provider: 'Staff Selection Commission',
     summary: 'Illustrative entry for clerk and data-entry posts open after Intermediate.',
@@ -91,7 +92,7 @@ export const SEED_OPPORTUNITIES: Opportunity[] = [
     deadline: '2026-12-05', source: { url: 'https://ssc.gov.in', label: 'SSC official website' }, tags: ['SSC', '12th pass'],
   },
   {
-    id: 'job-rrb-ntpc', kind: 'govt-job', scope: 'Central', sample: true, status: 'draft',
+    id: 'job-rrb-ntpc', sector: 'Railways', location: 'All India (zone-wise)', kind: 'govt-job', scope: 'Central', sample: true, status: 'draft',
     title: 'Railway non-technical posts (sample entry)',
     provider: 'Railway Recruitment Boards',
     summary: 'Illustrative entry for railway clerical, commercial and station posts.',
@@ -100,7 +101,7 @@ export const SEED_OPPORTUNITIES: Opportunity[] = [
     deadline: '2026-12-20', source: { url: 'https://indianrailways.gov.in', label: 'Indian Railways' }, tags: ['railways'],
   },
   {
-    id: 'job-tspsc-group', kind: 'govt-job', scope: 'State', sample: true, status: 'draft',
+    id: 'job-tspsc-group', sector: 'State PSC', location: 'Telangana', kind: 'govt-job', scope: 'State', sample: true, status: 'draft',
     title: 'Telangana state services recruitment (sample entry)',
     provider: 'Telangana State Public Service Commission',
     summary: 'Illustrative entry for state group services posts in Telangana.',
@@ -109,7 +110,7 @@ export const SEED_OPPORTUNITIES: Opportunity[] = [
     deadline: '2027-01-31', source: { url: 'https://www.tspsc.gov.in', label: 'TSPSC official website' }, tags: ['state PSC'],
   },
   {
-    id: 'job-apprentice', kind: 'govt-job', scope: 'Central', sample: true, status: 'draft',
+    id: 'job-apprentice', sector: 'Apprenticeship', location: 'Across India', kind: 'govt-job', scope: 'Central', sample: true, status: 'draft',
     title: 'Apprenticeship for ITI / Diploma holders (sample entry)',
     provider: 'Apprenticeship portal',
     summary: 'Illustrative entry for paid apprenticeship training in PSUs and industries.',
@@ -120,7 +121,7 @@ export const SEED_OPPORTUNITIES: Opportunity[] = [
 
   // ── Private jobs & internships ──────────────────────────────
   {
-    id: 'pvt-software-fresher', kind: 'private-job', scope: 'Private', sample: true, status: 'draft',
+    id: 'pvt-software-fresher', sector: 'IT & Software', location: 'Hyderabad', workMode: 'hybrid', experience: 'Fresher', kind: 'private-job', scope: 'Private', sample: true, status: 'draft',
     title: 'Graduate software engineer – fresher (sample entry)',
     provider: 'Example IT company (placeholder)',
     summary: 'Illustrative fresher role for engineering and science graduates. Hybrid, Hyderabad.',
@@ -129,7 +130,7 @@ export const SEED_OPPORTUNITIES: Opportunity[] = [
     deadline: '2026-12-01', source: { url: 'https://www.ncs.gov.in', label: 'Placeholder – replace with employer posting' }, tags: ['IT', 'fresher', 'Hyderabad'],
   },
   {
-    id: 'int-data-wfh', kind: 'internship', scope: 'Private', sample: true, status: 'draft',
+    id: 'int-data-wfh', sector: 'IT & Software', location: 'Remote', workMode: 'remote', experience: 'Students', kind: 'internship', scope: 'Private', sample: true, status: 'draft',
     title: 'Data analysis internship – work from home (sample entry)',
     provider: 'Example startup (placeholder)',
     summary: 'Illustrative 3-month remote internship for students who know spreadsheets or Python.',
@@ -199,6 +200,8 @@ export const SEED_OPPORTUNITIES: Opportunity[] = [
     source: { url: 'https://www.daad.de/en/', label: 'DAAD' }, tags: ['Germany', 'PG'],
   },
 ];
+
+export const SEED_OPPORTUNITIES: Opportunity[] = [...BASE, ...SEED_JOBS];
 
 /** What can I study next? Illustrative pathways, pending expert review. */
 export const SEED_PATHWAYS: Pathway[] = [

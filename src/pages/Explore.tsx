@@ -18,7 +18,7 @@ export function Explore() {
   const level = profile.level ?? 'class10';
   const options = pathwaysFor(level, profile.stream);
   return (
-    <section>
+    <section className="page">
       <h1>{t('studyNext')}</h1>
       <div className="notice">⚠ Pathway information is a first draft and has not been reviewed by a counsellor yet.</div>
       <label className="h-sm">{t('pickLevel')}</label>

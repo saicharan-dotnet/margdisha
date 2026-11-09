@@ -15,7 +15,7 @@ export function Profile() {
   const [ok, setOk] = useState(false);
   const set = (patch: Partial<P>) => { setF({ ...f, ...patch }); setOk(false); };
   return (
-    <section>
+    <section className="page">
       <h1>{t('navProfile')}</h1>
       <p className="muted">Everything is optional. The more you fill, the fewer results need verification. Phase 1 keeps your profile in this browser only.</p>
       <form className="form" onSubmit={(e) => { e.preventDefault(); setProfile(f); setOk(true); go('matches'); }}>

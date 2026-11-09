@@ -55,6 +55,11 @@ export type OpportunityKind =
   | 'scholarship' | 'govt-job' | 'private-job' | 'internship'
   | 'exam' | 'course' | 'skill' | 'abroad';
 
+export const GOVT_SECTORS = ['UPSC', 'State PSC', 'SSC', 'Banking', 'Railways', 'Defence', 'Police', 'Teaching', 'PSU', 'Apprenticeship', 'Departments'] as const;
+export const PRIVATE_SECTORS = ['IT & Software', 'Banking & Finance', 'Healthcare', 'Manufacturing', 'Sales & Marketing', 'Education', 'Customer Support'] as const;
+export type JobSector = (typeof GOVT_SECTORS)[number] | (typeof PRIVATE_SECTORS)[number];
+export type WorkMode = 'onsite' | 'remote' | 'hybrid';
+
 export type VerificationStatus = 'draft' | 'in-review' | 'verified' | 'rejected';
 
 export interface SourceInfo {
@@ -85,6 +90,12 @@ export interface Opportunity {
   /** True for seeded demo content. Never shown without a warning. */
   sample: boolean;
   tags: string[];
+  /** Jobs only. */
+  sector?: JobSector;
+  location?: string;
+  workMode?: WorkMode;
+  vacancies?: string;
+  experience?: string;
 }
 
 export interface PathwayOption {

@@ -6,6 +6,12 @@ export type Lang = 'en' | 'te' | 'hi';
 export const LANG_NAMES: Record<Lang, string> = { en: 'English', te: 'తెలుగు', hi: 'हिन्दी' };
 
 const en = {
+  navJobs: 'Jobs', govtTab: 'Government', privateTab: 'Private', onlyMine: 'Only jobs I may qualify for', searchJobs: 'Search by post, recruiter or place',
+  allSectors: 'All sectors', remote: 'Work from home', hybrid: 'Hybrid', onsite: 'On-site', qualNeeded: 'Qualification', ageLimit: 'Age', location: 'Location', experience: 'Experience',
+  jobsIntro: 'Recruitment notifications from government bodies and openings from private employers, matched to your profile.',
+  startHere: 'Start here', exploreAll: 'Explore everything', resultsCount: 'results',
+  q1: 'What can I study next?', q2: 'Which careers suit me?', q3: 'Which scholarships can I get?', q4: 'Which government jobs can I apply for?',
+  q5: 'Which private jobs match me?', q6: 'Which entrance exams can I write?', q7: 'What skills should I learn?', q8: 'Can I study abroad?', q9: 'What is my next step?',
   appName: 'NextStep',
   tagline: 'I finished my studies. What can I do next?',
   heroSub: 'Pick your qualification to see what you can study, which exams you can take, and which scholarships and jobs may fit you.',
@@ -36,6 +42,12 @@ const en = {
 export type Key = keyof typeof en;
 
 const te: Record<Key, string> = {
+  navJobs: 'ఉద్యోగాలు', govtTab: 'ప్రభుత్వ', privateTab: 'ప్రైవేట్', onlyMine: 'నాకు అర్హత ఉండే ఉద్యోగాలు మాత్రమే', searchJobs: 'పోస్టు, సంస్థ లేదా ప్రాంతంతో వెతకండి',
+  allSectors: 'అన్ని రంగాలు', remote: 'ఇంటి నుండి పని', hybrid: 'హైబ్రిడ్', onsite: 'ఆఫీసులో', qualNeeded: 'విద్యార్హత', ageLimit: 'వయస్సు', location: 'ప్రాంతం', experience: 'అనుభవం',
+  jobsIntro: 'ప్రభుత్వ నియామక నోటిఫికేషన్‌లు, ప్రైవేట్ సంస్థల ఉద్యోగాలు మీ ప్రొఫైల్‌కు సరిపోల్చి చూపిస్తాము.',
+  startHere: 'ఇక్కడ మొదలుపెట్టండి', exploreAll: 'అన్నీ చూడండి', resultsCount: 'ఫలితాలు',
+  q1: 'తర్వాత ఏమి చదవాలి?', q2: 'నాకు ఏ కెరీర్ సరిపోతుంది?', q3: 'నాకు ఏ స్కాలర్‌షిప్‌లు వస్తాయి?', q4: 'ఏ ప్రభుత్వ ఉద్యోగాలకు దరఖాస్తు చేయవచ్చు?',
+  q5: 'ఏ ప్రైవేట్ ఉద్యోగాలు సరిపోతాయి?', q6: 'ఏ ప్రవేశ పరీక్షలు రాయవచ్చు?', q7: 'ఏ నైపుణ్యాలు నేర్చుకోవాలి?', q8: 'విదేశాల్లో చదవవచ్చా?', q9: 'నా తదుపరి అడుగు ఏమిటి?',
   appName: 'NextStep',
   tagline: 'నా చదువు పూర్తయింది. తర్వాత ఏం చేయాలి?',
   heroSub: 'మీ అర్హతను ఎంచుకోండి. మీరు ఏమి చదవవచ్చు, ఏ పరీక్షలు రాయవచ్చు, ఏ స్కాలర్‌షిప్‌లు, ఉద్యోగాలు సరిపోవచ్చో చూడండి.',
@@ -64,6 +76,12 @@ const te: Record<Key, string> = {
 };
 
 const hi: Record<Key, string> = {
+  navJobs: 'नौकरियाँ', govtTab: 'सरकारी', privateTab: 'प्राइवेट', onlyMine: 'केवल वे नौकरियाँ जिनके लिए मैं पात्र हो सकता हूँ', searchJobs: 'पद, भर्ती संस्था या जगह से खोजें',
+  allSectors: 'सभी क्षेत्र', remote: 'घर से काम', hybrid: 'हाइब्रिड', onsite: 'ऑफ़िस में', qualNeeded: 'योग्यता', ageLimit: 'आयु', location: 'स्थान', experience: 'अनुभव',
+  jobsIntro: 'सरकारी भर्ती अधिसूचनाएँ और प्राइवेट कंपनियों की नौकरियाँ, आपकी प्रोफ़ाइल से मिलाकर।',
+  startHere: 'यहाँ से शुरू करें', exploreAll: 'सब कुछ देखें', resultsCount: 'परिणाम',
+  q1: 'आगे क्या पढ़ूँ?', q2: 'मेरे लिए कौन सा करियर सही है?', q3: 'मुझे कौन सी छात्रवृत्ति मिल सकती है?', q4: 'किन सरकारी नौकरियों के लिए आवेदन कर सकता हूँ?',
+  q5: 'कौन सी प्राइवेट नौकरियाँ मेरे लिए हैं?', q6: 'कौन सी प्रवेश परीक्षाएँ दे सकता हूँ?', q7: 'कौन से कौशल सीखूँ?', q8: 'क्या मैं विदेश में पढ़ सकता हूँ?', q9: 'मेरा अगला कदम क्या है?',
   appName: 'NextStep',
   tagline: 'मेरी पढ़ाई पूरी हो गई। अब आगे क्या करूँ?',
   heroSub: 'अपनी योग्यता चुनें और देखें कि आप आगे क्या पढ़ सकते हैं, कौन सी परीक्षाएँ दे सकते हैं, और कौन सी छात्रवृत्तियाँ व नौकरियाँ आपके लिए हो सकती हैं।',

@@ -20,7 +20,7 @@ export function Dashboard() {
     : 'Explore study options and save the ones you like.';
 
   return (
-    <section>
+    <section className="page">
       <h1>{t('navDashboard')}{profile.name ? ` · ${profile.name}` : ''}</h1>
       <div className="card highlight"><h2 className="h-sm">{t('nextStep')}</h2><p>{next}</p></div>
       <div className="stats">
