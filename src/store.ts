@@ -27,5 +27,5 @@ export function useHashRoute(): [string, (r: string) => void] {
     window.addEventListener('hashchange', on);
     return () => window.removeEventListener('hashchange', on);
   }, []);
-  return [route, (r) => { window.location.hash = '/' + r; }];
+  return [route, (r) => { window.location.hash = r; }];
 }

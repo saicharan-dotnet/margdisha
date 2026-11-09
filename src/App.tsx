@@ -35,9 +35,9 @@ export function App() {
     <Ctx.Provider value={state}>
       <div lang={lang}>
         <header className="top">
-          <a className="brand" href="#/home">◆ {t('appName')}</a>
+          <a className="brand" href="#home">◆ {t('appName')}</a>
           <nav aria-label="Main">
-            {NAV.map(([r, k]) => <a key={r} href={'#/' + r} className={route === r ? 'on' : ''}>{t(k)}</a>)}
+            {NAV.map(([r, k]) => <a key={r} href={'#' + r} className={route === r ? 'on' : ''}>{t(k)}</a>)}
           </nav>
           <select aria-label="Language" value={lang} onChange={(e) => setLang(e.target.value as Lang)}>
             {(Object.keys(LANG_NAMES) as Lang[]).map((l) => <option key={l} value={l}>{LANG_NAMES[l]}</option>)}
