@@ -1,8 +1,11 @@
+import type React from 'react';
 import { useApp } from '../app-context';
 import type { Key } from '../i18n/strings';
 import { LEVEL_LABEL } from '../engine/match';
 import { Icon } from '../components/Icon';
 import type { Level } from '../data/types';
+import hero from '../assets/hero.jpg';
+import heroSmall from '../assets/hero-800.jpg';
 
 const PICK: Level[] = ['class10', 'inter', 'diploma', 'ug', 'pg'];
 const PICK_HINT: Partial<Record<Level, string>> = {
@@ -23,9 +26,11 @@ export function Home() {
   return (
     <>
       <section className="hero">
-        <p className="eyebrow">{t('startHere')}</p>
-        <h1>{t('tagline')}</h1>
-        <p className="lede">{t('heroSub')}</p>
+        <div className="hero-banner" style={{ '--hero': `url(${hero})`, '--hero-sm': `url(${heroSmall})` } as React.CSSProperties}>
+          <p className="eyebrow">{t('startHere')}</p>
+          <h1>{t('tagline')}</h1>
+          <p className="lede">{t('heroSub')}</p>
+        </div>
         <h2 className="pick-h">{t('pickLevel')}</h2>
         <div className="level-grid">
           {PICK.map((l) => (
