@@ -56,7 +56,7 @@ export async function collectSource(src: NoticeSource, supabaseUrl: string, key:
     const found = pickNotices(all.filter((l) => isOfficialLink(l.url, src.url)), src);
     if (debug) return { id: src.id, ok: true, found: found.length, fresh: 0, sample: found,
       debug: { bytes: html.length, head: html.replace(/\s+/g, ' ').slice(0, html.length < 10_000 ? 6000 : 600), links: all.slice(0, 150),
-        apis: all.length < 5 ? await findApis(html, src.url) : undefined } };
+        apis: await findApis(html, src.url) } };
     const fresh = key && found.length
       ? await saveNotices(supabaseUrl, key, found.map((f) => ({ url: f.url, title: f.title, source_id: src.id, source_name: src.name, sector: src.sector ?? null, area: src.area })))
       : 0;
@@ -75,9 +75,12 @@ async function findApis(html: string, base: string): Promise<string[]> {
     try {
       const js = await fetchPage(u, 20_000);
       for (const m of js.matchAll(/["'`]((?:https?:\/\/[^"'`\s]*)?\/[A-Za-z0-9_\-./]*(?:api|notice|notification|advert|latest|news|whatsnew|recruit)[A-Za-z0-9_\-./?=&]*)["'`]/gi)) {
-        if (m[1].length < 160) out.add(m[1]);
-        if (out.size > 80) break;
+        if (m[1].length < 160 && !/\.pdf$/i.test(m[1])) out.add(m[1]);
+        if (out.size > 60) break;
       }
+      // Where the script builds its request addresses (base URL + path).
+      for (const m of js.matchAll(/(?:baseURL|apiUrl|API_URL|apiBase|BASE_URL|baseUrl|environment)[^;]{0,160}/g)) { out.add('ctx: ' + m[0].slice(0, 170)); if (out.size > 100) break; }
+      for (const m of js.matchAll(/.{0,90}(?:getNotifications|whatsNew|latestNews|notice-board|noticeboard|getLatest).{0,90}/gi)) { out.add('ctx: ' + m[0]); if (out.size > 120) break; }
     } catch { /* skip */ }
   }
   return [...out];

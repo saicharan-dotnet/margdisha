@@ -12,7 +12,7 @@ var NOTICE_SOURCES = [
   { id: "sbi", india: true, name: "State Bank of India", url: "https://sbi.co.in/web/careers/current-openings", area: "job", sector: "Banking" },
   { id: "rbi", name: "Reserve Bank of India", url: "https://opportunities.rbi.org.in/Scripts/Vacancies.aspx", area: "job", sector: "Banking" },
   { id: "tgpsc", india: true, name: "Telangana PSC", url: "https://www.tgpsc.gov.in/", area: "job", sector: "State PSC", keywords: ["group"] },
-  { id: "appsc", india: true, name: "Andhra Pradesh PSC", url: "https://psc.ap.gov.in/", area: "job", sector: "State PSC", keywords: ["group"] },
+  { id: "appsc", india: true, name: "Andhra Pradesh PSC", url: "https://portal-psc.ap.gov.in/Default.aspx", area: "job", sector: "State PSC", keywords: ["group"] },
   { id: "army", india: true, name: "Indian Army", url: "https://joinindianarmy.nic.in/", area: "job", sector: "Defence", keywords: ["agniveer", "entry"] },
   { id: "indiapost", name: "India Post GDS", url: "https://indiapostgdsonline.gov.in/", area: "job", sector: "Departments", keywords: ["gds", "schedule"] },
   // Entrance exams
@@ -234,7 +234,7 @@ async function collectSource(src, supabaseUrl, key, debug = false) {
         bytes: html.length,
         head: html.replace(/\s+/g, " ").slice(0, html.length < 1e4 ? 6e3 : 600),
         links: all.slice(0, 150),
-        apis: all.length < 5 ? await findApis(html, src.url) : void 0
+        apis: await findApis(html, src.url)
       }
     };
     const fresh = key && found.length ? await saveNotices(supabaseUrl, key, found.map((f) => ({ url: f.url, title: f.title, source_id: src.id, source_name: src.name, sector: src.sector ?? null, area: src.area }))) : 0;
@@ -250,8 +250,16 @@ async function findApis(html, base) {
     try {
       const js = await fetchPage(u, 2e4);
       for (const m of js.matchAll(/["'`]((?:https?:\/\/[^"'`\s]*)?\/[A-Za-z0-9_\-./]*(?:api|notice|notification|advert|latest|news|whatsnew|recruit)[A-Za-z0-9_\-./?=&]*)["'`]/gi)) {
-        if (m[1].length < 160) out.add(m[1]);
-        if (out.size > 80) break;
+        if (m[1].length < 160 && !/\.pdf$/i.test(m[1])) out.add(m[1]);
+        if (out.size > 60) break;
+      }
+      for (const m of js.matchAll(/(?:baseURL|apiUrl|API_URL|apiBase|BASE_URL|baseUrl|environment)[^;]{0,160}/g)) {
+        out.add("ctx: " + m[0].slice(0, 170));
+        if (out.size > 100) break;
+      }
+      for (const m of js.matchAll(/.{0,90}(?:getNotifications|whatsNew|latestNews|notice-board|noticeboard|getLatest).{0,90}/gi)) {
+        out.add("ctx: " + m[0]);
+        if (out.size > 120) break;
       }
     } catch {
     }
