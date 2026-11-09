@@ -177,7 +177,7 @@ function isOfficialLink(url, sourceUrl) {
 }
 
 // src/notices/collect.ts
-async function fetchPage(url, timeoutMs = 25e3) {
+async function fetchPage(url, timeoutMs = 25e3, depth = 0) {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs);
   try {
@@ -187,7 +187,10 @@ async function fetchPage(url, timeoutMs = 25e3) {
       "Accept-Language": "en-IN,en;q=0.9"
     } });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.text();
+    const html = await res.text();
+    const refresh = html.length < 2e3 && /<meta[^>]+http-equiv=["']?refresh[^>]+url=([^"'>\s]+)/i.exec(html);
+    if (refresh && depth < 2) return fetchPage(new URL(refresh[1], res.url || url).toString(), timeoutMs, depth + 1);
+    return html;
   } finally {
     clearTimeout(timer);
   }
@@ -227,13 +230,33 @@ async function collectSource(src, supabaseUrl, key, debug = false) {
       found: found.length,
       fresh: 0,
       sample: found,
-      debug: { bytes: html.length, head: html.replace(/\s+/g, " ").slice(0, 600), links: all.slice(0, 150) }
+      debug: {
+        bytes: html.length,
+        head: html.replace(/\s+/g, " ").slice(0, html.length < 1e4 ? 6e3 : 600),
+        links: all.slice(0, 150),
+        apis: all.length < 5 ? await findApis(html, src.url) : void 0
+      }
     };
     const fresh = key && found.length ? await saveNotices(supabaseUrl, key, found.map((f) => ({ url: f.url, title: f.title, source_id: src.id, source_name: src.name, sector: src.sector ?? null, area: src.area }))) : 0;
     return { id: src.id, ok: true, found: found.length, fresh, sample: found.slice(0, 5) };
   } catch (e) {
     return { id: src.id, ok: false, found: 0, fresh: 0, error: errorText(e) };
   }
+}
+async function findApis(html, base) {
+  const scripts = [...html.matchAll(/<script[^>]+src=["']([^"']+)["']/gi)].map((m) => new URL(m[1], base).toString()).filter((u) => new URL(u).hostname === new URL(base).hostname).slice(0, 4);
+  const out = /* @__PURE__ */ new Set();
+  for (const u of scripts) {
+    try {
+      const js = await fetchPage(u, 2e4);
+      for (const m of js.matchAll(/["'`]((?:https?:\/\/[^"'`\s]*)?\/[A-Za-z0-9_\-./]*(?:api|notice|notification|advert|latest|news|whatsnew|recruit)[A-Za-z0-9_\-./?=&]*)["'`]/gi)) {
+        if (m[1].length < 160) out.add(m[1]);
+        if (out.size > 80) break;
+      }
+    } catch {
+    }
+  }
+  return [...out];
 }
 
 // src/notices/edge-handler.ts

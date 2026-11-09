@@ -43,6 +43,7 @@ const run = async (src: NoticeSource) => {
   if (r.debug) {
     console.log(`\n===== ${src.id} (${src.url}) ${r.debug.bytes} bytes\nHEAD: ${r.debug.head}`);
     for (const l of r.debug.links) console.log(`  link: ${l.title}  ${l.url}`);
+    for (const a of r.debug.apis ?? []) console.log(`  api: ${a}`);
   }
   if (r.ok) {
     ok++; totalNew += r.fresh;
