@@ -57,6 +57,13 @@ export async function collectSource(src: NoticeSource, supabaseUrl: string, key:
     if (debug) return { id: src.id, ok: true, found: found.length, fresh: 0, sample: found,
       debug: { bytes: html.length, head: html.replace(/\s+/g, ' ').slice(0, html.length < 10_000 ? 6000 : 600), links: all.slice(0, 150),
         apis: await findApis(html, src.url) } };
+    if (debug && src.probe) {
+      const probes: string[] = [];
+      for (const u of src.probe) {
+        try { probes.push(`${u} => ${(await fetchPage(u, 20_000)).replace(/\s+/g, ' ').slice(0, 1500)}`); } catch (e) { probes.push(`${u} => ERROR ${errorText(e)}`); }
+      }
+      return { id: src.id, ok: true, found: found.length, fresh: 0, sample: found, debug: { bytes: html.length, head: '', links: [], apis: probes } };
+    }
     const fresh = key && found.length
       ? await saveNotices(supabaseUrl, key, found.map((f) => ({ url: f.url, title: f.title, source_id: src.id, source_name: src.name, sector: src.sector ?? null, area: src.area })))
       : 0;
@@ -81,6 +88,7 @@ async function findApis(html: string, base: string): Promise<string[]> {
       // Where the script builds its request addresses (base URL + path).
       for (const m of js.matchAll(/(?:baseURL|apiUrl|API_URL|apiBase|BASE_URL|baseUrl|environment)[^;]{0,160}/g)) { out.add('ctx: ' + m[0].slice(0, 170)); if (out.size > 100) break; }
       for (const m of js.matchAll(/.{0,90}(?:getNotifications|whatsNew|latestNews|notice-board|noticeboard|getLatest).{0,90}/gi)) { out.add('ctx: ' + m[0]); if (out.size > 120) break; }
+      for (const m of js.matchAll(/.{0,60}["'`]\/(?:api\/)?[a-z\-]*(?:notice|notification|admission|recruit|latest|news|announcement|circular|tender|vacanc)[a-z\-\/]*["'`].{0,60}/gi)) { out.add('ctx: ' + m[0]); if (out.size > 160) break; }
     } catch { /* skip */ }
   }
   return [...out];

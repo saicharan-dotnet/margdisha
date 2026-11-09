@@ -23,7 +23,7 @@ var NOTICE_SOURCES = [
   { id: "kvs", name: "Kendriya Vidyalaya Sangathan", url: "https://kvsangathan.nic.in/", area: "school", sector: "Kendriya Vidyalaya", keywords: ["balvatika", "class i"] },
   { id: "rms", name: "Rashtriya Military Schools", url: "https://www.rashtriyamilitaryschools.edu.in/", area: "school", sector: "Military School", keywords: ["cet"] },
   { id: "nests", name: "NESTS (Eklavya schools)", url: "https://nests.tribal.gov.in/", area: "school", sector: "EMRS", keywords: ["emrs", "eklavya"] },
-  { id: "tgcet", india: true, name: "Telangana Gurukul (TGCET)", url: "https://tgcet.cgg.gov.in/", area: "school", sector: "State residential", keywords: ["tgcet", "gurukul"] },
+  { id: "tgcet", india: true, probe: ["https://tgcet.cgg.gov.in/TGCETWEB/api/getNotifications", "https://tgcet.cgg.gov.in/TGCETWEB/getNotifications", "https://tgcet.cgg.gov.in/api/getNotifications"], name: "Telangana Gurukul (TGCET)", url: "https://tgcet.cgg.gov.in/", area: "school", sector: "State residential", keywords: ["tgcet", "gurukul"] },
   // Scholarships
   { id: "nsp", name: "National Scholarship Portal", url: "https://scholarships.gov.in/", area: "scholarship", sector: "School scholarship", keywords: ["scheme", "nmms"] }
 ];
@@ -237,6 +237,17 @@ async function collectSource(src, supabaseUrl, key, debug = false) {
         apis: await findApis(html, src.url)
       }
     };
+    if (debug && src.probe) {
+      const probes = [];
+      for (const u of src.probe) {
+        try {
+          probes.push(`${u} => ${(await fetchPage(u, 2e4)).replace(/\s+/g, " ").slice(0, 1500)}`);
+        } catch (e) {
+          probes.push(`${u} => ERROR ${errorText(e)}`);
+        }
+      }
+      return { id: src.id, ok: true, found: found.length, fresh: 0, sample: found, debug: { bytes: html.length, head: "", links: [], apis: probes } };
+    }
     const fresh = key && found.length ? await saveNotices(supabaseUrl, key, found.map((f) => ({ url: f.url, title: f.title, source_id: src.id, source_name: src.name, sector: src.sector ?? null, area: src.area }))) : 0;
     return { id: src.id, ok: true, found: found.length, fresh, sample: found.slice(0, 5) };
   } catch (e) {
@@ -260,6 +271,10 @@ async function findApis(html, base) {
       for (const m of js.matchAll(/.{0,90}(?:getNotifications|whatsNew|latestNews|notice-board|noticeboard|getLatest).{0,90}/gi)) {
         out.add("ctx: " + m[0]);
         if (out.size > 120) break;
+      }
+      for (const m of js.matchAll(/.{0,60}["'`]\/(?:api\/)?[a-z\-]*(?:notice|notification|admission|recruit|latest|news|announcement|circular|tender|vacanc)[a-z\-\/]*["'`].{0,60}/gi)) {
+        out.add("ctx: " + m[0]);
+        if (out.size > 160) break;
       }
     } catch {
     }

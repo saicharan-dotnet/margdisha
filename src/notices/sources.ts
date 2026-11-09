@@ -15,6 +15,8 @@ export interface NoticeSource {
   keywords?: string[];
   /** The site blocks servers outside India: read it through the Supabase function in Mumbai. */
   india?: boolean;
+  /** Diagnostics only: extra addresses on the same site to fetch and print in a debug run. */
+  probe?: string[];
 }
 
 export const NOTICE_SOURCES: NoticeSource[] = [
@@ -39,7 +41,7 @@ export const NOTICE_SOURCES: NoticeSource[] = [
   { id: 'kvs', name: 'Kendriya Vidyalaya Sangathan', url: 'https://kvsangathan.nic.in/', area: 'school', sector: 'Kendriya Vidyalaya', keywords: ['balvatika', 'class i'] },
   { id: 'rms', name: 'Rashtriya Military Schools', url: 'https://www.rashtriyamilitaryschools.edu.in/', area: 'school', sector: 'Military School', keywords: ['cet'] },
   { id: 'nests', name: 'NESTS (Eklavya schools)', url: 'https://nests.tribal.gov.in/', area: 'school', sector: 'EMRS', keywords: ['emrs', 'eklavya'] },
-  { id: 'tgcet', india: true, name: 'Telangana Gurukul (TGCET)', url: 'https://tgcet.cgg.gov.in/', area: 'school', sector: 'State residential', keywords: ['tgcet', 'gurukul'] },
+  { id: 'tgcet', india: true, probe: ['https://tgcet.cgg.gov.in/TGCETWEB/api/getNotifications', 'https://tgcet.cgg.gov.in/TGCETWEB/getNotifications', 'https://tgcet.cgg.gov.in/api/getNotifications'], name: 'Telangana Gurukul (TGCET)', url: 'https://tgcet.cgg.gov.in/', area: 'school', sector: 'State residential', keywords: ['tgcet', 'gurukul'] },
   // Scholarships
   { id: 'nsp', name: 'National Scholarship Portal', url: 'https://scholarships.gov.in/', area: 'scholarship', sector: 'School scholarship', keywords: ['scheme', 'nmms'] },
 ];
