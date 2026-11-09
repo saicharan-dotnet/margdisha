@@ -11,15 +11,24 @@ const FLOW: VerificationStatus[] = ['draft', 'in-review', 'verified', 'rejected'
  * the details match it. Sample entries cannot be published until marked as real data.
  */
 export function Admin() {
-  const { opps, setOpps } = useApp();
+  const { opps, saveOpp, isAdmin, source, user } = useApp();
+  const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<VerificationStatus | 'all'>('all');
   const [editing, setEditing] = useState<string | null>(null);
-  const update = (id: string, patch: (o: Opportunity) => Opportunity) => setOpps((all) => all.map((o) => (o.id === id ? patch(o) : o)));
+  const update = async (id: string, patch: (o: Opportunity) => Opportunity) => {
+    const cur = opps.find((o) => o.id === id);
+    if (!cur) return;
+    setError(await saveOpp(patch(cur)));
+  };
+  const live = source === 'db' && isAdmin;
   const shown = opps.filter((o) => filter === 'all' || o.status === filter);
   return (
     <section className="page">
       <h1>Admin · content verification</h1>
-      <div className="notice">Phase 1 demo: no sign-in yet, and changes are stored in this browser only. Real admin access, roles and an audit log come with the backend.</div>
+      {live
+        ? <div className="notice ok-note">Signed in as admin ({user}). Changes are saved to the database, and every status change is recorded in the audit log.</div>
+        : <div className="notice">Demo mode: changes stay in this browser only. {user ? 'Your account is not an admin.' : 'Sign in with an admin account (My profile) to manage live data.'}</div>}
+      {error && <div className="notice err" role="alert">{error}</div>}
       <div className="chips">
         {(['all', ...FLOW] as const).map((s) => (
           <button key={s} className={'chip ' + (s === filter ? 'on' : '')} onClick={() => setFilter(s)}>
@@ -50,7 +59,7 @@ export function Admin() {
         </table>
       </div>
       {editing && <VerifyDialog opp={opps.find((o) => o.id === editing)!} onClose={() => setEditing(null)}
-        onVerify={(patch) => { update(editing, patch); setEditing(null); }} />}
+        onVerify={(patch) => { void update(editing, patch); setEditing(null); }} />}
     </section>
   );
 }

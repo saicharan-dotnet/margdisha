@@ -13,6 +13,15 @@ export interface AppState {
   saved: string[];
   toggleSaved: (id: string) => void;
   go: (route: string) => void;
+  /** Signed-in user's email, or null. */
+  user: string | null;
+  isAdmin: boolean;
+  /** Where opportunities came from: the live database, or bundled sample data. */
+  source: 'db' | 'local' | 'loading';
+  /** Saves one opportunity: to the database when signed in as admin, otherwise only in this browser. */
+  saveOpp: (o: Opportunity) => Promise<string | null>;
+  signIn: (email: string) => Promise<string | null>;
+  signOut: () => Promise<void>;
 }
 
 export const Ctx = createContext<AppState>(null as unknown as AppState);

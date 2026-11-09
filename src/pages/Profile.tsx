@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useApp } from '../app-context';
 import { LEVELS, type Category, type Gender, type Level, type Profile as P, type Stream } from '../data/types';
 import { LEVEL_LABEL } from '../engine/match';
+import { Account } from '../components/Account';
 
 const STREAMS: Stream[] = ['MPC', 'BiPC', 'MEC', 'CEC', 'HEC', 'Vocational', 'Engineering', 'Science', 'Commerce', 'Arts', 'Medical'];
 const STATES = ['Andhra Pradesh', 'Telangana', 'Karnataka', 'Tamil Nadu', 'Maharashtra', 'Kerala', 'Odisha', 'Delhi', 'Uttar Pradesh', 'Bihar', 'West Bengal', 'Other'];
@@ -17,7 +18,8 @@ export function Profile() {
   return (
     <section className="page">
       <h1>{t('navProfile')}</h1>
-      <p className="muted">Everything is optional. The more you fill, the fewer results need verification. Phase 1 keeps your profile in this browser only.</p>
+      <p className="muted">Everything is optional. The more you fill, the fewer results need verification. </p>
+      <Account />
       <form className="form" onSubmit={(e) => { e.preventDefault(); setProfile(f); setOk(true); go('matches'); }}>
         <label>{t('fName')} <small>({t('optional')})</small><input value={f.name ?? ''} onChange={(e) => set({ name: e.target.value })} /></label>
         <label>{t('fQualification')}

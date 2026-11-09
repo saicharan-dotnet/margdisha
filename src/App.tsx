@@ -1,7 +1,9 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Ctx, translator, type AppState } from './app-context';
 import type { Opportunity, OpportunityKind, Profile as P } from './data/types';
 import { SEED_OPPORTUNITIES } from './data/seed';
+import { checkIsAdmin, fetchOpportunities, loadUserData, saveOpportunity, saveProfileRemote, setSavedRemote } from './data/remote';
+import { supabase } from './lib/supabase';
 import { LANG_NAMES, type Key, type Lang } from './i18n/strings';
 import { usePersisted, useHashRoute } from './store';
 import { Icon, type IconName } from './components/Icon';
@@ -37,14 +39,69 @@ const section = (r: string) => r.split('-')[0];
 export function App() {
   const [route, go] = useHashRoute();
   const [lang, setLang] = usePersisted<Lang>('lang', 'en');
-  const [profile, setProfile] = usePersisted<P>('profile', { skills: [], interests: [] });
-  const [opps, setOpps] = usePersisted<Opportunity[]>('opps-v2', SEED_OPPORTUNITIES);
+  const [profile, setProfileLocal] = usePersisted<P>('profile', { skills: [], interests: [] });
+  const [localOpps, setLocalOpps] = usePersisted<Opportunity[]>('opps-v2', SEED_OPPORTUNITIES);
   const [saved, setSaved] = usePersisted<string[]>('saved', []);
+  const [remoteOpps, setRemoteOpps] = useState<Opportunity[] | null>(null);
+  const [source, setSource] = useState<'db' | 'local' | 'loading'>(supabase ? 'loading' : 'local');
+  const [user, setUser] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const t = useMemo(() => translator(lang), [lang]);
 
+  // Load opportunities from the database; fall back to bundled sample data.
+  const reload = async () => {
+    const rows = await fetchOpportunities();
+    if (rows && rows.length) { setRemoteOpps(rows); setSource('db'); } else setSource('local');
+  };
+  useEffect(() => { void reload(); }, []);
+
+  // Track sign-in; pull the user's profile and saved items from the database.
+  useEffect(() => {
+    if (!supabase) return;
+    const onSession = async (email: string | null) => {
+      setUser(email);
+      if (!email) { setIsAdmin(false); return; }
+      const [admin, data] = await Promise.all([checkIsAdmin(), loadUserData()]);
+      setIsAdmin(admin);
+      if (data.profile) setProfileLocal(data.profile);
+      else void saveProfileRemote(profile); // first sign-in: keep what they filled in as a guest
+      setSaved((s) => [...new Set([...s, ...data.saved])]);
+      if (admin) void reload(); // admins can see drafts too
+    };
+    supabase.auth.getSession().then(({ data }) => onSession(data.session?.user.email ?? null));
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => { void onSession(session?.user.email ?? null); });
+    return () => sub.subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const opps = source === 'db' && remoteOpps ? remoteOpps : localOpps;
+
   const state: AppState = {
-    lang, setLang, t, profile, setProfile, opps, setOpps: (f) => setOpps(f), saved, go,
-    toggleSaved: (id) => setSaved((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id])),
+    lang, setLang, t, opps, saved, go, user, isAdmin, source,
+    profile,
+    setProfile: (p) => { setProfileLocal(p); if (user) void saveProfileRemote(p); },
+    setOpps: (f) => (source === 'db' ? setRemoteOpps((o) => f(o ?? [])) : setLocalOpps(f)),
+    toggleSaved: (id) => {
+      const on = !saved.includes(id);
+      setSaved((s) => (on ? [...s, id] : s.filter((x) => x !== id)));
+      if (user && source === 'db') void setSavedRemote(id, on);
+    },
+    saveOpp: async (o) => {
+      if (source === 'db' && isAdmin) {
+        const r = await saveOpportunity(o);
+        if (!r.ok) return r.error;
+        setRemoteOpps((list) => (list ?? []).map((x) => (x.id === o.id ? r.opp : x)));
+        return null;
+      }
+      setLocalOpps((list) => list.map((x) => (x.id === o.id ? o : x)));
+      return null;
+    },
+    signIn: async (email) => {
+      if (!supabase) return 'Sign-in is not available right now.';
+      const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: window.location.origin + window.location.pathname } });
+      return error ? error.message : null;
+    },
+    signOut: async () => { await supabase?.auth.signOut(); },
   };
 
   return (
@@ -57,7 +114,8 @@ export function App() {
               {NAV.map(([r, k]) => <a key={r} href={'#' + r} className={section(route) === section(r) ? 'on' : ''}>{t(k)}</a>)}
             </nav>
             <div className="top-tools">
-              <a href="#admin" className={'admin-link ' + (route === 'admin' ? 'on' : '')}>{t('navAdmin')}</a>
+              {isAdmin && <a href="#admin" className={'admin-link ' + (route === 'admin' ? 'on' : '')}>{t('navAdmin')}</a>}
+              <a href="#profile" className={'admin-link ' + (route === 'profile' ? 'on' : '')}>{user ? t('navProfile') : t('signIn')}</a>
               <select id="lang" aria-label="Language" value={lang} onChange={(e) => setLang(e.target.value as Lang)}>
                 {(Object.keys(LANG_NAMES) as Lang[]).map((l) => <option key={l} value={l}>{LANG_NAMES[l]}</option>)}
               </select>
@@ -66,7 +124,7 @@ export function App() {
         </header>
         <div className="banner" role="note"><div className="banner-in">{t('sampleBanner')}</div></div>
         <main>{page(route)}</main>
-        <footer className="foot">{t('noGuarantee')}</footer>
+        <footer className="foot">{t('noGuarantee')}{route !== 'admin' && <> · <a href="#admin">{t('navAdmin')}</a></>}</footer>
         <nav className="tabbar" aria-label="Main">
           {NAV.map(([r, k, icon]) => (
             <a key={r} href={'#' + r} className={section(route) === section(r) ? 'on' : ''}>
