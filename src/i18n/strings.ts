@@ -1,0 +1,94 @@
+/**
+ * UI strings. Telugu and Hindi are first drafts and need review by native speakers
+ * before launch. Content (opportunity details) is English-only in phase 1.
+ */
+export type Lang = 'en' | 'te' | 'hi';
+export const LANG_NAMES: Record<Lang, string> = { en: 'English', te: 'తెలుగు', hi: 'हिन्दी' };
+
+const en = {
+  appName: 'NextStep',
+  tagline: 'I finished my studies. What can I do next?',
+  heroSub: 'Pick your qualification to see what you can study, which exams you can take, and which scholarships and jobs may fit you.',
+  navHome: 'Home', navExplore: 'What next?', navProfile: 'My profile', navMatches: 'My matches', navDashboard: 'Dashboard', navAdmin: 'Admin',
+  sampleBanner: 'Demo version: all information here is sample data and has NOT been verified. Always check the official link before applying.',
+  pickLevel: 'What is your highest qualification?',
+  pickStream: 'Which stream?',
+  studyNext: 'What you can study next',
+  duration: 'Duration', eligibility: 'Eligibility', leadsTo: 'Leads to', careers: 'Careers', exams: 'Entrance exams',
+  completeProfile: 'Fill your profile to see matching scholarships, jobs and exams',
+  saveProfile: 'Save profile', saved: 'Saved',
+  likely: 'Likely eligible', verify: 'Needs verification', not: 'Not eligible',
+  likelyHelp: 'You seem to meet the listed conditions. Confirm on the official notification.',
+  verifyHelp: 'We need more details from you, or some conditions must be checked by hand.',
+  notHelp: 'You do not meet at least one condition.',
+  whyResult: 'Why this result', missingInfo: 'Add to your profile', officialSource: 'Official source',
+  deadline: 'Deadline', expired: 'Expired', daysLeft: 'days left', lastVerified: 'Last verified', notVerified: 'Not verified yet',
+  sample: 'Sample data', save: 'Save', unsave: 'Saved ✓',
+  noGuarantee: 'This is guidance only. It does not guarantee selection, admission or a scholarship award.',
+  upcoming: 'Upcoming deadlines', savedItems: 'Saved opportunities', nextStep: 'Your next step',
+  all: 'All', scholarship: 'Scholarships', 'govt-job': 'Government jobs', 'private-job': 'Private jobs', internship: 'Internships',
+  exam: 'Entrance exams', course: 'Courses', skill: 'Skills', abroad: 'Study abroad',
+  fQualification: 'Qualification', fStatus: 'Status', fCompleted: 'Completed', fPursuing: 'Studying now', fStream: 'Stream',
+  fPercentage: 'Marks (%)', fAge: 'Age', fState: 'State', fCategory: 'Category', fGender: 'Gender', fIncome: 'Family income per year (₹)',
+  fSkills: 'Skills (comma separated)', fInterests: 'Interests (comma separated)', fGoals: 'Career goal', fName: 'Name',
+  optional: 'optional', select: 'Select', female: 'Female', male: 'Male', other: 'Other',
+};
+export type Key = keyof typeof en;
+
+const te: Record<Key, string> = {
+  appName: 'NextStep',
+  tagline: 'నా చదువు పూర్తయింది. తర్వాత ఏం చేయాలి?',
+  heroSub: 'మీ అర్హతను ఎంచుకోండి. మీరు ఏమి చదవవచ్చు, ఏ పరీక్షలు రాయవచ్చు, ఏ స్కాలర్‌షిప్‌లు, ఉద్యోగాలు సరిపోవచ్చో చూడండి.',
+  navHome: 'హోమ్', navExplore: 'తర్వాత ఏమిటి?', navProfile: 'నా ప్రొఫైల్', navMatches: 'నాకు సరిపోయేవి', navDashboard: 'డ్యాష్‌బోర్డ్', navAdmin: 'అడ్మిన్',
+  sampleBanner: 'డెమో వెర్షన్: ఇక్కడ ఉన్న సమాచారం అంతా నమూనా మాత్రమే, ధృవీకరించబడలేదు. దరఖాస్తు చేసే ముందు అధికారిక లింక్‌ను తప్పక చూడండి.',
+  pickLevel: 'మీ అత్యున్నత విద్యార్హత ఏమిటి?', pickStream: 'ఏ గ్రూప్?',
+  studyNext: 'తర్వాత మీరు చదవగలిగేవి',
+  duration: 'వ్యవధి', eligibility: 'అర్హత', leadsTo: 'తర్వాత దారులు', careers: 'ఉద్యోగాలు', exams: 'ప్రవేశ పరీక్షలు',
+  completeProfile: 'స్కాలర్‌షిప్‌లు, ఉద్యోగాలు, పరీక్షలు చూడటానికి మీ ప్రొఫైల్ నింపండి',
+  saveProfile: 'ప్రొఫైల్ సేవ్ చేయండి', saved: 'సేవ్ అయింది',
+  likely: 'అర్హత ఉండే అవకాశం', verify: 'ధృవీకరణ అవసరం', not: 'అర్హత లేదు',
+  likelyHelp: 'మీరు షరతులను పాటిస్తున్నట్లు ఉంది. అధికారిక నోటిఫికేషన్‌లో నిర్ధారించుకోండి.',
+  verifyHelp: 'మరిన్ని వివరాలు కావాలి, లేదా కొన్ని షరతులను మీరే చూసుకోవాలి.',
+  notHelp: 'కనీసం ఒక షరతును మీరు పాటించడం లేదు.',
+  whyResult: 'ఈ ఫలితానికి కారణం', missingInfo: 'ప్రొఫైల్‌లో చేర్చండి', officialSource: 'అధికారిక మూలం',
+  deadline: 'చివరి తేదీ', expired: 'గడువు ముగిసింది', daysLeft: 'రోజులు మిగిలాయి', lastVerified: 'చివరిగా ధృవీకరించినది', notVerified: 'ఇంకా ధృవీకరించలేదు',
+  sample: 'నమూనా సమాచారం', save: 'సేవ్', unsave: 'సేవ్ అయింది ✓',
+  noGuarantee: 'ఇది మార్గదర్శకం మాత్రమే. ఎంపిక, ప్రవేశం లేదా స్కాలర్‌షిప్‌కు హామీ కాదు.',
+  upcoming: 'రాబోయే చివరి తేదీలు', savedItems: 'సేవ్ చేసినవి', nextStep: 'మీ తదుపరి అడుగు',
+  all: 'అన్నీ', scholarship: 'స్కాలర్‌షిప్‌లు', 'govt-job': 'ప్రభుత్వ ఉద్యోగాలు', 'private-job': 'ప్రైవేట్ ఉద్యోగాలు', internship: 'ఇంటర్న్‌షిప్‌లు',
+  exam: 'ప్రవేశ పరీక్షలు', course: 'కోర్సులు', skill: 'నైపుణ్యాలు', abroad: 'విదేశీ చదువు',
+  fQualification: 'విద్యార్హత', fStatus: 'స్థితి', fCompleted: 'పూర్తయింది', fPursuing: 'ఇప్పుడు చదువుతున్నాను', fStream: 'గ్రూప్',
+  fPercentage: 'మార్కులు (%)', fAge: 'వయస్సు', fState: 'రాష్ట్రం', fCategory: 'కేటగిరీ', fGender: 'లింగం', fIncome: 'కుటుంబ వార్షిక ఆదాయం (₹)',
+  fSkills: 'నైపుణ్యాలు (కామాతో)', fInterests: 'ఆసక్తులు (కామాతో)', fGoals: 'కెరీర్ లక్ష్యం', fName: 'పేరు',
+  optional: 'ఐచ్ఛికం', select: 'ఎంచుకోండి', female: 'స్త్రీ', male: 'పురుషుడు', other: 'ఇతర',
+};
+
+const hi: Record<Key, string> = {
+  appName: 'NextStep',
+  tagline: 'मेरी पढ़ाई पूरी हो गई। अब आगे क्या करूँ?',
+  heroSub: 'अपनी योग्यता चुनें और देखें कि आप आगे क्या पढ़ सकते हैं, कौन सी परीक्षाएँ दे सकते हैं, और कौन सी छात्रवृत्तियाँ व नौकरियाँ आपके लिए हो सकती हैं।',
+  navHome: 'होम', navExplore: 'आगे क्या?', navProfile: 'मेरी प्रोफ़ाइल', navMatches: 'मेरे लिए', navDashboard: 'डैशबोर्ड', navAdmin: 'एडमिन',
+  sampleBanner: 'डेमो संस्करण: यहाँ की सारी जानकारी नमूना है और सत्यापित नहीं है। आवेदन से पहले आधिकारिक लिंक ज़रूर देखें।',
+  pickLevel: 'आपकी सबसे ऊँची योग्यता क्या है?', pickStream: 'कौन सा स्ट्रीम?',
+  studyNext: 'आगे आप क्या पढ़ सकते हैं',
+  duration: 'अवधि', eligibility: 'पात्रता', leadsTo: 'आगे के रास्ते', careers: 'करियर', exams: 'प्रवेश परीक्षाएँ',
+  completeProfile: 'छात्रवृत्ति, नौकरी और परीक्षाएँ देखने के लिए अपनी प्रोफ़ाइल भरें',
+  saveProfile: 'प्रोफ़ाइल सहेजें', saved: 'सहेजा गया',
+  likely: 'संभवतः पात्र', verify: 'जाँच ज़रूरी', not: 'पात्र नहीं',
+  likelyHelp: 'आप दी गई शर्तें पूरी करते दिखते हैं। आधिकारिक अधिसूचना में पुष्टि करें।',
+  verifyHelp: 'हमें आपसे और जानकारी चाहिए, या कुछ शर्तें आपको खुद जाँचनी होंगी।',
+  notHelp: 'आप कम से कम एक शर्त पूरी नहीं करते।',
+  whyResult: 'यह परिणाम क्यों', missingInfo: 'प्रोफ़ाइल में जोड़ें', officialSource: 'आधिकारिक स्रोत',
+  deadline: 'अंतिम तिथि', expired: 'समाप्त', daysLeft: 'दिन बाकी', lastVerified: 'अंतिम सत्यापन', notVerified: 'अभी सत्यापित नहीं',
+  sample: 'नमूना जानकारी', save: 'सहेजें', unsave: 'सहेजा ✓',
+  noGuarantee: 'यह केवल मार्गदर्शन है। चयन, प्रवेश या छात्रवृत्ति की गारंटी नहीं है।',
+  upcoming: 'आने वाली अंतिम तिथियाँ', savedItems: 'सहेजे गए अवसर', nextStep: 'आपका अगला कदम',
+  all: 'सभी', scholarship: 'छात्रवृत्तियाँ', 'govt-job': 'सरकारी नौकरियाँ', 'private-job': 'प्राइवेट नौकरियाँ', internship: 'इंटर्नशिप',
+  exam: 'प्रवेश परीक्षाएँ', course: 'कोर्स', skill: 'कौशल', abroad: 'विदेश में पढ़ाई',
+  fQualification: 'योग्यता', fStatus: 'स्थिति', fCompleted: 'पूरी हुई', fPursuing: 'अभी पढ़ रहे हैं', fStream: 'स्ट्रीम',
+  fPercentage: 'अंक (%)', fAge: 'आयु', fState: 'राज्य', fCategory: 'श्रेणी', fGender: 'लिंग', fIncome: 'परिवार की वार्षिक आय (₹)',
+  fSkills: 'कौशल (कॉमा से अलग)', fInterests: 'रुचियाँ (कॉमा से अलग)', fGoals: 'करियर लक्ष्य', fName: 'नाम',
+  optional: 'वैकल्पिक', select: 'चुनें', female: 'महिला', male: 'पुरुष', other: 'अन्य',
+};
+
+export const STRINGS: Record<Lang, Record<Key, string>> = { en, te, hi };
