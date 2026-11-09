@@ -216,10 +216,19 @@ function errorText(e) {
   const cause = c ? ` (${c.code ?? ""} ${c.message ?? ""})` : "";
   return (e instanceof Error ? e.name === "AbortError" ? "timed out" : e.message : String(e)) + cause;
 }
-async function collectSource(src, supabaseUrl, key) {
+async function collectSource(src, supabaseUrl, key, debug = false) {
   try {
     const html = await fetchPage(src.url);
-    const found = pickNotices(extractLinks(html, src.url).filter((l) => isOfficialLink(l.url, src.url)), src);
+    const all = extractLinks(html, src.url);
+    const found = pickNotices(all.filter((l) => isOfficialLink(l.url, src.url)), src);
+    if (debug) return {
+      id: src.id,
+      ok: true,
+      found: found.length,
+      fresh: 0,
+      sample: found,
+      debug: { bytes: html.length, head: html.replace(/\s+/g, " ").slice(0, 600), links: all.slice(0, 150) }
+    };
     const fresh = key && found.length ? await saveNotices(supabaseUrl, key, found.map((f) => ({ url: f.url, title: f.title, source_id: src.id, source_name: src.name, sector: src.sector ?? null, area: src.area }))) : 0;
     return { id: src.id, ok: true, found: found.length, fresh, sample: found.slice(0, 5) };
   } catch (e) {
@@ -238,7 +247,7 @@ async function handle(req, supabaseUrl) {
   const ids = (body.only ?? []).slice(0, 4);
   const sources = NOTICE_SOURCES.filter((s) => ids.includes(s.id));
   if (!sources.length) return json({ error: 'Name 1 to 4 source ids in "only"' }, 400);
-  const results = await Promise.all(sources.map((s) => collectSource(s, supabaseUrl, key)));
+  const results = await Promise.all(sources.map((s) => collectSource(s, supabaseUrl, key, body.debug === true)));
   return json({ region: globalThis.Deno?.env.get("SB_REGION") ?? null, results });
 }
 

@@ -9,6 +9,7 @@ import { collectSource, errorText, type CollectResult } from '../src/notices/col
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://rimsuaeqnxntgfmbicyb.supabase.co';
 const KEY = process.env.SUPABASE_SECRET_KEY || '';
+const DEBUG = process.env.DEBUG === 'true';
 const only = (process.env.ONLY ?? '').split(',').map((s) => s.trim()).filter(Boolean);
 let functionMissing = false;
 
@@ -17,7 +18,7 @@ async function viaMumbai(src: NoticeSource): Promise<CollectResult & { route: st
   if (KEY && !functionMissing) {
     try {
       const res = await fetch(`${SUPABASE_URL}/functions/v1/collect-notices`, {
-        method: 'POST', body: JSON.stringify({ only: [src.id] }),
+        method: 'POST', body: JSON.stringify({ only: [src.id], debug: DEBUG }),
         headers: { apikey: KEY, 'Content-Type': 'application/json', 'x-region': 'ap-south-1',
           ...(KEY.startsWith('sb_') ? {} : { Authorization: `Bearer ${KEY}` }) },
         signal: AbortSignal.timeout(60_000),
@@ -32,13 +33,17 @@ async function viaMumbai(src: NoticeSource): Promise<CollectResult & { route: st
       return { id: src.id, ok: false, found: 0, fresh: 0, error: errorText(e), route: 'Mumbai' };
     }
   }
-  return { ...(await collectSource(src, SUPABASE_URL, KEY)), route: functionMissing ? 'direct (function not deployed)' : 'direct' };
+  return { ...(await collectSource(src, SUPABASE_URL, KEY, DEBUG)), route: functionMissing ? 'direct (function not deployed)' : 'direct' };
 }
 
 const lines: string[] = ['| Source | Read from | Status | Notices found | New |', '|---|---|---|---|---|'];
 let ok = 0, totalNew = 0;
 const run = async (src: NoticeSource) => {
-  const r = src.india ? await viaMumbai(src) : { ...(await collectSource(src, SUPABASE_URL, KEY)), route: 'GitHub' };
+  const r = src.india ? await viaMumbai(src) : { ...(await collectSource(src, SUPABASE_URL, KEY, DEBUG)), route: 'GitHub' };
+  if (r.debug) {
+    console.log(`\n===== ${src.id} (${src.url}) ${r.debug.bytes} bytes\nHEAD: ${r.debug.head}`);
+    for (const l of r.debug.links) console.log(`  link: ${l.title}  ${l.url}`);
+  }
   if (r.ok) {
     ok++; totalNew += r.fresh;
     console.log(`✓ ${src.id} [${r.route}]: ${r.found} notices, ${r.fresh} new`);

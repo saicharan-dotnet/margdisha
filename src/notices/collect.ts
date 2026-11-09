@@ -34,7 +34,9 @@ export async function canWrite(supabaseUrl: string, key: string): Promise<boolea
   return res.ok;
 }
 
-export interface CollectResult { id: string; ok: boolean; found: number; fresh: number; error?: string; sample?: FoundNotice[] }
+export interface CollectResult { id: string; ok: boolean; found: number; fresh: number; error?: string; sample?: FoundNotice[];
+  /** Diagnostics only: page size, start of the page, and every link before filtering. */
+  debug?: { bytes: number; head: string; links: FoundNotice[] } }
 
 export function errorText(e: unknown): string {
   const c = (e as { cause?: { code?: string; message?: string } } | null)?.cause;
@@ -43,10 +45,13 @@ export function errorText(e: unknown): string {
 }
 
 /** Read one source and save what it lists. With no key, nothing is saved (dry run). */
-export async function collectSource(src: NoticeSource, supabaseUrl: string, key: string): Promise<CollectResult> {
+export async function collectSource(src: NoticeSource, supabaseUrl: string, key: string, debug = false): Promise<CollectResult> {
   try {
     const html = await fetchPage(src.url);
-    const found = pickNotices(extractLinks(html, src.url).filter((l) => isOfficialLink(l.url, src.url)), src);
+    const all = extractLinks(html, src.url);
+    const found = pickNotices(all.filter((l) => isOfficialLink(l.url, src.url)), src);
+    if (debug) return { id: src.id, ok: true, found: found.length, fresh: 0, sample: found,
+      debug: { bytes: html.length, head: html.replace(/\s+/g, ' ').slice(0, 600), links: all.slice(0, 150) } };
     const fresh = key && found.length
       ? await saveNotices(supabaseUrl, key, found.map((f) => ({ url: f.url, title: f.title, source_id: src.id, source_name: src.name, sector: src.sector ?? null, area: src.area })))
       : 0;

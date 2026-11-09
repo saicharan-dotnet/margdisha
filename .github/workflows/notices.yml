@@ -10,6 +10,10 @@ on:
       only:
         description: 'Comma-separated source ids to run (blank = all)'
         required: false
+      debug:
+        description: 'Print every link found, save nothing'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -33,3 +37,4 @@ jobs:
         env:
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
           ONLY: ${{ github.event.inputs.only }}
+          DEBUG: ${{ github.event.inputs.debug }}
