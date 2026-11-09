@@ -35,4 +35,4 @@ jobs:
             echo "::warning::SUPABASE_ACCESS_TOKEN is not set, so the function was not deployed. See docs/NOTICES.md."
             exit 0
           fi
-          supabase functions deploy collect-notices --project-ref rimsuaeqnxntgfmbicyb --use-api --no-verify-jwt
+          supabase functions deploy collect-notices --project-ref rimsuaeqnxntgfmbicyb --use-api --no-verify-jwt --yes
