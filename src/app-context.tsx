@@ -1,5 +1,6 @@
 import { createContext, useContext } from 'react';
 import type { Opportunity, Profile } from './data/types';
+import type { Notice } from './data/remote';
 import { STRINGS, type Key, type Lang } from './i18n/strings';
 
 export interface AppState {
@@ -23,6 +24,9 @@ export interface AppState {
   deleteOpp: (id: string) => Promise<string | null>;
   signIn: (email: string) => Promise<string | null>;
   signOut: () => Promise<void>;
+  /** Notices collected automatically from official websites (not verified). */
+  notices: Notice[];
+  setNoticeStatus: (id: number, status: Notice['status'], listingId?: string) => Promise<string | null>;
 }
 
 export const Ctx = createContext<AppState>(null as unknown as AppState);

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Ctx, translator, type AppState } from './app-context';
 import type { Opportunity, OpportunityKind, Profile as P } from './data/types';
 import { SEED_OPPORTUNITIES } from './data/seed';
-import { checkIsAdmin, deleteOpportunity, fetchOpportunities, loadUserData, saveOpportunity, saveProfileRemote, setSavedRemote } from './data/remote';
+import { checkIsAdmin, deleteOpportunity, fetchNotices, fetchOpportunities, setNoticeStatus as setNoticeStatusRemote, type Notice, loadUserData, saveOpportunity, saveProfileRemote, setSavedRemote } from './data/remote';
 import { supabase } from './lib/supabase';
 import { LANG_NAMES, type Key, type Lang } from './i18n/strings';
 import { usePersisted, useHashRoute } from './store';
@@ -55,7 +55,9 @@ export function App() {
     const rows = await fetchOpportunities();
     if (rows && rows.length) { setRemoteOpps(rows); setSource('db'); } else setSource('local');
   };
-  useEffect(() => { void reload(); }, []);
+  const [notices, setNotices] = useState<Notice[]>([]);
+  const reloadNotices = async () => { const n = await fetchNotices(); if (n) setNotices(n); };
+  useEffect(() => { void reload(); void reloadNotices(); }, []);
 
   // Track sign-in; pull the user's profile and saved items from the database.
   useEffect(() => {
@@ -68,7 +70,7 @@ export function App() {
       if (data.profile) setProfileLocal(data.profile);
       else void saveProfileRemote(profile); // first sign-in: keep what they filled in as a guest
       setSaved((s) => [...new Set([...s, ...data.saved])]);
-      if (admin) void reload(); // admins can see drafts too
+      if (admin) { void reload(); void reloadNotices(); } // admins can see drafts and dismissed notices too
     };
     supabase.auth.getSession().then(({ data }) => onSession(data.session?.user.email ?? null));
     const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => { void onSession(session?.user.email ?? null); });
@@ -114,6 +116,12 @@ export function App() {
       return error ? error.message : null;
     },
     signOut: async () => { await supabase?.auth.signOut(); },
+    notices,
+    setNoticeStatus: async (id, status, listingId) => {
+      const err = await setNoticeStatusRemote(id, status, listingId);
+      if (!err) setNotices((list) => list.map((n) => (n.id === id ? { ...n, status, listing_id: listingId ?? null } : n)));
+      return err;
+    },
   };
 
   return (

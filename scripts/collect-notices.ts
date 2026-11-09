@@ -7,7 +7,7 @@ import { extractLinks, pickNotices, type FoundNotice } from '../src/notices/extr
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://rimsuaeqnxntgfmbicyb.supabase.co';
 const KEY = process.env.SUPABASE_SECRET_KEY || '';
-const only = process.env.ONLY?.split(',').filter(Boolean);
+const only = (process.env.ONLY ?? '').split(',').map((s) => s.trim()).filter(Boolean);
 
 async function fetchPage(url: string): Promise<string> {
   const ctrl = new AbortController();
@@ -31,7 +31,7 @@ async function save(rows: object[]): Promise<number> {
 
 const lines: string[] = ['| Source | Status | Notices found | New |', '|---|---|---|---|'];
 let ok = 0, totalNew = 0;
-for (const src of NOTICE_SOURCES.filter((s) => !only || only.includes(s.id))) {
+for (const src of NOTICE_SOURCES.filter((s) => !only.length || only.includes(s.id))) {
   let found: FoundNotice[] = [];
   try {
     const html = await fetchPage(src.url);

@@ -57,3 +57,24 @@ export async function deleteOpportunity(id: string): Promise<string | null> {
   const { error } = await supabase.from('opportunities').delete().eq('id', id);
   return error ? error.message : null;
 }
+
+export interface Notice {
+  id: number; url: string; title: string; source_id: string; source_name: string;
+  sector: string | null; area: 'job' | 'school' | 'exam' | 'scholarship';
+  first_seen: string; status: 'new' | 'listed' | 'ignored'; listing_id: string | null;
+}
+
+/** Latest notices collected from official websites (newest first). Null if the table is not set up yet. */
+export async function fetchNotices(limit = 300): Promise<Notice[] | null> {
+  if (!supabase) return null;
+  const { data, error } = await supabase.from('official_notices').select('*').order('first_seen', { ascending: false }).order('id', { ascending: true }).limit(limit);
+  if (error || !data) return null;
+  return data as Notice[];
+}
+
+/** Admin-only (enforced by RLS). */
+export async function setNoticeStatus(id: number, status: Notice['status'], listingId?: string): Promise<string | null> {
+  if (!supabase) return 'Database not available';
+  const { error } = await supabase.from('official_notices').update({ status, listing_id: listingId ?? null }).eq('id', id);
+  return error ? error.message : null;
+}
