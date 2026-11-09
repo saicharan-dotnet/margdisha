@@ -1,6 +1,6 @@
 // Shared by the GitHub Actions script (Node) and the Supabase Edge Function (Deno).
 import type { NoticeSource } from './sources';
-import { extractLinks, isOfficialLink, pickNotices, type FoundNotice } from './extract';
+import { extractLinks, isOfficialLink, noticesFromJson, pickNotices, type FoundNotice } from './extract';
 
 export async function fetchPage(url: string, timeoutMs = 25_000, depth = 0, accept = 'text/html,application/xhtml+xml'): Promise<string> {
   const ctrl = new AbortController();
@@ -51,9 +51,16 @@ export function errorText(e: unknown): string {
 /** Read one source and save what it lists. With no key, nothing is saved (dry run). */
 export async function collectSource(src: NoticeSource, supabaseUrl: string, key: string, debug = false): Promise<CollectResult> {
   try {
-    const html = await fetchPage(src.url);
-    const all = extractLinks(html, src.url);
-    const found = pickNotices(all.filter((l) => isOfficialLink(l.url, src.url)), src);
+    let html: string, all: FoundNotice[], found: FoundNotice[];
+    if (src.json) {
+      html = await fetchPage(src.json.url, 25_000, 0, 'application/json, text/plain, */*');
+      all = noticesFromJson(JSON.parse(html), src.json);
+      found = all.filter((l) => isOfficialLink(l.url, src.url));
+    } else {
+      html = await fetchPage(src.url);
+      all = extractLinks(html, src.url);
+      found = pickNotices(all.filter((l) => isOfficialLink(l.url, src.url)), src);
+    }
     if (debug && src.probe) {
       const probes: string[] = [];
       for (const u of src.probe) {

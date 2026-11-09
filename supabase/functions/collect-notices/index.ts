@@ -18,12 +18,12 @@ var NOTICE_SOURCES = [
   // Entrance exams
   { id: "nta", name: "National Testing Agency", url: "https://nta.ac.in/", area: "exam" },
   // School admissions
-  { id: "navodaya", india: true, probe: ["https://navodaya.gov.in/api/public/media?page=1&limit=5"], name: "Navodaya Vidyalaya Samiti", url: "https://navodaya.gov.in/", area: "school", sector: "Navodaya", keywords: ["jnvst", "lateral"] },
+  { id: "navodaya", india: true, json: { url: "https://navodaya.gov.in/api/public/media?page=1&limit=30", items: "data.items", title: "title_english", link: ["external_url", "download_url"], prefix: "media_type_name" }, name: "Navodaya Vidyalaya Samiti", url: "https://navodaya.gov.in/", area: "school", sector: "Navodaya", keywords: ["jnvst", "lateral"] },
   { id: "aissee", india: true, name: "AISSEE (Sainik Schools)", url: "https://exams.nta.nic.in/sainik-school-society/", area: "school", sector: "Sainik", keywords: ["aissee", "sainik"] },
   { id: "kvs", name: "Kendriya Vidyalaya Sangathan", url: "https://kvsangathan.nic.in/", area: "school", sector: "Kendriya Vidyalaya", keywords: ["balvatika", "class i"] },
   { id: "rms", name: "Rashtriya Military Schools", url: "https://www.rashtriyamilitaryschools.edu.in/", area: "school", sector: "Military School", keywords: ["cet"] },
   { id: "nests", name: "NESTS (Eklavya schools)", url: "https://nests.tribal.gov.in/", area: "school", sector: "EMRS", keywords: ["emrs", "eklavya"] },
-  { id: "tgcet", india: true, probe: ["https://tgcet.cgg.gov.in/TGCETWEB/getNotifications"], name: "Telangana Gurukul (TGCET)", url: "https://tgcet.cgg.gov.in/", area: "school", sector: "State residential", keywords: ["tgcet", "gurukul"] },
+  { id: "tgcet", india: true, json: { url: "https://tgcet.cgg.gov.in/TGCETWEB/getNotifications", items: "data", title: "DESCRIPTION", prefix: "DEPT_SHORT_NAME", linkTemplate: "https://tgcet.cgg.gov.in/TGCETWEB/?notification={NOTIFICATION_ID}" }, name: "Telangana Gurukul (TGCET)", url: "https://tgcet.cgg.gov.in/", area: "school", sector: "State residential", keywords: ["tgcet", "gurukul"] },
   // Scholarships
   { id: "nsp", name: "National Scholarship Portal", url: "https://scholarships.gov.in/", area: "scholarship", sector: "School scholarship", keywords: ["scheme", "nmms"] }
 ];
@@ -175,6 +175,32 @@ function isOfficialLink(url, sourceUrl) {
     return false;
   }
 }
+var at = (o, path) => path.split(".").filter(Boolean).reduce((v, k) => v && typeof v === "object" ? v[k] : void 0, o);
+var str = (v) => typeof v === "string" || typeof v === "number" ? String(v).trim() : "";
+function noticesFromJson(body, feed, max = 30) {
+  const list = at(body, feed.items);
+  if (!Array.isArray(list)) return [];
+  const out = [];
+  for (const item of list) {
+    const title = text(str(at(item, feed.title)));
+    if (!title) continue;
+    const prefix = feed.prefix ? str(at(item, feed.prefix)) : "";
+    let link = (feed.link ?? []).map((f) => str(at(item, f))).find(Boolean) ?? "";
+    if (!link && feed.linkTemplate) link = feed.linkTemplate.replace(/\{(\w+)\}/g, (_, f) => encodeURIComponent(str(at(item, f))));
+    const url = link ? (() => {
+      try {
+        const u = new URL(link, feed.url);
+        return /^https?:$/.test(u.protocol) ? u.toString() : null;
+      } catch {
+        return null;
+      }
+    })() : null;
+    if (!url) continue;
+    out.push({ title: (prefix && !title.toLowerCase().startsWith(prefix.toLowerCase()) ? `${prefix}: ${title}` : title).slice(0, 300), url });
+    if (out.length >= max) break;
+  }
+  return out;
+}
 
 // src/notices/collect.ts
 async function fetchPage(url, timeoutMs = 25e3, depth = 0, accept = "text/html,application/xhtml+xml") {
@@ -221,9 +247,16 @@ function errorText(e) {
 }
 async function collectSource(src, supabaseUrl, key, debug = false) {
   try {
-    const html = await fetchPage(src.url);
-    const all = extractLinks(html, src.url);
-    const found = pickNotices(all.filter((l) => isOfficialLink(l.url, src.url)), src);
+    let html, all, found;
+    if (src.json) {
+      html = await fetchPage(src.json.url, 25e3, 0, "application/json, text/plain, */*");
+      all = noticesFromJson(JSON.parse(html), src.json);
+      found = all.filter((l) => isOfficialLink(l.url, src.url));
+    } else {
+      html = await fetchPage(src.url);
+      all = extractLinks(html, src.url);
+      found = pickNotices(all.filter((l) => isOfficialLink(l.url, src.url)), src);
+    }
     if (debug && src.probe) {
       const probes = [];
       for (const u of src.probe) {

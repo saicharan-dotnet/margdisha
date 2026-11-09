@@ -1,4 +1,4 @@
-import type { NoticeSource } from './sources';
+import type { JsonFeed, NoticeSource } from './sources';
 
 export interface FoundNotice { title: string; url: string }
 
@@ -92,4 +92,26 @@ export function isOfficialLink(url: string, sourceUrl: string): boolean {
     const h = new URL(url).hostname.toLowerCase(), s = new URL(sourceUrl).hostname.toLowerCase();
     return h === s || site(h) === site(s) || GOV_HOST.test(h);
   } catch { return false; }
+}
+
+const at = (o: unknown, path: string): unknown => path.split('.').filter(Boolean).reduce<unknown>((v, k) => (v && typeof v === 'object' ? (v as Record<string, unknown>)[k] : undefined), o);
+const str = (v: unknown) => (typeof v === 'string' || typeof v === 'number' ? String(v).trim() : '');
+
+/** Notices from a JSON feed that a script-built page loads. */
+export function noticesFromJson(body: unknown, feed: JsonFeed, max = 30): FoundNotice[] {
+  const list = at(body, feed.items);
+  if (!Array.isArray(list)) return [];
+  const out: FoundNotice[] = [];
+  for (const item of list) {
+    const title = text(str(at(item, feed.title)));
+    if (!title) continue;
+    const prefix = feed.prefix ? str(at(item, feed.prefix)) : '';
+    let link = (feed.link ?? []).map((f) => str(at(item, f))).find(Boolean) ?? '';
+    if (!link && feed.linkTemplate) link = feed.linkTemplate.replace(/\{(\w+)\}/g, (_, f: string) => encodeURIComponent(str(at(item, f))));
+    const url = link ? (() => { try { const u = new URL(link, feed.url); return /^https?:$/.test(u.protocol) ? u.toString() : null; } catch { return null; } })() : null;
+    if (!url) continue;
+    out.push({ title: (prefix && !title.toLowerCase().startsWith(prefix.toLowerCase()) ? `${prefix}: ${title}` : title).slice(0, 300), url });
+    if (out.length >= max) break;
+  }
+  return out;
 }

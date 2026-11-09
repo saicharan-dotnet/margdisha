@@ -17,6 +17,21 @@ export interface NoticeSource {
   india?: boolean;
   /** Diagnostics only: extra addresses on the same site to fetch and print in a debug run. */
   probe?: string[];
+  /** The site builds its page with scripts from a JSON feed: read the feed instead of the page. */
+  json?: JsonFeed;
+}
+
+export interface JsonFeed {
+  url: string;
+  /** Dotted path to the list in the response, e.g. "data.items". */
+  items: string;
+  title: string;
+  /** Field(s) holding the link, first non-empty wins. Relative links are resolved against the feed address. */
+  link?: string[];
+  /** Used when no link field is set: "{FIELD}" is replaced by that field's value. */
+  linkTemplate?: string;
+  /** Optional prefix field, e.g. a category name, shown before the title. */
+  prefix?: string;
 }
 
 export const NOTICE_SOURCES: NoticeSource[] = [
@@ -36,12 +51,12 @@ export const NOTICE_SOURCES: NoticeSource[] = [
   // Entrance exams
   { id: 'nta', name: 'National Testing Agency', url: 'https://nta.ac.in/', area: 'exam' },
   // School admissions
-  { id: 'navodaya', india: true, probe: ['https://navodaya.gov.in/api/public/media?page=1&limit=5'], name: 'Navodaya Vidyalaya Samiti', url: 'https://navodaya.gov.in/', area: 'school', sector: 'Navodaya', keywords: ['jnvst', 'lateral'] },
+  { id: 'navodaya', india: true, json: { url: 'https://navodaya.gov.in/api/public/media?page=1&limit=30', items: 'data.items', title: 'title_english', link: ['external_url', 'download_url'], prefix: 'media_type_name' }, name: 'Navodaya Vidyalaya Samiti', url: 'https://navodaya.gov.in/', area: 'school', sector: 'Navodaya', keywords: ['jnvst', 'lateral'] },
   { id: 'aissee', india: true, name: 'AISSEE (Sainik Schools)', url: 'https://exams.nta.nic.in/sainik-school-society/', area: 'school', sector: 'Sainik', keywords: ['aissee', 'sainik'] },
   { id: 'kvs', name: 'Kendriya Vidyalaya Sangathan', url: 'https://kvsangathan.nic.in/', area: 'school', sector: 'Kendriya Vidyalaya', keywords: ['balvatika', 'class i'] },
   { id: 'rms', name: 'Rashtriya Military Schools', url: 'https://www.rashtriyamilitaryschools.edu.in/', area: 'school', sector: 'Military School', keywords: ['cet'] },
   { id: 'nests', name: 'NESTS (Eklavya schools)', url: 'https://nests.tribal.gov.in/', area: 'school', sector: 'EMRS', keywords: ['emrs', 'eklavya'] },
-  { id: 'tgcet', india: true, probe: ['https://tgcet.cgg.gov.in/TGCETWEB/getNotifications'], name: 'Telangana Gurukul (TGCET)', url: 'https://tgcet.cgg.gov.in/', area: 'school', sector: 'State residential', keywords: ['tgcet', 'gurukul'] },
+  { id: 'tgcet', india: true, json: { url: 'https://tgcet.cgg.gov.in/TGCETWEB/getNotifications', items: 'data', title: 'DESCRIPTION', prefix: 'DEPT_SHORT_NAME', linkTemplate: 'https://tgcet.cgg.gov.in/TGCETWEB/?notification={NOTIFICATION_ID}' }, name: 'Telangana Gurukul (TGCET)', url: 'https://tgcet.cgg.gov.in/', area: 'school', sector: 'State residential', keywords: ['tgcet', 'gurukul'] },
   // Scholarships
   { id: 'nsp', name: 'National Scholarship Portal', url: 'https://scholarships.gov.in/', area: 'scholarship', sector: 'School scholarship', keywords: ['scheme', 'nmms'] },
 ];

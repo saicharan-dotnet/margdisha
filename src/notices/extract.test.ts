@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { extractLinks, isOfficialLink, pickNotices, resolve } from './extract';
+import { extractLinks, isOfficialLink, noticesFromJson, pickNotices, resolve } from './extract';
 
 const PAGE = `
 <html><head><script>var a = '<a href="/x">recruitment exam fake</a>';</script></head><body>
@@ -37,5 +37,17 @@ describe('notice extraction', () => {
   it('resolves relative links and strips fragments', () => {
     expect(resolve('/cgl.pdf#page=2', 'https://a.gov.in/x/')).toBe('https://a.gov.in/cgl.pdf');
     expect(resolve('mailto:x@y.in', 'https://a.gov.in/')).toBeNull();
+  });
+
+  it('reads notices from a JSON feed', () => {
+    const body = { data: { items: [
+      { title_english: 'Notice dated 14.09.2026 – Tier-II result', media_type_name: 'Recruitment', external_url: null, download_url: '/api/public/media/305/download' },
+      { title_english: '', download_url: '/x' },
+    ] } };
+    expect(noticesFromJson(body, { url: 'https://navodaya.gov.in/api/public/media?page=1', items: 'data.items', title: 'title_english', link: ['external_url', 'download_url'], prefix: 'media_type_name' }))
+      .toEqual([{ title: 'Recruitment: Notice dated 14.09.2026 – Tier-II result', url: 'https://navodaya.gov.in/api/public/media/305/download' }]);
+    expect(noticesFromJson({ data: [{ DESCRIPTION: 'CET2026', NOTIFICATION_ID: 13190, DEPT_SHORT_NAME: 'TGCET' }] },
+      { url: 'https://tgcet.cgg.gov.in/TGCETWEB/getNotifications', items: 'data', title: 'DESCRIPTION', prefix: 'DEPT_SHORT_NAME', linkTemplate: 'https://tgcet.cgg.gov.in/TGCETWEB/?notification={NOTIFICATION_ID}' }))
+      .toEqual([{ title: 'TGCET: CET2026', url: 'https://tgcet.cgg.gov.in/TGCETWEB/?notification=13190' }]);
   });
 });
