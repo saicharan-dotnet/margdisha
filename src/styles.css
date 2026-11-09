@@ -209,5 +209,5 @@ th, td { text-align: left; padding: 12px; border-bottom: 1px solid var(--line); 
 textarea { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; width: 100%; resize: vertical; }
 .multi { display: flex; flex-wrap: wrap; gap: 4px 16px; }
 .relax { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; }
-.logo { flex: none; border-radius: 9px; }
+.logo { flex: none; display: block; border-radius: 9px; box-shadow: 0 2px 6px rgb(0 0 0 / .18); }
 @media (max-width: 760px) { .desk-only { display: none; } .top-tools { gap: 4px; } }
