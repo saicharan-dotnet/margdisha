@@ -39,6 +39,14 @@ const en = {
   fPercentage: 'Marks (%)', fAge: 'Age', fState: 'State', fCategory: 'Category', fGender: 'Gender', fIncome: 'Family income per year (₹)',
   fSkills: 'Skills (comma separated)', fInterests: 'Interests (comma separated)', fGoals: 'Career goal', fName: 'Name',
   optional: 'optional', select: 'Select', female: 'Female', male: 'Male', other: 'Other',
+  'school-admission': 'School admissions', navSchools: 'Schools', schoolsTitle: 'School admissions',
+  schoolsIntro: 'Entrance tests and admissions for Navodaya, Sainik, Military, Kendriya Vidyalaya, Eklavya and state residential schools, plus scholarships for school children.',
+  joinsClass: 'Joining class', anyClass: 'Any class', entryClass: 'Joins in', schoolType: 'Type of school',
+  latestTitle: 'Latest from official websites', latestNote: 'Collected automatically from official websites every few hours. We have not checked these yet, so always open the official notice.',
+  noUpdates: 'No new notices yet. They appear here as soon as official websites publish them.', seeAll: 'See all', showMore: 'Show more',
+  searchAll: 'Search jobs, exams, schools, scholarships', closingSoon: 'Closing soon', forSchool: 'For school children',
+  schoolTile: 'Navodaya · Sainik · Kendriya Vidyalaya · Military · Gurukul', newBadge: 'New', today: 'Today', hoursAgo: 'h ago', daysAgo: 'd ago',
+  childStudying: 'My child is in', noResults: 'Nothing matches these filters.',
 };
 export type Key = keyof typeof en;
 
@@ -75,6 +83,14 @@ const te: Record<Key, string> = {
   fPercentage: 'మార్కులు (%)', fAge: 'వయస్సు', fState: 'రాష్ట్రం', fCategory: 'కేటగిరీ', fGender: 'లింగం', fIncome: 'కుటుంబ వార్షిక ఆదాయం (₹)',
   fSkills: 'నైపుణ్యాలు (కామాతో)', fInterests: 'ఆసక్తులు (కామాతో)', fGoals: 'కెరీర్ లక్ష్యం', fName: 'పేరు',
   optional: 'ఐచ్ఛికం', select: 'ఎంచుకోండి', female: 'స్త్రీ', male: 'పురుషుడు', other: 'ఇతర',
+  'school-admission': 'పాఠశాల ప్రవేశాలు', navSchools: 'పాఠశాలలు', schoolsTitle: 'పాఠశాల ప్రవేశాలు',
+  schoolsIntro: 'నవోదయ, సైనిక్, మిలిటరీ, కేంద్రీయ విద్యాలయ, ఏకలవ్య, రాష్ట్ర గురుకుల పాఠశాలల ప్రవేశ పరీక్షలు, ప్రవేశాలు, పాఠశాల విద్యార్థుల స్కాలర్‌షిప్‌లు.',
+  joinsClass: 'చేరే తరగతి', anyClass: 'ఏ తరగతి అయినా', entryClass: 'చేరే తరగతి', schoolType: 'పాఠశాల రకం',
+  latestTitle: 'అధికారిక వెబ్‌సైట్ల నుండి తాజా సమాచారం', latestNote: 'ప్రతి కొన్ని గంటలకు అధికారిక వెబ్‌సైట్ల నుండి ఆటోమేటిక్‌గా సేకరించినవి. ఇవి మేము ఇంకా పరిశీలించలేదు, కాబట్టి అధికారిక నోటీసు తప్పక చూడండి.',
+  noUpdates: 'ఇంకా కొత్త నోటీసులు లేవు. అధికారిక వెబ్‌సైట్లలో వచ్చిన వెంటనే ఇక్కడ కనిపిస్తాయి.', seeAll: 'అన్నీ చూడండి', showMore: 'మరిన్ని చూపించు',
+  searchAll: 'ఉద్యోగాలు, పరీక్షలు, పాఠశాలలు, స్కాలర్‌షిప్‌లు వెతకండి', closingSoon: 'త్వరలో ముగిసేవి', forSchool: 'పాఠశాల విద్యార్థులకు',
+  schoolTile: 'నవోదయ · సైనిక్ · కేంద్రీయ విద్యాలయ · మిలిటరీ · గురుకులం', newBadge: 'కొత్తది', today: 'ఈరోజు', hoursAgo: 'గం. క్రితం', daysAgo: 'రో. క్రితం',
+  childStudying: 'మా పిల్లలు చదువుతున్నది', noResults: 'ఈ ఫిల్టర్లకు సరిపోయేవి ఏమీ లేవు.',
 };
 
 const hi: Record<Key, string> = {
@@ -110,6 +126,14 @@ const hi: Record<Key, string> = {
   fPercentage: 'अंक (%)', fAge: 'आयु', fState: 'राज्य', fCategory: 'श्रेणी', fGender: 'लिंग', fIncome: 'परिवार की वार्षिक आय (₹)',
   fSkills: 'कौशल (कॉमा से अलग)', fInterests: 'रुचियाँ (कॉमा से अलग)', fGoals: 'करियर लक्ष्य', fName: 'नाम',
   optional: 'वैकल्पिक', select: 'चुनें', female: 'महिला', male: 'पुरुष', other: 'अन्य',
+  'school-admission': 'स्कूल प्रवेश', navSchools: 'स्कूल', schoolsTitle: 'स्कूल प्रवेश',
+  schoolsIntro: 'नवोदय, सैनिक, मिलिट्री, केंद्रीय विद्यालय, एकलव्य और राज्य आवासीय स्कूलों की प्रवेश परीक्षाएँ और प्रवेश, साथ ही स्कूली बच्चों की छात्रवृत्तियाँ।',
+  joinsClass: 'प्रवेश कक्षा', anyClass: 'कोई भी कक्षा', entryClass: 'प्रवेश कक्षा', schoolType: 'स्कूल का प्रकार',
+  latestTitle: 'आधिकारिक वेबसाइटों से ताज़ा सूचनाएँ', latestNote: 'हर कुछ घंटों में आधिकारिक वेबसाइटों से अपने-आप इकट्ठा की गई। हमने इन्हें अभी जाँचा नहीं है, इसलिए आधिकारिक सूचना ज़रूर खोलें।',
+  noUpdates: 'अभी कोई नई सूचना नहीं है। आधिकारिक वेबसाइटों पर आते ही यहाँ दिखेगी।', seeAll: 'सभी देखें', showMore: 'और दिखाएँ',
+  searchAll: 'नौकरी, परीक्षा, स्कूल, छात्रवृत्ति खोजें', closingSoon: 'जल्द बंद होने वाले', forSchool: 'स्कूली बच्चों के लिए',
+  schoolTile: 'नवोदय · सैनिक · केंद्रीय विद्यालय · मिलिट्री · गुरुकुल', newBadge: 'नया', today: 'आज', hoursAgo: 'घंटे पहले', daysAgo: 'दिन पहले',
+  childStudying: 'मेरा बच्चा पढ़ रहा है', noResults: 'इन फ़िल्टर से कुछ नहीं मिला।',
 };
 
 export const STRINGS: Record<Lang, Record<Key, string>> = { en, te, hi };

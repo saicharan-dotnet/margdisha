@@ -2,3 +2,4 @@ node_modules
 dist
 dist-single
 scripts/.gen-seed.mjs
+scripts/.collect-notices.mjs

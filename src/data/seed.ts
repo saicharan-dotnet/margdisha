@@ -1,5 +1,6 @@
 import type { Opportunity, Pathway } from './types';
 import { SEED_JOBS } from './seed-jobs';
+import { SEED_SCHOOLS } from './seed-schools';
 
 /**
  * SAMPLE DATA — FOR DEVELOPMENT AND DEMO ONLY.
@@ -201,7 +202,7 @@ const BASE: Opportunity[] = [
   },
 ];
 
-export const SEED_OPPORTUNITIES: Opportunity[] = [...BASE, ...SEED_JOBS];
+export const SEED_OPPORTUNITIES: Opportunity[] = [...BASE, ...SEED_JOBS, ...SEED_SCHOOLS];
 
 /** What can I study next? Illustrative pathways, pending expert review. */
 export const SEED_PATHWAYS: Pathway[] = [

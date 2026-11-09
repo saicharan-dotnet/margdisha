@@ -53,11 +53,12 @@ export interface Criteria {
 
 export type OpportunityKind =
   | 'scholarship' | 'govt-job' | 'private-job' | 'internship'
-  | 'exam' | 'course' | 'skill' | 'abroad';
+  | 'exam' | 'course' | 'skill' | 'abroad' | 'school-admission';
 
 export const GOVT_SECTORS = ['UPSC', 'State PSC', 'SSC', 'Banking', 'Railways', 'Defence', 'Police', 'Teaching', 'PSU', 'Apprenticeship', 'Departments'] as const;
 export const PRIVATE_SECTORS = ['IT & Software', 'Banking & Finance', 'Healthcare', 'Manufacturing', 'Sales & Marketing', 'Education', 'Customer Support'] as const;
-export type JobSector = (typeof GOVT_SECTORS)[number] | (typeof PRIVATE_SECTORS)[number];
+export const SCHOOL_SECTORS = ['Navodaya', 'Sainik', 'Military School', 'Kendriya Vidyalaya', 'EMRS', 'State residential', 'School scholarship'] as const;
+export type JobSector = (typeof GOVT_SECTORS)[number] | (typeof PRIVATE_SECTORS)[number] | (typeof SCHOOL_SECTORS)[number];
 export type WorkMode = 'onsite' | 'remote' | 'hybrid';
 
 export type VerificationStatus = 'draft' | 'in-review' | 'verified' | 'rejected';
@@ -90,12 +91,14 @@ export interface Opportunity {
   /** True for seeded demo content. Never shown without a warning. */
   sample: boolean;
   tags: string[];
-  /** Jobs only. */
+  /** Jobs and school admissions. */
   sector?: JobSector;
   location?: string;
   workMode?: WorkMode;
   vacancies?: string;
   experience?: string;
+  /** School admissions: the class a child joins (e.g. "Class 6"). */
+  entryClass?: string;
 }
 
 export interface PathwayOption {

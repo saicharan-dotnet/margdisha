@@ -10,7 +10,7 @@ export interface OppRow {
   status: Opportunity['status']; sample: boolean;
 }
 
-const DETAIL_KEYS = ['amount', 'salary', 'selection', 'documents', 'opensOn', 'location', 'workMode', 'vacancies', 'experience', 'tags'] as const;
+const DETAIL_KEYS = ['amount', 'salary', 'selection', 'documents', 'opensOn', 'location', 'workMode', 'vacancies', 'experience', 'entryClass', 'tags'] as const;
 
 export function oppToRow(o: Opportunity): OppRow {
   const details: Record<string, unknown> = {};

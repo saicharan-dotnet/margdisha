@@ -9,7 +9,8 @@
     "build:single": "vite build --mode single",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "db:seed-sql": "esbuild scripts/gen-seed-sql.ts --bundle --platform=node --format=esm --outfile=scripts/.gen-seed.mjs && node scripts/.gen-seed.mjs"
+    "db:seed-sql": "esbuild scripts/gen-seed-sql.ts --bundle --platform=node --format=esm --outfile=scripts/.gen-seed.mjs && node scripts/.gen-seed.mjs",
+    "notices": "esbuild scripts/collect-notices.ts --bundle --platform=node --format=esm --outfile=scripts/.collect-notices.mjs && node scripts/.collect-notices.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.115.0",

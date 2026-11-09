@@ -42,7 +42,7 @@ export function App() {
   const [route, go] = useHashRoute();
   const [lang, setLang] = usePersisted<Lang>('lang', 'en');
   const [profile, setProfileLocal] = usePersisted<P>('profile', { skills: [], interests: [] });
-  const [localOpps, setLocalOpps] = usePersisted<Opportunity[]>('opps-v2', SEED_OPPORTUNITIES);
+  const [localOpps, setLocalOpps] = usePersisted<Opportunity[]>('opps-v3', SEED_OPPORTUNITIES);
   const [saved, setSaved] = usePersisted<string[]>('saved', []);
   const [remoteOpps, setRemoteOpps] = useState<Opportunity[] | null>(null);
   const [source, setSource] = useState<'db' | 'local' | 'loading'>(supabase ? 'loading' : 'local');
