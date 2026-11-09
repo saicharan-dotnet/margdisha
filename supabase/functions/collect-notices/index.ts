@@ -281,7 +281,7 @@ async function collectSource(src, supabaseUrl, key, debug = false) {
         apis: await findApis(html, src.url)
       }
     };
-    const fresh = key && found.length ? await saveNotices(supabaseUrl, key, found.map((f) => ({ url: f.url, title: f.title, source_id: src.id, source_name: src.name, sector: src.sector ?? null, area: src.area }))) : 0;
+    const fresh = key && found.length ? await saveNotices(supabaseUrl, key, found.map((f) => ({ url: f.url, title: f.title, source_id: src.id, source_name: src.name, sector: src.sector ?? null, area: areaFor(src, f.title) }))) : 0;
     return { id: src.id, ok: true, found: found.length, fresh, sample: found.slice(0, 5) };
   } catch (e) {
     return { id: src.id, ok: false, found: 0, fresh: 0, error: errorText(e) };
@@ -321,6 +321,9 @@ async function findApis(html, base) {
     }
   }
   return [...out];
+}
+function areaFor(src, title) {
+  return src.area === "school" && /recruit|\bposts? of\b|vacanc|teacher|\b(pgt|tgt|prt)\b/i.test(title) ? "job" : src.area;
 }
 
 // src/notices/edge-handler.ts

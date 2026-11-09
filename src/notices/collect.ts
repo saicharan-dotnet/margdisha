@@ -72,7 +72,7 @@ export async function collectSource(src: NoticeSource, supabaseUrl: string, key:
       debug: { bytes: html.length, head: html.replace(/\s+/g, ' ').slice(0, html.length < 10_000 ? 6000 : 600), links: all.slice(0, 150),
         apis: await findApis(html, src.url) } };
     const fresh = key && found.length
-      ? await saveNotices(supabaseUrl, key, found.map((f) => ({ url: f.url, title: f.title, source_id: src.id, source_name: src.name, sector: src.sector ?? null, area: src.area })))
+      ? await saveNotices(supabaseUrl, key, found.map((f) => ({ url: f.url, title: f.title, source_id: src.id, source_name: src.name, sector: src.sector ?? null, area: areaFor(src, f.title) })))
       : 0;
     return { id: src.id, ok: true, found: found.length, fresh, sample: found.slice(0, 5) };
   } catch (e) {
@@ -101,4 +101,9 @@ async function findApis(html: string, base: string): Promise<string[]> {
     } catch { /* skip */ }
   }
   return [...out];
+}
+
+/** School sites also post staff recruitment; file those under jobs. */
+export function areaFor(src: Pick<NoticeSource, 'area'>, title: string): NoticeSource['area'] {
+  return src.area === 'school' && /recruit|\bposts? of\b|vacanc|teacher|\b(pgt|tgt|prt)\b/i.test(title) ? 'job' : src.area;
 }

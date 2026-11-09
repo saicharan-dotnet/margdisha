@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { areaFor } from './collect';
 import { extractLinks, isOfficialLink, noticesFromJson, pickNotices, resolve } from './extract';
 
 const PAGE = `
@@ -49,5 +50,10 @@ describe('notice extraction', () => {
     expect(noticesFromJson({ data: [{ DESCRIPTION: 'CET2026', NOTIFICATION_ID: 13190, DEPT_SHORT_NAME: 'TGCET' }] },
       { url: 'https://tgcet.cgg.gov.in/TGCETWEB/getNotifications', items: 'data', title: 'DESCRIPTION', prefix: 'DEPT_SHORT_NAME', linkTemplate: 'https://tgcet.cgg.gov.in/TGCETWEB/?notification={NOTIFICATION_ID}' }))
       .toEqual([{ title: 'TGCET: CET2026', url: 'https://tgcet.cgg.gov.in/TGCETWEB/?notification=13190' }]);
+  });
+
+  it('files staff recruitment from school sites under jobs', () => {
+    expect(areaFor({ area: 'school' }, 'Recruitment: result for the posts of PGT (Hindi)')).toBe('job');
+    expect(areaFor({ area: 'school' }, 'JNVST 2027 admission for Class VI')).toBe('school');
   });
 });
