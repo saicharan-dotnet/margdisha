@@ -1,13 +1,13 @@
 import { useState, type FormEvent } from 'react';
 import {
-  GOVT_SECTORS, LEVELS, PRIVATE_SECTORS, type Category, type Criteria, type Gender, type Level,
+  GOVT_SECTORS, LEVELS, PRIVATE_SECTORS, SCHOOL_SECTORS, type Category, type Criteria, type Gender, type Level,
   type Opportunity, type OpportunityKind, type Stream, type WorkMode,
 } from '../data/types';
 import { LEVEL_LABEL } from '../engine/match';
 
 const KINDS: [OpportunityKind, string][] = [
   ['scholarship', 'Scholarship'], ['govt-job', 'Government job'], ['private-job', 'Private job'], ['internship', 'Internship'],
-  ['exam', 'Entrance exam'], ['course', 'Course'], ['skill', 'Skill programme'], ['abroad', 'Study abroad'],
+  ['exam', 'Entrance exam'], ['course', 'Course'], ['skill', 'Skill programme'], ['abroad', 'Study abroad'], ['school-admission', 'School admission'],
 ];
 const SCOPES: Opportunity['scope'][] = ['Central', 'State', 'Private', 'International', 'Institutional'];
 const STREAMS: Stream[] = ['MPC', 'BiPC', 'MEC', 'CEC', 'HEC', 'Vocational', 'Engineering', 'Science', 'Commerce', 'Arts', 'Medical'];
@@ -44,12 +44,12 @@ function Multi<T extends string>({ label, all, value, onChange, show = (x) => x 
   );
 }
 
-export function ListingForm({ initial, existingIds, onSave, onCancel }: {
-  initial?: Opportunity; existingIds: string[];
+export function ListingForm({ initial, prefill, existingIds, onSave, onCancel }: {
+  initial?: Opportunity; prefill?: Partial<Opportunity>; existingIds: string[];
   onSave: (o: Opportunity) => Promise<string | null>; onCancel: () => void;
 }) {
   const isNew = !initial;
-  const [o, setO] = useState<Opportunity>(initial ?? blank());
+  const [o, setO] = useState<Opportunity>(initial ?? { ...blank(), ...prefill });
   const [docs, setDocs] = useState((initial?.documents ?? []).join('\n'));
   const [checks, setChecks] = useState((initial?.criteria.manualChecks ?? []).join('\n'));
   const [err, setErr] = useState<string | null>(null);
@@ -62,8 +62,9 @@ export function ListingForm({ initial, existingIds, onSave, onCancel }: {
     if (num(v) === undefined) delete r[cat]; else r[cat] = num(v);
     setC({ ageRelaxation: Object.keys(r).length ? r : undefined });
   };
-  const isJob = o.kind === 'govt-job' || o.kind === 'private-job' || o.kind === 'internship';
-  const sectors = o.kind === 'govt-job' ? GOVT_SECTORS : PRIVATE_SECTORS;
+  const isSchool = o.kind === 'school-admission';
+  const isJob = o.kind === 'govt-job' || o.kind === 'private-job' || o.kind === 'internship' || isSchool;
+  const sectors = o.kind === 'govt-job' ? GOVT_SECTORS : isSchool ? SCHOOL_SECTORS : PRIVATE_SECTORS;
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
@@ -95,6 +96,7 @@ export function ListingForm({ initial, existingIds, onSave, onCancel }: {
       <label>Type<select value={o.kind} onChange={(e) => set({ kind: e.target.value as OpportunityKind, sector: undefined })}>{KINDS.map(([k, l]) => <option key={k} value={k}>{l}</option>)}</select></label>
       <label>Level<select value={o.scope} onChange={(e) => set({ scope: e.target.value as Opportunity['scope'] })}>{SCOPES.map((s) => <option key={s}>{s}</option>)}</select></label>
       {isJob && <label>Sector<select value={o.sector ?? ''} onChange={(e) => set({ sector: (e.target.value || undefined) as Opportunity['sector'] })}><option value="">—</option>{sectors.map((s) => <option key={s}>{s}</option>)}</select></label>}
+      {isSchool && <label>Joining class<input value={o.entryClass ?? ''} onChange={(e) => set({ entryClass: e.target.value || undefined })} placeholder="e.g. Class 6" /></label>}
       <label className="wide">Title<input required value={o.title} onChange={(e) => set({ title: e.target.value })} placeholder="e.g. SSC Combined Graduate Level Examination 2027" /></label>
       <label>Organisation<input required value={o.provider} onChange={(e) => set({ provider: e.target.value })} placeholder="e.g. Staff Selection Commission" /></label>
       <label>Last date to apply<input type="date" value={o.deadline ?? ''} onChange={(e) => set({ deadline: e.target.value || undefined })} /></label>

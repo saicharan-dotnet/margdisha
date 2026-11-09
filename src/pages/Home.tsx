@@ -1,16 +1,21 @@
 import type React from 'react';
+import { useMemo, useState } from 'react';
 import { useApp } from '../app-context';
 import type { Key } from '../i18n/strings';
-import { LEVEL_LABEL } from '../engine/match';
+import { daysLeft, LEVEL_LABEL } from '../engine/match';
 import { Icon } from '../components/Icon';
+import { NoticeFeed } from '../components/NoticeFeed';
+import { DeadlineTag } from '../components/OppCard';
 import type { Level } from '../data/types';
 import hero from '../assets/hero.jpg';
 import heroSmall from '../assets/hero-800.jpg';
 
-const PICK: Level[] = ['class10', 'inter', 'diploma', 'ug', 'pg'];
+const PICK: Level[] = ['class5', 'class8', 'class10', 'inter', 'diploma', 'ug', 'pg'];
 const PICK_HINT: Partial<Record<Level, string>> = {
+  class5: 'Navodaya · Sainik · Gurukul', class8: 'Class 9 entry · NMMS',
   class10: 'SSC / 10th', inter: 'MPC · BiPC · MEC · CEC', diploma: 'Polytechnic / ITI', ug: 'B.Tech · B.Sc · B.Com · B.A.', pg: 'M.Tech · M.Sc · MBA · M.A.',
 };
+const SCHOOL_LEVELS: Level[] = ['class5', 'class8'];
 
 const QUESTIONS: [Key, string, string][] = [
   ['q1', 'explore', 'Courses'], ['q2', 'explore', 'Careers'], ['q3', 'matches-scholarship', 'Scholarships'],
@@ -20,9 +25,19 @@ const QUESTIONS: [Key, string, string][] = [
 
 export function Home() {
   const { t, go, profile, setProfile, opps } = useApp();
-  const govt = opps.filter((o) => o.kind === 'govt-job').length;
-  const pvt = opps.filter((o) => o.kind === 'private-job' || o.kind === 'internship').length;
-  const sch = opps.filter((o) => o.kind === 'scholarship').length;
+  const [q, setQ] = useState('');
+  const n = (f: (k: string) => boolean) => opps.filter((o) => f(o.kind)).length;
+  const closing = useMemo(() => opps
+    .filter((o) => o.deadline && daysLeft(o.deadline) >= 0)
+    .sort((a, b) => a.deadline!.localeCompare(b.deadline!)).slice(0, 6), [opps]);
+
+  const tiles: [string, string, number, Key | string, string, string][] = [
+    ['govt', 'jobs-govt', n((k) => k === 'govt-job'), t('govt-job'), 'SSC · Railways · UPSC · Banking · Police · Defence', 'briefcase'],
+    ['school', 'schools', n((k) => k === 'school-admission'), t('school-admission'), t('schoolTile'), 'school'],
+    ['pvt', 'jobs-private', n((k) => k === 'private-job' || k === 'internship'), `${t('private-job')} & ${t('internship')}`, 'Freshers · Work from home · Near you', 'briefcase'],
+    ['sch', 'matches-scholarship', n((k) => k === 'scholarship'), t('scholarship'), 'Central · Telangana · Andhra Pradesh · Private', 'shield'],
+  ];
+
   return (
     <>
       <section className="hero">
@@ -30,37 +45,63 @@ export function Home() {
           <p className="eyebrow">{t('startHere')}</p>
           <h1>{t('tagline')}</h1>
           <p className="lede">{t('heroSub')}</p>
+          <form className="hero-search" role="search" onSubmit={(e) => { e.preventDefault(); go('search?q=' + encodeURIComponent(q.trim())); }}>
+            <Icon name="search" size={20} />
+            <input id="home-search" type="search" aria-label={t('searchAll')} placeholder={t('searchAll')} value={q} onChange={(e) => setQ(e.target.value)} />
+            <button className="btn">{t('searchBtn')}</button>
+          </form>
         </div>
+
         <h2 className="pick-h">{t('pickLevel')}</h2>
         <div className="level-grid">
-          {PICK.map((l) => (
-            <button key={l} className="level" onClick={() => { setProfile({ ...profile, level: l, levelStatus: profile.levelStatus ?? 'completed' }); go('explore'); }}>
-              <span className="level-name">{LEVEL_LABEL[l]}</span>
-              <span className="level-hint">{PICK_HINT[l]}</span>
-              <Icon name="arrow" size={18} />
-            </button>
-          ))}
+          {PICK.map((l) => {
+            const school = SCHOOL_LEVELS.includes(l);
+            return (
+              <button key={l} className={'level ' + (school ? 'is-school' : '')} onClick={() => {
+                setProfile({ ...profile, level: l, levelStatus: school ? 'pursuing' : profile.levelStatus ?? 'completed' });
+                go(school ? 'schools' : 'explore');
+              }}>
+                {school && <span className="level-tag">{t('forSchool')}</span>}
+                <span className="level-name">{LEVEL_LABEL[l]}</span>
+                <span className="level-hint">{PICK_HINT[l]}</span>
+                <Icon name="arrow" size={18} />
+              </button>
+            );
+          })}
         </div>
       </section>
 
       <section className="split">
-        <button className="feature govt" onClick={() => go('jobs-govt')}>
-          <span className="feature-n">{govt}</span>
-          <span className="feature-t">{t('govt-job')}</span>
-          <span className="feature-s">UPSC · SSC · Banking · Railways · Defence · Police · Teaching · PSU</span>
-        </button>
-        <button className="feature pvt" onClick={() => go('jobs-private')}>
-          <span className="feature-n">{pvt}</span>
-          <span className="feature-t">{t('private-job')} & {t('internship')}</span>
-          <span className="feature-s">Freshers · Experienced · Work from home · Near you</span>
-        </button>
-        <button className="feature sch" onClick={() => go('matches-scholarship')}>
-          <span className="feature-n">{sch}</span>
-          <span className="feature-t">{t('scholarship')}</span>
-          <span className="feature-s">Central · Telangana · Andhra Pradesh · Private</span>
-        </button>
+        {tiles.map(([cls, route, count, label, sub, icon]) => (
+          <button key={cls} className={'feature ' + cls} onClick={() => go(route)}>
+            <span className="feature-icon"><Icon name={icon as 'briefcase'} size={22} /></span>
+            <span className="feature-n">{count}</span>
+            <span className="feature-t">{label}</span>
+            <span className="feature-s">{sub}</span>
+          </button>
+        ))}
       </section>
       <p className="small muted center">Counts are sample listings in this demo.</p>
+
+      <section className="home-two">
+        <div className="panel">
+          <h2 className="section-h"><Icon name="clock" size={20} /> {t('closingSoon')}</h2>
+          <ul className="closing">
+            {closing.map((o) => (
+              <li key={o.id}>
+                <button className="closing-item" onClick={() => go(o.kind === 'govt-job' ? 'jobs-govt' : o.kind === 'private-job' || o.kind === 'internship' ? 'jobs-private' : o.kind === 'school-admission' ? 'schools' : 'matches-' + o.kind)}>
+                  <span className="closing-title">{o.title}</span>
+                  <span className="closing-meta">{o.sector ?? t(o.kind as Key)} · <DeadlineTag deadline={o.deadline} /></span>
+                </button>
+              </li>
+            ))}
+            {!closing.length && <li className="muted">—</li>}
+          </ul>
+        </div>
+        <div className="panel">
+          <NoticeFeed limit={6} more={() => go('updates')} />
+        </div>
+      </section>
 
       <section>
         <h2 className="section-h">{t('exploreAll')}</h2>

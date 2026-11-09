@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { extractLinks, pickNotices, resolve } from './extract';
+import { extractLinks, isOfficialLink, pickNotices, resolve } from './extract';
 
 const PAGE = `
 <html><head><script>var a = '<a href="/x">recruitment exam fake</a>';</script></head><body>
@@ -28,6 +28,11 @@ describe('notice extraction', () => {
       'Combined Graduate Level Examination 2027 – Notice',
       'JNVST 2027 admission for Class VI',
     ]);
+  });
+  it('keeps only official links', () => {
+    expect(isOfficialLink('https://exams.nta.nic.in/niftee/', 'https://kvsangathan.nic.in/')).toBe(true);
+    expect(isOfficialLink('https://www.ibps.in/crp.pdf', 'https://ibps.in/')).toBe(true);
+    expect(isOfficialLink('https://ndtv.in/education/x', 'https://kvsangathan.nic.in/')).toBe(false);
   });
   it('resolves relative links and strips fragments', () => {
     expect(resolve('/cgl.pdf#page=2', 'https://a.gov.in/x/')).toBe('https://a.gov.in/cgl.pdf');

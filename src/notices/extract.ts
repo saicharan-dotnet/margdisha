@@ -11,7 +11,7 @@ const EXCLUDE = [
   'tender', 'rti', 'annual report', 'login', 'sign in', 'sitemap', 'site map', 'contact', 'privacy', 'copyright', 'disclaimer',
   'feedback', 'faq', 'gallery', 'photo', 'video', 'twitter', 'facebook', 'youtube', 'instagram', 'linkedin', 'screen reader',
   'skip to', 'accessibility', 'hyperlink', 'terms', 'web information manager', 'help desk', 'helpdesk', 'grievance',
-  'citizen charter', 'archive', 'about us', 'home page', 'officers', 'who\'s who', 'telephone directory', 'budget',
+  'citizen charter', 'archive', 'about us', 'home page', 'read more', 'user manual', 'how to fill', 'officers', 'who\'s who', 'telephone directory', 'budget',
 ];
 const GENERIC = /^(click here|here|download|view|view more|read more|more|details|pdf|link|open|new|apply|apply online|english|hindi|हिन्दी)$/i;
 
@@ -80,4 +80,16 @@ export function pickNotices(links: FoundNotice[], source: Pick<NoticeSource, 'ke
     if (out.length >= max) break;
   }
   return out;
+}
+
+const GOV_HOST = /\.(gov\.in|nic\.in|edu\.in|ac\.in)$/;
+/** Last two labels of a host (three for .gov.in / .co.in style suffixes). */
+const site = (host: string) => host.split('.').slice(/\.(gov|nic|co|org|ac|edu|net)\.in$/.test(host) ? -3 : -2).join('.');
+
+/** Keep only links on the source's own site or another government / educational site (no news sites or ads). */
+export function isOfficialLink(url: string, sourceUrl: string): boolean {
+  try {
+    const h = new URL(url).hostname.toLowerCase(), s = new URL(sourceUrl).hostname.toLowerCase();
+    return h === s || site(h) === site(s) || GOV_HOST.test(h);
+  } catch { return false; }
 }

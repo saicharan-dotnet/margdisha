@@ -4,7 +4,7 @@ import type { MatchStatus, OpportunityKind } from '../data/types';
 import { matchAll } from '../engine/match';
 import { OppCard } from '../components/OppCard';
 
-const KINDS: (OpportunityKind | 'all')[] = ['all', 'scholarship', 'govt-job', 'private-job', 'internship', 'exam', 'skill', 'abroad'];
+const KINDS: (OpportunityKind | 'all')[] = ['all', 'scholarship', 'govt-job', 'private-job', 'internship', 'exam', 'school-admission', 'skill', 'abroad'];
 const GROUPS: MatchStatus[] = ['likely', 'verify', 'not'];
 
 export function Matches({ initialKind = 'all' }: { initialKind?: OpportunityKind | 'all' }) {

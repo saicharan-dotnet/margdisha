@@ -15,13 +15,22 @@ import { Matches } from './pages/Matches';
 import { Dashboard } from './pages/Dashboard';
 import { Admin } from './pages/Admin';
 import { Jobs } from './pages/Jobs';
+import { Schools } from './pages/Schools';
+import { Updates } from './pages/Updates';
+import { Search } from './pages/Search';
 
-const NAV: [string, Key, IconName][] = [
-  ['home', 'navHome', 'home'], ['explore', 'navExplore', 'compass'], ['jobs-govt', 'navJobs', 'briefcase'],
-  ['matches', 'navMatches', 'check'], ['dashboard', 'navDashboard', 'user'],
+/** [route, label, icon, shown in the mobile tab bar] */
+const NAV: [string, Key, IconName, boolean][] = [
+  ['home', 'navHome', 'home', true], ['explore', 'navExplore', 'compass', true], ['jobs-govt', 'navJobs', 'briefcase', true],
+  ['schools', 'navSchools', 'school', true], ['matches', 'navMatches', 'check', true], ['dashboard', 'navDashboard', 'user', false],
 ];
 
 function page(route: string) {
+  if (route.startsWith('search')) {
+    let q = route.split('q=')[1] ?? '';
+    try { q = decodeURIComponent(q); } catch { /* keep raw */ }
+    return <Search key={q} initial={q} />;
+  }
   if (route.startsWith('jobs')) return <Jobs tab={route === 'jobs-private' ? 'private' : 'govt'} />;
   if (route.startsWith('matches')) {
     const k = route.slice('matches-'.length) as OpportunityKind;
@@ -32,6 +41,8 @@ function page(route: string) {
     case 'profile': return <Profile />;
     case 'dashboard': return <Dashboard />;
     case 'admin': return <Admin />;
+    case 'schools': return <Schools />;
+    case 'updates': return <Updates />;
     default: return <Home />;
   }
 }
@@ -146,7 +157,7 @@ export function App() {
         <main>{page(route)}</main>
         <footer className="foot">{t('noGuarantee')}</footer>
         <nav className="tabbar" aria-label="Main">
-          {NAV.map(([r, k, icon]) => (
+          {NAV.filter((n) => n[3]).map(([r, k, icon]) => (
             <a key={r} href={'#' + r} className={section(route) === section(r) ? 'on' : ''}>
               <Icon name={icon} size={22} /><span>{t(k)}</span>
             </a>

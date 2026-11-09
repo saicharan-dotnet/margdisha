@@ -67,4 +67,9 @@ describe('matchAll', () => {
     expect(matchAll(base, list, { includeUnverified: false, today }).map((m) => m.opp.id)).toEqual(['c', 'b']);
     expect(matchAll(base, list, { includeUnverified: true, today }).map((m) => m.opp.id)).toEqual(['c', 'a', 'b']);
   });
+
+  it('treats rules that can only be checked by hand as needing verification', () => {
+    const r = evaluate({ level: 'ug', levelStatus: 'completed', skills: [], interests: [] }, { manualChecks: ['Age on the cut-off date'] });
+    expect(r.status).toBe('verify');
+  });
 });

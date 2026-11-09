@@ -17,7 +17,7 @@ export function Profile() {
   const set = (patch: Partial<P>) => { setF({ ...f, ...patch }); setOk(false); };
   return (
     <section className="page">
-      <h1>{t('navProfile')}</h1>
+      <div className="admin-head"><h1>{t('navProfile')}</h1><button className="btn ghost sm" onClick={() => go('dashboard')}>{t('navDashboard')} →</button></div>
       <p className="muted">Everything is optional. The more you fill, the fewer results need verification. </p>
       <Account />
       <form className="form" onSubmit={(e) => { e.preventDefault(); setProfile(f); setOk(true); go('matches'); }}>

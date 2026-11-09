@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useApp } from '../app-context';
-import type { Opportunity, VerificationStatus } from '../data/types';
+import type { Opportunity, OpportunityKind, VerificationStatus } from '../data/types';
+import type { Notice } from '../data/remote';
+import { ago } from '../components/NoticeFeed';
 import { ListingForm } from './ListingForm';
 import { Icon } from '../components/Icon';
 
@@ -12,7 +14,9 @@ const FLOW: VerificationStatus[] = ['draft', 'in-review', 'verified', 'rejected'
  * The database enforces the same rules, so the browser cannot bypass them.
  */
 export function Admin() {
-  const { opps, saveOpp, deleteOpp, isAdmin, user, go } = useApp();
+  const { opps, saveOpp, deleteOpp, isAdmin, user, go, notices, setNoticeStatus, t } = useApp();
+  const [view, setView] = useState<'listings' | 'notices'>('listings');
+  const [fromNotice, setFromNotice] = useState<Notice | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<VerificationStatus | 'all' | 'sample'>('all');
   const [verifying, setVerifying] = useState<string | null>(null);
@@ -35,6 +39,7 @@ export function Admin() {
     const cur = opps.find((o) => o.id === id);
     if (cur) setError(await saveOpp(patch(cur)));
   };
+  const newCount = notices.filter((n) => n.status === 'new').length;
   const needle = q.trim().toLowerCase();
   const shown = opps.filter((o) =>
     (filter === 'all' || (filter === 'sample' ? o.sample : o.status === filter)) &&
@@ -46,9 +51,14 @@ export function Admin() {
         <ListingForm
           key={form}
           initial={form === 'new' ? undefined : opps.find((o) => o.id === form)}
+          prefill={fromNotice ? noticePrefill(fromNotice) : undefined}
           existingIds={opps.map((o) => o.id)}
-          onSave={saveOpp}
-          onCancel={() => setForm(null)}
+          onSave={async (o) => {
+            const err = await saveOpp(o);
+            if (!err && fromNotice) await setNoticeStatus(fromNotice.id, 'listed', o.id);
+            return err;
+          }}
+          onCancel={() => { setForm(null); setFromNotice(null); }}
         />
       </section>
     );
@@ -61,6 +71,15 @@ export function Admin() {
       </div>
       <div className="notice ok-note">Signed in as {user}. Changes save to the database, and every status change is recorded in the audit log.</div>
       {error && <div className="notice err" role="alert">{error}</div>}
+      <div className="segmented" role="tablist">
+        <button role="tab" aria-selected={view === 'listings'} className={view === 'listings' ? 'on' : ''} onClick={() => setView('listings')}>Listings</button>
+        <button role="tab" aria-selected={view === 'notices'} className={view === 'notices' ? 'on' : ''} onClick={() => setView('notices')}>
+          Notices inbox {newCount > 0 && <span className="count-badge">{newCount}</span>}
+        </button>
+      </div>
+      {view === 'notices' ? <NoticeInbox notices={notices} t={t} onCreate={(n) => { setFromNotice(n); setForm('new'); }}
+        onIgnore={async (n) => setError(await setNoticeStatus(n.id, 'ignored'))}
+        onRestore={async (n) => setError(await setNoticeStatus(n.id, 'new'))} /> : <>
       <div className="toolbar">
         <label className="search"><Icon name="search" size={18} /><input id="admin-search" type="search" placeholder="Search listings" value={q} onChange={(e) => setQ(e.target.value)} /></label>
       </div>
@@ -98,6 +117,7 @@ export function Admin() {
           </tbody>
         </table>
       </div>
+      </>}
       {verifying && <VerifyDialog opp={opps.find((o) => o.id === verifying)!} onClose={() => setVerifying(null)}
         onVerify={(patch) => { void update(verifying, patch); setVerifying(null); }} />}
     </section>
@@ -126,6 +146,51 @@ function VerifyDialog({ opp, onClose, onVerify }: { opp: Opportunity; onClose: (
           <button className="btn secondary" onClick={onClose}>Cancel</button>
         </div>
       </div>
+    </div>
+  );
+}
+
+const AREA_KIND: Record<Notice['area'], OpportunityKind> = { job: 'govt-job', school: 'school-admission', exam: 'exam', scholarship: 'scholarship' };
+
+function noticePrefill(n: Notice): Partial<Opportunity> {
+  return {
+    kind: AREA_KIND[n.area], title: n.title, provider: n.source_name, sector: (n.sector ?? undefined) as Opportunity['sector'],
+    source: { url: n.url.replace(/^http:/, 'https:'), label: n.source_name }, status: 'draft', sample: false,
+  };
+}
+
+/** Notices the collector found on official websites. An admin turns the useful ones into listings. */
+function NoticeInbox({ notices, t, onCreate, onIgnore, onRestore }: {
+  notices: Notice[]; t: ReturnType<typeof useApp>['t'];
+  onCreate: (n: Notice) => void; onIgnore: (n: Notice) => void; onRestore: (n: Notice) => void;
+}) {
+  const [show, setShow] = useState<Notice['status']>('new');
+  const list = notices.filter((n) => n.status === show);
+  return (
+    <div>
+      <p className="small muted">Found automatically every 6 hours on official websites. Open the notice, then create a listing from it (it starts as a draft) or ignore it. Ignored notices disappear from the public "Latest" list.</p>
+      <div className="chips">
+        {(['new', 'listed', 'ignored'] as const).map((s) => (
+          <button key={s} className={'chip ' + (s === show ? 'on' : '')} onClick={() => setShow(s)}>{s} ({notices.filter((n) => n.status === s).length})</button>
+        ))}
+      </div>
+      {!list.length && <p className="empty">{notices.length ? 'Nothing here.' : 'No notices yet. They arrive after the collector runs with the database key set up (see docs/NOTICES.md).'}</p>}
+      <ul className="inbox">
+        {list.slice(0, 200).map((n) => (
+          <li key={n.id}>
+            <div className="inbox-main">
+              <span className={'feed-src a-' + n.area}>{n.sector ?? n.area}</span>
+              <a href={n.url} target="_blank" rel="noreferrer">{n.title}</a>
+              <span className="small muted">{n.source_name} · {ago(n.first_seen, t)}{n.listing_id ? ' · listing ' + n.listing_id : ''}</span>
+            </div>
+            <div className="actions">
+              {n.status === 'new' && <><button className="btn sm" onClick={() => onCreate(n)}>Create listing</button>
+                <button className="btn sm ghost" onClick={() => onIgnore(n)}>Ignore</button></>}
+              {n.status === 'ignored' && <button className="btn sm ghost" onClick={() => onRestore(n)}>Restore</button>}
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

@@ -8,6 +8,8 @@ const PATHS = {
   arrow: 'M5 12h14M13 6l6 6-6 6',
   pin: 'M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11zm0-8.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z',
   clock: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 4v5l3 2',
+  school: 'M12 3 2 8l10 5 10-5zM6 10.5V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-5.5M22 8v6',
+  bell: 'M6 16V11a6 6 0 0 1 12 0v5l2 2H4zm4 4h4',
   search: 'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm9 16-4-4',
 } as const;
 export type IconName = keyof typeof PATHS;

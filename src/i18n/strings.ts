@@ -47,6 +47,7 @@ const en = {
   searchAll: 'Search jobs, exams, schools, scholarships', closingSoon: 'Closing soon', forSchool: 'For school children',
   schoolTile: 'Navodaya · Sainik · Kendriya Vidyalaya · Military · Gurukul', newBadge: 'New', today: 'Today', hoursAgo: 'h ago', daysAgo: 'd ago',
   childStudying: 'My child is in', noResults: 'Nothing matches these filters.',
+  searchBtn: 'Search', searchTitle: 'Search results', searchEmpty: 'Type what you are looking for, for example "SSC", "Navodaya" or "scholarship".', fromOfficial: 'From official websites',
 };
 export type Key = keyof typeof en;
 
@@ -91,6 +92,7 @@ const te: Record<Key, string> = {
   searchAll: 'ఉద్యోగాలు, పరీక్షలు, పాఠశాలలు, స్కాలర్‌షిప్‌లు వెతకండి', closingSoon: 'త్వరలో ముగిసేవి', forSchool: 'పాఠశాల విద్యార్థులకు',
   schoolTile: 'నవోదయ · సైనిక్ · కేంద్రీయ విద్యాలయ · మిలిటరీ · గురుకులం', newBadge: 'కొత్తది', today: 'ఈరోజు', hoursAgo: 'గం. క్రితం', daysAgo: 'రో. క్రితం',
   childStudying: 'మా పిల్లలు చదువుతున్నది', noResults: 'ఈ ఫిల్టర్లకు సరిపోయేవి ఏమీ లేవు.',
+  searchBtn: 'వెతకండి', searchTitle: 'శోధన ఫలితాలు', searchEmpty: 'మీకు కావలసింది టైప్ చేయండి, ఉదా. "SSC", "నవోదయ", "స్కాలర్‌షిప్".', fromOfficial: 'అధికారిక వెబ్‌సైట్ల నుండి',
 };
 
 const hi: Record<Key, string> = {
@@ -134,6 +136,7 @@ const hi: Record<Key, string> = {
   searchAll: 'नौकरी, परीक्षा, स्कूल, छात्रवृत्ति खोजें', closingSoon: 'जल्द बंद होने वाले', forSchool: 'स्कूली बच्चों के लिए',
   schoolTile: 'नवोदय · सैनिक · केंद्रीय विद्यालय · मिलिट्री · गुरुकुल', newBadge: 'नया', today: 'आज', hoursAgo: 'घंटे पहले', daysAgo: 'दिन पहले',
   childStudying: 'मेरा बच्चा पढ़ रहा है', noResults: 'इन फ़िल्टर से कुछ नहीं मिला।',
+  searchBtn: 'खोजें', searchTitle: 'खोज परिणाम', searchEmpty: 'जो ढूँढ रहे हैं वह लिखें, जैसे "SSC", "नवोदय" या "छात्रवृत्ति"।', fromOfficial: 'आधिकारिक वेबसाइटों से',
 };
 
 export const STRINGS: Record<Lang, Record<Key, string>> = { en, te, hi };

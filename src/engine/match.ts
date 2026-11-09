@@ -102,7 +102,9 @@ export function evaluate(profile: Profile, c: Criteria, today = new Date(), dead
   for (const m of c.manualChecks ?? []) reasons.push({ ok: null, text: `Check yourself: ${m}` });
 
   const failed = reasons.some((r) => r.ok === false);
-  const status = failed ? 'not' : missing.size ? 'verify' : 'likely';
+  // Nothing could be checked automatically, only by hand: never call that "likely".
+  const onlyManual = !reasons.some((r) => r.ok === true) && (c.manualChecks?.length ?? 0) > 0;
+  const status = failed ? 'not' : missing.size || onlyManual ? 'verify' : 'likely';
   const expired = !!deadline && new Date(deadline + 'T23:59:59') < today;
   return { status, reasons, missing: [...missing], expired };
 }

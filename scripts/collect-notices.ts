@@ -3,7 +3,7 @@
 // Without SUPABASE_SECRET_KEY it only prints what it found (dry run).
 import { appendFileSync } from 'node:fs';
 import { NOTICE_SOURCES } from '../src/notices/sources';
-import { extractLinks, pickNotices, type FoundNotice } from '../src/notices/extract';
+import { extractLinks, isOfficialLink, pickNotices, type FoundNotice } from '../src/notices/extract';
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://rimsuaeqnxntgfmbicyb.supabase.co';
 const KEY = process.env.SUPABASE_SECRET_KEY || '';
@@ -31,11 +31,11 @@ async function save(rows: object[]): Promise<number> {
 
 const lines: string[] = ['| Source | Status | Notices found | New |', '|---|---|---|---|'];
 let ok = 0, totalNew = 0;
-for (const src of NOTICE_SOURCES.filter((s) => !only.length || only.includes(s.id))) {
+const run = async (src: (typeof NOTICE_SOURCES)[number]) => {
   let found: FoundNotice[] = [];
   try {
     const html = await fetchPage(src.url);
-    found = pickNotices(extractLinks(html, src.url), src);
+    found = pickNotices(extractLinks(html, src.url).filter((l) => isOfficialLink(l.url, src.url)), src);
     let fresh = 0;
     if (KEY && found.length)
       fresh = await save(found.map((f) => ({ url: f.url, title: f.title, source_id: src.id, source_name: src.name, sector: src.sector ?? null, area: src.area })));
@@ -49,7 +49,10 @@ for (const src of NOTICE_SOURCES.filter((s) => !only.length || only.includes(s.i
     console.log(`✗ ${src.id}: ${msg}`);
     lines.push(`| ${src.name} | failed: ${msg.replace(/\|/g, '/')} | – | – |`);
   }
-}
+};
+// Read a few sites at a time; each site still gets only one request.
+const queue = NOTICE_SOURCES.filter((s) => !only.length || only.includes(s.id));
+await Promise.all(Array.from({ length: 5 }, async () => { for (let s = queue.shift(); s; s = queue.shift()) await run(s); }));
 const summary = `### Notice collector\n${KEY ? `${totalNew} new notices saved.` : 'Dry run: SUPABASE_SECRET_KEY is not set, nothing was saved.'}\n\n${lines.join('\n')}\n`;
 console.log('\n' + summary);
 if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary);

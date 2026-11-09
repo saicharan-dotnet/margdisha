@@ -38,6 +38,7 @@ export function OppCard({ opp, result }: { opp: Opportunity; result: MatchResult
     [t('ageLimit'), ageText(opp)],
     [t('location'), opp.location],
     [t('experience'), opp.experience],
+    [t('entryClass'), opp.entryClass],
   ];
   return (
     <article className={'opp ' + (result.expired ? 'is-expired' : '')}>

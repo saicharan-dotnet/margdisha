@@ -43,7 +43,7 @@ export const SEED_SCHOOLS: Opportunity[] = [
     summary: 'Residential schools that prepare children for the National Defence Academy and other officer entries. Admission to Class 6 is through the All India Sainik Schools Entrance Examination. Girls can apply for Class 6.',
     selection: 'Written exam (maths, intelligence, language, general knowledge), then medical check',
     amount: 'Fees apply; state and central scholarships are available for many students',
-    criteria: { manualChecks: [
+    criteria: { studyingAt: ['class5'], manualChecks: [
       'Age limit for Class 6 as given in this year\'s notice (usually around 10 to 12 years)',
       'Seat reservation for the home state, SC, ST, OBC and defence wards',
     ] },
@@ -68,7 +68,7 @@ export const SEED_SCHOOLS: Opportunity[] = [
     provider: 'Rashtriya Military Schools, Ministry of Defence',
     summary: 'Five residential schools at Ajmer, Bengaluru, Belagavi, Chail and Dholpur. A Common Entrance Test is held for Class 6 and Class 9. Seats are kept for children of defence personnel, with some open to civilians.',
     selection: 'Common Entrance Test, interview and medical check',
-    criteria: { manualChecks: [
+    criteria: { studyingAt: ['class5', 'class8'], manualChecks: [
       'Age limit for the class you apply to, as given in this year\'s notice',
       'Seat quota for wards of serving or retired defence personnel and for civilians',
       'Whether girls are admitted this year',
