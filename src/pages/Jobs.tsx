@@ -7,7 +7,7 @@ import { Icon } from '../components/Icon';
 import { NoticeFeed } from '../components/NoticeFeed';
 import { CalendarCard, latestNoticeFor } from '../components/CalendarCard';
 import { JOB_CALENDAR } from '../data/job-calendar';
-import { monthsUntil } from '../data/school-calendar';
+import { calendarOrder } from '../data/school-calendar';
 import type { Level } from '../data/types';
 
 /** Minimum qualification of a calendar entry, and what a profile level counts as. */
@@ -21,9 +21,12 @@ export function Jobs({ tab }: { tab: 'govt' | 'private' }) {
   const [q, setQ] = useState('');
   const [mode, setMode] = useState<WorkMode | 'all'>('all');
   const [qual, setQual] = useState<number>(() => (profile.level && LEVEL_RANK[profile.level]) || 0);
-  const now = new Date().getMonth() + 1;
-  const cal = JOB_CALENDAR.filter((e) => !qual || QUAL_RANK[e.joins] <= qual)
-    .sort((a, b) => monthsUntil(now, a.formsFrom, a.formsTo) - monthsUntil(now, b.formsFrom, b.formsTo));
+  const [region, setRegion] = useState<string>(() => (profile.state === 'Telangana' || profile.state === 'Andhra Pradesh' ? profile.state : 'all'));
+  const order = calendarOrder(new Date().getMonth() + 1);
+  const cal = JOB_CALENDAR
+    .filter((e) => (!qual || QUAL_RANK[e.joins] <= qual) && (region === 'all' || (region === 'All India' ? !e.state : e.state === region || !e.state)))
+    .sort((a, b) => order(a) - order(b));
+  const REGIONS: [string, string][] = [['all', t('all')], ['All India', t('allIndia')], ['Telangana', 'Telangana'], ['Andhra Pradesh', 'Andhra Pradesh']];
 
   const all = useMemo(() => matchAll(profile, opps, { includeUnverified: true }), [profile, opps]);
   const inTab = all.filter((m) => (tab === 'govt' ? m.opp.kind === 'govt-job' : m.opp.kind === 'private-job' || m.opp.kind === 'internship'));
@@ -50,6 +53,12 @@ export function Jobs({ tab }: { tab: 'govt' | 'private' }) {
         <h2 className="section-h"><Icon name="clock" size={20} /> {t('jobCalTitle')}</h2>
         <p className="small muted">{t('jobCalNote')}</p>
         <div className="filter-block">
+          <span className="filter-label">{t('region')}</span>
+          <div className="chips scroll">
+            {REGIONS.map(([r, l]) => <button key={r} className={'chip ' + (region === r ? 'on' : '')} onClick={() => setRegion(r)}>{l}</button>)}
+          </div>
+        </div>
+        <div className="filter-block">
           <span className="filter-label">{t('myQual')}</span>
           <div className="chips scroll">
             {([[0, t('all')], [1, t('qual10')], [2, t('qual12')], [3, t('qualDeg')]] as [number, string][]).map(([r, l]) => (
@@ -59,6 +68,7 @@ export function Jobs({ tab }: { tab: 'govt' | 'private' }) {
         </div>
         <div className="cal-grid">
           {cal.map((e) => <CalendarCard key={e.id} e={e} whoLabel={t('eligibilityLbl')} latest={latestNoticeFor(notices, e, (a) => a !== 'school')} />)}
+        {!cal.length && <p className="empty">{t('noResults')}</p>}
         </div>
       </>}
 

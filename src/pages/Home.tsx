@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import { useApp } from '../app-context';
 import type { Key } from '../i18n/strings';
 import { daysLeft, LEVEL_LABEL } from '../engine/match';
-import { Icon } from '../components/Icon';
+import { Icon, type IconName } from '../components/Icon';
 import { NoticeFeed } from '../components/NoticeFeed';
 import { DeadlineTag } from '../components/OppCard';
 import type { Level } from '../data/types';
@@ -17,7 +17,7 @@ const PICK_HINT: Partial<Record<Level, string>> = {
 
 const QUESTIONS: [Key, string, string][] = [
   ['q1', 'explore', 'Courses'], ['q2', 'explore', 'Careers'], ['q3', 'matches-scholarship', 'Scholarships'],
-  ['q4', 'jobs-govt', 'Government jobs'], ['q5', 'jobs-private', 'Private jobs'], ['q6', 'matches-exam', 'Entrance exams'],
+  ['q4', 'jobs-govt', 'Government jobs'], ['q5', 'jobs-private', 'Private jobs'], ['q6', 'exams', 'Entrance exams'],
   ['q7', 'matches-skill', 'Skills'], ['q8', 'matches-abroad', 'Abroad'], ['q9', 'dashboard', 'Next step'],
 ];
 
@@ -32,6 +32,7 @@ export function Home() {
   const tiles: [string, string, number, Key | string, string, string][] = [
     ['govt', 'jobs-govt', n((k) => k === 'govt-job'), t('govt-job'), 'SSC · Railways · UPSC · Banking · Police · Defence', 'briefcase'],
     ['school', 'schools', n((k) => k === 'school-admission'), t('school-admission'), t('schoolTile'), 'school'],
+    ['exam', 'exams', 0, t('examsTitle'), t('examsTile'), 'exam'],
     ['pvt', 'jobs-private', n((k) => k === 'private-job' || k === 'internship'), `${t('private-job')} & ${t('internship')}`, 'Freshers · Work from home · Near you', 'briefcase'],
     ['sch', 'matches-scholarship', n((k) => k === 'scholarship'), t('scholarship'), 'Central · Telangana · Andhra Pradesh · Private', 'shield'],
   ];
@@ -76,7 +77,7 @@ export function Home() {
       <section className="split">
         {tiles.map(([cls, route, count, label, sub, icon]) => (
           <button key={cls} className={'feature ' + cls} onClick={() => go(route)}>
-            <span className="feature-icon"><Icon name={icon as 'briefcase'} size={22} /></span>
+            <span className="feature-icon"><Icon name={icon as IconName} size={22} /></span>
             {count > 0 && <span className="feature-n">{count}</span>}
             <span className="feature-t">{label}</span>
             <span className="feature-s">{sub}</span>

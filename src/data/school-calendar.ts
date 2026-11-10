@@ -22,6 +22,14 @@ export interface CalendarEntry {
   state?: string;
   /** Words that identify this exam in a notice title, e.g. "CGL|Combined Graduate". */
   match?: string;
+  /** No fixed yearly cycle: notified only when there are vacancies. */
+  irregular?: boolean;
+  /** How to apply, step by step. */
+  steps?: string[];
+  /** Extra plain-language note (e.g. which posts, or a second window). */
+  note?: string;
+  /** What passing gets you (colleges, courses, jobs). */
+  gives?: string;
 }
 
 export const SCHOOL_CALENDAR: CalendarEntry[] = [
@@ -57,14 +65,18 @@ export const monthName = (m: number) => MONTHS[(m - 1 + 12) % 12];
 /** Is month m inside the window (which may wrap past December)? */
 export const inWindow = (m: number, from: number, to: number) => (from <= to ? m >= from && m <= to : m >= from || m <= to);
 
+/** Sort key: open first, then by months until forms open, entries with no fixed cycle last. */
+export const calendarOrder = (now: number) => (e: CalendarEntry) => (e.irregular ? 99 : monthsUntil(now, e.formsFrom, e.formsTo));
+
 /** Months from `now` until the window next opens (0 = open now). */
 export function monthsUntil(now: number, from: number, to: number) {
   if (inWindow(now, from, to)) return 0;
   return (from - now + 12) % 12;
 }
 
-/** "open" now, "soon" within 2 months, otherwise "later". */
-export function calendarStatus(e: Pick<CalendarEntry, 'formsFrom' | 'formsTo'>, now = new Date()): 'open' | 'soon' | 'later' {
+/** "open" now, "soon" within 2 months, otherwise "later"; "irregular" when there is no fixed cycle. */
+export function calendarStatus(e: Pick<CalendarEntry, 'formsFrom' | 'formsTo' | 'irregular'>, now = new Date()): 'open' | 'soon' | 'later' | 'irregular' {
+  if (e.irregular) return 'irregular';
   const n = monthsUntil(now.getMonth() + 1, e.formsFrom, e.formsTo);
   return n === 0 ? 'open' : n <= 2 ? 'soon' : 'later';
 }

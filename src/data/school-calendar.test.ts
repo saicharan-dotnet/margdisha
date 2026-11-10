@@ -47,3 +47,24 @@ describe('job calendar', () => {
     expect(latestNoticeFor(notices, cgl)?.url).toBe('b');
   });
 });
+
+import { EXAM_GUIDE } from './exam-guide';
+describe('exam guide and job calendar content', () => {
+  it('every exam has what it gives, steps and a valid window', () => {
+    for (const e of EXAM_GUIDE) {
+      expect(e.gives, e.id).toBeTruthy();
+      expect(e.steps?.length, e.id).toBeGreaterThan(0);
+      expect(e.formsFrom).toBeGreaterThanOrEqual(1); expect(e.formsTo).toBeLessThanOrEqual(12);
+      expect(e.url).toMatch(/^https:\/\//);
+    }
+  });
+  it('ids are unique across all calendars', () => {
+    const ids = [...EXAM_GUIDE, ...JOB_CALENDAR].map((e) => e.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+  it('every job has how-to-apply steps and state jobs are tagged', () => {
+    for (const e of JOB_CALENDAR) expect(e.steps?.length, e.id).toBeGreaterThan(0);
+    expect(JOB_CALENDAR.some((e) => e.state === 'Telangana')).toBe(true);
+    expect(JOB_CALENDAR.some((e) => e.state === 'Andhra Pradesh')).toBe(true);
+  });
+});

@@ -19,11 +19,12 @@ import { Schools } from './pages/Schools';
 import { Updates } from './pages/Updates';
 import { Search } from './pages/Search';
 import { About, Privacy, Terms } from './pages/Info';
+import { Exams } from './pages/Exams';
 
 /** [route, label, icon, shown in the mobile tab bar] */
 const NAV: [string, Key, IconName, boolean][] = [
-  ['home', 'navHome', 'home', true], ['explore', 'navExplore', 'compass', true], ['jobs-govt', 'navJobs', 'briefcase', true],
-  ['schools', 'navSchools', 'school', true], ['matches', 'navMatches', 'check', true], ['dashboard', 'navDashboard', 'user', false],
+  ['home', 'navHome', 'home', true], ['explore', 'navExplore', 'compass', true], ['exams', 'navExams', 'exam', true], ['jobs-govt', 'navJobs', 'briefcase', true],
+  ['schools', 'navSchools', 'school', true], ['matches', 'navMatches', 'check', false], ['dashboard', 'navDashboard', 'user', false],
 ];
 
 function page(route: string) {
@@ -44,6 +45,7 @@ function page(route: string) {
     case 'admin': return <Admin />;
     case 'schools': return <Schools />;
     case 'updates': return <Updates />;
+    case 'exams': return <Exams />;
     case 'about': return <About />;
     case 'privacy': return <Privacy />;
     case 'terms': return <Terms />;
@@ -60,6 +62,8 @@ const META: Record<string, [string, string]> = {
     'Courses and careers you can choose after Class 10, Intermediate (MPC, BiPC, MEC, CEC), diploma, B.Tech, B.Sc, B.Com, B.A. and more.'],
   'jobs-govt': ['Latest government jobs: SSC, Railways, UPSC, Banks, Police | MargDisha',
     'Government job notifications from SSC, RRB Railways, UPSC, IBPS, SBI, state PSCs, Army and India Post, with eligibility and last dates.'],
+  exams: ['Entrance exams after 10th, Inter and degree: JEE, EAPCET, NEET, POLYCET, GATE | MargDisha',
+    'How to apply for JEE Main, JEE Advanced, TG and AP EAPCET, NEET, POLYCET, RGUKT IIIT, ECET, GATE, ICET and more, what each gets you, and how to get into IITs, NITs and IIITs.'],
   'jobs-private': ['Private jobs and internships for freshers | MargDisha', 'Private jobs, work from home roles and internships for freshers in India.'],
   schools: ['School admissions: Navodaya, Sainik, KV, Gurukul | MargDisha',
     'When admission forms open for Kendriya Vidyalaya Class 1, Gurukul Class 5 (TGCET, AP), Navodaya Class 6 and 9, Sainik and Military Schools, EMRS and the NMMS scholarship.'],
