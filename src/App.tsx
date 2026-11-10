@@ -103,7 +103,7 @@ function useTheme(): [Theme, () => void] {
   });
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#0f1615' : '#ffffff');
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#253634' : '#ffffff');
   }, [theme]);
   const toggle = () => setTheme((t) => {
     const next = t === 'dark' ? 'light' : 'dark';

@@ -13,17 +13,17 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0f1615; --surface: #172120; --surface-2: #1f2c2a; --text: #e6eeec; --muted: #9db0ac; --line: #2a3a37;
-    --brand: #5fc7b5; --brand-ink: #062521; --brand-soft: #173a35; --marigold: #f2b84b; --marigold-soft: #3a2c10; --marigold-ink: #f6d38d;
-    --ok: #6fd39b; --ok-bg: #163322; --warn: #f0c060; --warn-bg: #3a2d12; --bad: #f19189; --bad-bg: #3b1d1b;
-    --govt: #5fc7b5; --pvt: #93b3f0; --sch: #f2b84b; --school: #c7a6f2; --shadow: none; color-scheme: dark;
+    --bg: #1c2a28; --surface: #253634; --surface-2: #2f4441; --text: #eef4f2; --muted: #b0c2be; --line: #3c534f;
+    --brand: #5fc7b5; --brand-ink: #062521; --brand-soft: #22504a; --marigold: #f2b84b; --marigold-soft: #4a3916; --marigold-ink: #f6d38d;
+    --ok: #6fd39b; --ok-bg: #1f4430; --warn: #f0c060; --warn-bg: #4a3a18; --bad: #f19189; --bad-bg: #4b2826;
+    --govt: #5fc7b5; --pvt: #93b3f0; --sch: #f2b84b; --school: #c7a6f2; --shadow: 0 1px 2px rgb(0 0 0 / .25), 0 4px 16px rgb(0 0 0 / .18); color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0f1615; --surface: #172120; --surface-2: #1f2c2a; --text: #e6eeec; --muted: #9db0ac; --line: #2a3a37;
-  --brand: #5fc7b5; --brand-ink: #062521; --brand-soft: #173a35; --marigold: #f2b84b; --marigold-soft: #3a2c10; --marigold-ink: #f6d38d;
-  --ok: #6fd39b; --ok-bg: #163322; --warn: #f0c060; --warn-bg: #3a2d12; --bad: #f19189; --bad-bg: #3b1d1b;
-  --govt: #5fc7b5; --pvt: #93b3f0; --sch: #f2b84b; --school: #c7a6f2; --shadow: none; color-scheme: dark;
+  --bg: #1c2a28; --surface: #253634; --surface-2: #2f4441; --text: #eef4f2; --muted: #b0c2be; --line: #3c534f;
+  --brand: #5fc7b5; --brand-ink: #062521; --brand-soft: #22504a; --marigold: #f2b84b; --marigold-soft: #4a3916; --marigold-ink: #f6d38d;
+  --ok: #6fd39b; --ok-bg: #1f4430; --warn: #f0c060; --warn-bg: #4a3a18; --bad: #f19189; --bad-bg: #4b2826;
+  --govt: #5fc7b5; --pvt: #93b3f0; --sch: #f2b84b; --school: #c7a6f2; --shadow: 0 1px 2px rgb(0 0 0 / .25), 0 4px 16px rgb(0 0 0 / .18); color-scheme: dark;
 }
 * { box-sizing: border-box; }
 html, body { background: var(--bg); }
