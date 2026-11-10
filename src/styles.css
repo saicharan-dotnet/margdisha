@@ -6,7 +6,7 @@
   --ok: #17703f; --ok-bg: #dff2e6; --warn: #8a5600; --warn-bg: #fcefd2; --bad: #a3322b; --bad-bg: #fbe4e1;
   --govt: #0e5a52; --pvt: #2f4f8f; --sch: #8a5600; --school: #6b3fa0;
   --shadow: 0 1px 2px rgb(20 33 31 / .06), 0 4px 16px rgb(20 33 31 / .06);
-  --display: "Bricolage Grotesque", "Noto Sans", system-ui, sans-serif;
+  --display: "Bricolage Grotesque", "Noto Sans", "Noto Sans Telugu", "Noto Sans Devanagari", system-ui, sans-serif;
   --body: "Noto Sans", "Noto Sans Telugu", "Noto Sans Devanagari", system-ui, -apple-system, "Segoe UI", sans-serif;
   --r: 14px;
   color-scheme: light;
