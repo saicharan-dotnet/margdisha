@@ -312,8 +312,7 @@ body {
   background-attachment: fixed;
 }
 .top { background: color-mix(in srgb, var(--surface) 82%, transparent); backdrop-filter: saturate(1.6) blur(12px); -webkit-backdrop-filter: saturate(1.6) blur(12px); }
-.top::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: linear-gradient(90deg, var(--sun), var(--sun-2) 30%, var(--brand) 70%, var(--sky)); opacity: .85; }
-.nav-desktop a.on { background: color-mix(in srgb, var(--brand) 14%, var(--surface)); box-shadow: inset 0 -2px 0 var(--brand); }
+.nav-desktop a.on { background: color-mix(in srgb, var(--brand) 14%, var(--surface)); }
 
 .btn:not(.ghost):not(.secondary) { background: var(--grad-brand); border-color: transparent; box-shadow: 0 4px 14px color-mix(in srgb, var(--brand) 30%, transparent); }
 .btn:not(.ghost):not(.secondary):hover { filter: brightness(1.08); transform: translateY(-1px); }
