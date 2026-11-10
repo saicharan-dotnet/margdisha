@@ -366,3 +366,14 @@ body {
 @media (prefers-reduced-motion: reduce) { .cal-pill.open::before { animation: none; } .level, .qcard, .cal-card { transition: none; } }
 @media (prefers-reduced-motion: no-preference) { .level, .qcard, .cal-card { transition: transform .15s, box-shadow .15s, border-color .15s; } }
 .tabbar { background: color-mix(in srgb, var(--surface) 88%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+
+/* Footer links and info pages */
+.foot-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 20px; margin-bottom: 8px; }
+.foot-links a { color: var(--text); font-weight: 600; text-decoration: none; }
+.foot-links a:hover { color: var(--brand); text-decoration: underline; }
+.foot p { margin: 4px 0; }
+.prose { max-width: 72ch; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 8px 24px 20px; box-shadow: var(--shadow); margin-top: 12px; }
+.prose h2 { font-size: 1.15rem; margin: 22px 0 6px; }
+.prose p, .prose li { color: var(--text); }
+.prose ul { padding-left: 20px; }
+.info-links { margin-top: 16px; color: var(--muted); }

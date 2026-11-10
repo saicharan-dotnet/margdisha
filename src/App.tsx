@@ -18,6 +18,7 @@ import { Jobs } from './pages/Jobs';
 import { Schools } from './pages/Schools';
 import { Updates } from './pages/Updates';
 import { Search } from './pages/Search';
+import { About, Privacy, Terms } from './pages/Info';
 
 /** [route, label, icon, shown in the mobile tab bar] */
 const NAV: [string, Key, IconName, boolean][] = [
@@ -43,6 +44,9 @@ function page(route: string) {
     case 'admin': return <Admin />;
     case 'schools': return <Schools />;
     case 'updates': return <Updates />;
+    case 'about': return <About />;
+    case 'privacy': return <Privacy />;
+    case 'terms': return <Terms />;
     default: return <Home />;
   }
 }
@@ -63,6 +67,9 @@ const META: Record<string, [string, string]> = {
   'matches-scholarship': ['Scholarships for students in India | MargDisha', 'Central, Telangana, Andhra Pradesh and private scholarships with eligibility and last dates.'],
   'matches-exam': ['Entrance exams after 10th and 12th | MargDisha', 'Entrance exams for engineering, medical, polytechnic, degree and government courses.'],
   updates: ['Latest updates from official websites | MargDisha', 'New notices collected automatically from official government websites every few hours.'],
+  about: ['About MargDisha', 'What MargDisha is, where its information comes from, and how to contact us.'],
+  privacy: ['Privacy policy | MargDisha', 'What information MargDisha collects, how cookies and ads work, and your choices.'],
+  terms: ['Terms of use | MargDisha', 'Terms for using MargDisha.'],
   search: ['Search | MargDisha', 'Search jobs, exams, schools and scholarships.'],
 };
 function useMeta(route: string) {
@@ -192,7 +199,11 @@ export function App() {
         </header>
         {isAdmin && hiddenCount > 0 && <div className="banner" role="note"><div className="banner-in">{t('adminPreview').replace('{n}', String(hiddenCount))}</div></div>}
         <main>{page(route)}</main>
-        <footer className="foot">{t('noGuarantee')}</footer>
+        <footer className="foot">
+          <nav className="foot-links"><a href={hrefFor('about')}>About</a><a href={hrefFor('privacy')}>Privacy policy</a><a href={hrefFor('terms')}>Terms of use</a></nav>
+          <p>{t('noGuarantee')}</p>
+          <p className="small">© {new Date().getFullYear()} MargDisha</p>
+        </footer>
         <nav className="tabbar" aria-label="Main">
           {NAV.filter((n) => n[3]).map(([r, k, icon]) => (
             <a key={r} href={hrefFor(r)} className={section(route) === section(r) ? 'on' : ''}>
