@@ -18,6 +18,9 @@ const CHILD: [string, string[]][] = [
   ['Class 10', ['Class 11']],
 ];
 
+/** Short chip labels so the school types fit on two lines on a phone. */
+const SHORT: Record<string, string> = { 'Military School': 'Military', 'Kendriya Vidyalaya': 'KV', 'State residential': 'Gurukul', 'School scholarship': 'Scholarship' };
+
 export function Schools() {
   const { t, profile, opps, notices } = useApp();
   const [type, setType] = useState('all');
@@ -54,7 +57,7 @@ export function Schools() {
         <div className="chips scroll">
           <button className={'chip ' + (type === 'all' ? 'on' : '')} onClick={() => setType('all')}>{t('all')}</button>
           {SCHOOL_SECTORS.filter((s) => count(s) > 0).map((s) => (
-            <button key={s} className={'chip ' + (s === type ? 'on' : '')} onClick={() => setType(s)}>{s}</button>
+            <button key={s} className={'chip ' + (s === type ? 'on' : '')} onClick={() => setType(s)}>{SHORT[s] ?? s}</button>
           ))}
         </div>
       </div>
