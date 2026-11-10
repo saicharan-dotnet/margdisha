@@ -401,3 +401,4 @@ body {
 .theme-btn:hover { border-color: var(--brand); color: var(--brand); }
 @media (max-width: 420px) { .top-in { gap: 8px; } .top-tools { gap: 4px; } .top-tools .admin-link { padding: 8px 6px; } .theme-btn { width: 34px; height: 34px; border-radius: 10px; } .brand { gap: 8px; font-size: 1.08rem; } .top-tools select { padding: 6px 4px; } }
 @media (max-width: 350px) { .brand { font-size: 0; gap: 0; } }
+.priv-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }

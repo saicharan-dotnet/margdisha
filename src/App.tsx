@@ -64,7 +64,7 @@ const META: Record<string, [string, string]> = {
     'Government job notifications from SSC, RRB Railways, UPSC, IBPS, SBI, state PSCs, Army and India Post, with eligibility and last dates.'],
   exams: ['Entrance exams after 10th, Inter and degree: JEE, EAPCET, NEET, POLYCET, GATE | MargDisha',
     'How to apply for JEE Main, JEE Advanced, TG and AP EAPCET, NEET, POLYCET, RGUKT IIIT, ECET, GATE, ICET and more, what each gets you, and how to get into IITs, NITs and IIITs.'],
-  'jobs-private': ['Private jobs and internships for freshers | MargDisha', 'Private jobs, work from home roles and internships for freshers in India.'],
+  'jobs-private': ['Private jobs by qualification and sector | MargDisha', 'Private jobs, apprenticeships and internships for 10th, ITI, 12th, diploma, degree and B.Tech: typical jobs, selection and how to apply.'],
   schools: ['School admissions: Navodaya, Sainik, KV, Gurukul | MargDisha',
     'When admission forms open for Kendriya Vidyalaya Class 1, Gurukul Class 5 (TGCET, AP), Navodaya Class 6 and 9, Sainik and Military Schools, EMRS and the NMMS scholarship.'],
   matches: ['Scholarships, entrance exams and opportunities for you | MargDisha', 'Scholarships, entrance exams, skill courses and study abroad options that match your qualification.'],

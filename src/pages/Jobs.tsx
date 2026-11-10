@@ -9,10 +9,14 @@ import { CalendarCard, latestNoticeFor } from '../components/CalendarCard';
 import { JOB_CALENDAR } from '../data/job-calendar';
 import { calendarOrder } from '../data/school-calendar';
 import type { Level } from '../data/types';
+import { PRIVATE_JOBS, PRIV_SECTORS, type PrivQual } from '../data/private-jobs';
+import { PrivateCard } from '../components/PrivateCard';
 
 /** Minimum qualification of a calendar entry, and what a profile level counts as. */
 const QUAL_RANK: Record<string, number> = { '10th pass': 1, '12th pass': 2, Graduate: 3 };
 const LEVEL_RANK: Partial<Record<Level, number>> = { class10: 1, diploma: 1, inter: 2, ug: 3, pg: 3 };
+/** Private tab: which qualification chip a profile level starts on. */
+const PRIV_QUAL_FOR: Partial<Record<Level, PrivQual>> = { class10: '10th', inter: '12th', diploma: 'Diploma', ug: 'Degree', pg: 'Degree' };
 
 export function Jobs({ tab }: { tab: 'govt' | 'private' }) {
   const { t, profile, opps, go, notices } = useApp();
@@ -22,6 +26,11 @@ export function Jobs({ tab }: { tab: 'govt' | 'private' }) {
   const [mode, setMode] = useState<WorkMode | 'all'>('all');
   const [qual, setQual] = useState<number>(() => (profile.level && LEVEL_RANK[profile.level]) || 0);
   const [region, setRegion] = useState<string>(() => (profile.state === 'Telangana' || profile.state === 'Andhra Pradesh' ? profile.state : 'all'));
+  const [pq, setPq] = useState<PrivQual | 'all'>(() => (profile.level && PRIV_QUAL_FOR[profile.level]) || 'all');
+  const [ps, setPs] = useState<string>('all');
+  const privByQual = PRIVATE_JOBS.filter((r) => pq === 'all' || r.quals.includes(pq));
+  const privShown = privByQual.filter((r) => ps === 'all' || r.sector === ps);
+  const PQ: [PrivQual | 'all', string][] = [['all', t('all')], ['10th', t('qual10')], ['ITI', t('qualITI')], ['12th', t('qual12')], ['Diploma', t('qualDip')], ['Degree', t('qualDeg')], ['BTech', t('qualBtech')]];
   const order = calendarOrder(new Date().getMonth() + 1);
   const cal = JOB_CALENDAR
     .filter((e) => (!qual || QUAL_RANK[e.joins] <= qual) && (region === 'all' || (region === 'All India' ? !e.state : e.state === region || !e.state)))
@@ -72,8 +81,32 @@ export function Jobs({ tab }: { tab: 'govt' | 'private' }) {
         </div>
       </>}
 
-      {(tab === 'private' || inTab.length > 0) && <>
-      {tab === 'govt' && <h2 className="section-h">{t('verifiedJobs')}</h2>}
+      {tab === 'private' && <>
+        <h2 className="section-h"><Icon name="briefcase" size={20} /> {t('privTitle')}</h2>
+        <p className="small muted">{t('privNote')}</p>
+        <div className="filter-block">
+          <span className="filter-label">{t('myQual')}</span>
+          <div className="chips scroll">
+            {PQ.map(([k, l]) => <button key={k} className={'chip ' + (pq === k ? 'on' : '')} onClick={() => { setPq(k); setPs('all'); }}>{l}</button>)}
+          </div>
+        </div>
+        <div className="filter-block">
+          <span className="filter-label">{t('sectorLbl')}</span>
+          <div className="chips scroll">
+            <button className={'chip ' + (ps === 'all' ? 'on' : '')} onClick={() => setPs('all')}>{t('allSectors')} <span className="n">{privByQual.length}</span></button>
+            {PRIV_SECTORS.filter((s) => privByQual.some((r) => r.sector === s)).map((s) => (
+              <button key={s} className={'chip ' + (ps === s ? 'on' : '')} onClick={() => setPs(s)}>{s} <span className="n">{privByQual.filter((r) => r.sector === s).length}</span></button>
+            ))}
+          </div>
+        </div>
+        <div className="cal-grid">
+          {privShown.map((r) => <PrivateCard key={r.id} r={r} />)}
+          {!privShown.length && <p className="empty">{t('noResults')}</p>}
+        </div>
+      </>}
+
+      {inTab.length > 0 && <>
+      <h2 className="section-h">{tab === 'govt' ? t('verifiedJobs') : t('privListings')}</h2>
         <div className="toolbar">
           <label className="search">
             <Icon name="search" size={18} />
