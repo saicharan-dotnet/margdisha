@@ -10,12 +10,10 @@ import type { Level } from '../data/types';
 import hero from '../assets/hero.jpg';
 import heroSmall from '../assets/hero-800.jpg';
 
-const PICK: Level[] = ['class5', 'class8', 'class10', 'inter', 'diploma', 'ug', 'pg'];
+const PICK: Level[] = ['class10', 'inter', 'diploma', 'ug', 'pg'];
 const PICK_HINT: Partial<Record<Level, string>> = {
-  class5: 'Navodaya · Sainik · Gurukul', class8: 'Class 9 entry · NMMS',
   class10: 'SSC / 10th', inter: 'MPC · BiPC · MEC · CEC', diploma: 'Polytechnic / ITI', ug: 'B.Tech · B.Sc · B.Com · B.A.', pg: 'M.Tech · M.Sc · MBA · M.A.',
 };
-const SCHOOL_LEVELS: Level[] = ['class5', 'class8'];
 
 const QUESTIONS: [Key, string, string][] = [
   ['q1', 'explore', 'Courses'], ['q2', 'explore', 'Careers'], ['q3', 'matches-scholarship', 'Scholarships'],
@@ -55,13 +53,11 @@ export function Home() {
         <h2 className="pick-h">{t('pickLevel')}</h2>
         <div className="level-grid">
           {PICK.map((l) => {
-            const school = SCHOOL_LEVELS.includes(l);
             return (
-              <button key={l} className={'level ' + (school ? 'is-school' : '')} onClick={() => {
-                setProfile({ ...profile, level: l, levelStatus: school ? 'pursuing' : profile.levelStatus ?? 'completed' });
-                go(school ? 'schools' : 'explore');
+              <button key={l} className="level" onClick={() => {
+                setProfile({ ...profile, level: l, levelStatus: profile.levelStatus ?? 'completed' });
+                go('explore');
               }}>
-                {school && <span className="level-tag">{t('forSchool')}</span>}
                 <span className="level-name">{LEVEL_LABEL[l]}</span>
                 <span className="level-hint">{PICK_HINT[l]}</span>
                 <Icon name="arrow" size={18} />
