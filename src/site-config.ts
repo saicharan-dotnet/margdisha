@@ -5,6 +5,6 @@
 export const SITE = {
   name: 'MargDisha',
   url: 'https://margdisha.com',
-  contactEmail: '',
+  contactEmail: 'contact@margdisha.com',
   updated: '10 November 2026',
 };
