@@ -49,7 +49,8 @@ flowchart TD
 |---|---|---|
 | Pages | `src/pages/` | Home, Exams, Jobs, Schools, Explore (What next?), Matches, Search, Updates, Admin, About, Privacy, Terms |
 | Exam guide | `src/data/exam-guide.ts` | POLYCET, RGUKT IIIT, JEE, JoSAA, EAPCET, NEET, CUET, ECET, GATE, ICET and more |
-| Job calendar | `src/data/job-calendar.ts` | UPSC, SSC, Railways, banks, postal, defence, TG/AP Groups, police, teachers, power, steel |
+| Job calendar | `src/data/job-calendar.ts` | UPSC, SSC, Railways, banks, postal, defence, TG/AP Groups, police, teachers, power, steel, BHEL and PSUs, DRDO, ISRO, CSIR, BARC, doctors and nurses, TTD, courts, RTC |
+| Private jobs | `src/data/private-jobs.ts` | Ways in by qualification and sector, with how to apply |
 | School calendar | `src/data/school-calendar.ts` | KV Class 1, Gurukul Class 5, Navodaya, Sainik, RMS, EMRS, NMMS |
 | Eligibility engine | `src/engine/match.ts` | Pure functions, unit tested |
 | Languages | `src/i18n/strings.ts` | English, Telugu, Hindi |

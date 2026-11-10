@@ -21,7 +21,8 @@ const ALIASES: Record<string, string> = {
   'eamcet': 'eapcet', 'emcet': 'eapcet', 'zenco': 'genco', 'genco': 'genco', 'transco': 'transco', 'postal': 'post', 'iiit': 'iiit', 'iit': 'iit',
   'groups': 'group', 'appsc': 'appsc', 'tspsc': 'tgpsc', 'tgpsc': 'tgpsc', 'polycet': 'polycet', 'polytechnic': 'polycet', 'ias': 'civil services',
   'pcest': 'polycet', 'vizag': 'vizag', 'steel': 'steel', 'teacher': 'teach', 'dsc': 'dsc', 'tet': 'tet', 'mba': 'mba', 'mtech': 'm.tech', 'btech': 'b.tech',
-  'private': 'private', 'it': 'it', 'software': 'software', 'bpo': 'bpo', 'apprentice': 'apprentice', 'internship': 'intern', 'delivery': 'delivery', 'pharma': 'pharma', 'nurse': 'nurs', 'iti': 'iti',
+  'private': 'private', 'it': 'it', 'software': 'software', 'bpo': 'bpo', 'apprentice': 'apprentice', 'internship': 'intern', 'delivery': 'delivery', 'pharma': 'pharma', 'nurse': 'nurs', 'iti': 'iti', 'doctor': 'mbbs', 'doctors': 'mbbs', 'nursing': 'nurs', 'ttd': 'ttd', 'tirumala': 'tirumala', 'bhel': 'bhel', 'csir': 'csir', 'drdo': 'drdo', 'isro': 'isro', 'hospital': 'hospital', 'engineer': 'engineer',
+  'డాక్టర్': 'mbbs', 'डॉक्टर': 'mbbs', 'నర్సు': 'nurs', 'नर्स': 'nurs', 'ఇంజినీర్': 'engineer', 'इंजीनियर': 'engineer',
   'ప్రైవేట్': 'private', 'प्राइवेट': 'private',
 };
 
@@ -34,7 +35,7 @@ export function Search({ initial }: { initial: string }) {
     .filter((m) => hit([m.opp.title, m.opp.provider, m.opp.summary, m.opp.sector, m.opp.location, m.opp.tags.join(' '), m.opp.kind].join(' '))),
   // eslint-disable-next-line react-hooks/exhaustive-deps
   [profile, opps, q]);
-  const guides = GUIDES.filter((e) => hit([e.school, e.sector, e.joins, e.who, e.gives, e.note, e.state, e.selection].join(' '))).slice(0, 12);
+  const guides = GUIDES.filter((e) => hit([e.school, e.sector, e.joins, e.who, e.gives, e.note, e.state, e.selection, e.url, e.match].join(' '))).slice(0, 12);
   const privs = PRIVATE_JOBS.filter((r) => hit(['private', r.title, r.sector, r.roles, r.who, r.quals.join(' '), r.state].join(' '))).slice(0, 8);
   const found = notices.filter((n) => n.status !== 'ignored' && hit(`${n.title} ${n.source_name} ${n.sector ?? ''}`)).slice(0, 20);
 

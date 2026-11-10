@@ -32,9 +32,13 @@ export function Jobs({ tab }: { tab: 'govt' | 'private' }) {
   const privShown = privByQual.filter((r) => ps === 'all' || r.sector === ps);
   const PQ: [PrivQual | 'all', string][] = [['all', t('all')], ['10th', t('qual10')], ['ITI', t('qualITI')], ['12th', t('qual12')], ['Diploma', t('qualDip')], ['Degree', t('qualDeg')], ['BTech', t('qualBtech')]];
   const order = calendarOrder(new Date().getMonth() + 1);
-  const cal = JOB_CALENDAR
-    .filter((e) => (!qual || QUAL_RANK[e.joins] <= qual) && (region === 'all' || (region === 'All India' ? !e.state : e.state === region || !e.state)))
-    .sort((a, b) => order(a) - order(b));
+  const [field, setField] = useState<'all' | 'engineer' | 'medical'>('all');
+  const [gs, setGs] = useState<string>('all');
+  const calBase = JOB_CALENDAR
+    .filter((e) => (!qual || QUAL_RANK[e.joins] <= qual) && (region === 'all' || (region === 'All India' ? !e.state : e.state === region || !e.state))
+      && (field === 'all' || e.fields?.includes(field)));
+  const govSectors = [...new Set(JOB_CALENDAR.map((e) => e.sector))].filter((s) => calBase.some((e) => e.sector === s));
+  const cal = calBase.filter((e) => gs === 'all' || e.sector === gs).sort((a, b) => order(a) - order(b));
   const REGIONS: [string, string][] = [['all', t('all')], ['All India', t('allIndia')], ['Telangana', 'Telangana'], ['Andhra Pradesh', 'Andhra Pradesh']];
 
   const all = useMemo(() => matchAll(profile, opps, { includeUnverified: true }), [profile, opps]);
@@ -72,6 +76,23 @@ export function Jobs({ tab }: { tab: 'govt' | 'private' }) {
           <div className="chips scroll">
             {([[0, t('all')], [1, t('qual10')], [2, t('qual12')], [3, t('qualDeg')]] as [number, string][]).map(([r, l]) => (
               <button key={r} className={'chip ' + (qual === r ? 'on' : '')} onClick={() => setQual(r)}>{l}</button>
+            ))}
+          </div>
+        </div>
+        <div className="filter-block">
+          <span className="filter-label">{t('fieldLbl')}</span>
+          <div className="chips scroll">
+            {([['all', t('all')], ['engineer', t('fieldEng')], ['medical', t('fieldMed')]] as const).map(([k, l]) => (
+              <button key={k} className={'chip ' + (field === k ? 'on' : '')} onClick={() => { setField(k); setGs('all'); }}>{l}</button>
+            ))}
+          </div>
+        </div>
+        <div className="filter-block">
+          <span className="filter-label">{t('sectorLbl')}</span>
+          <div className="chips scroll">
+            <button className={'chip ' + (gs === 'all' ? 'on' : '')} onClick={() => setGs('all')}>{t('allSectors')} <span className="n">{calBase.length}</span></button>
+            {govSectors.map((s) => (
+              <button key={s} className={'chip ' + (gs === s ? 'on' : '')} onClick={() => setGs(s)}>{s} <span className="n">{calBase.filter((e) => e.sector === s).length}</span></button>
             ))}
           </div>
         </div>

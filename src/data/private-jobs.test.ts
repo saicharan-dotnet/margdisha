@@ -15,3 +15,12 @@ describe('private jobs guide', () => {
     for (const q of PRIV_QUALS) expect(PRIVATE_JOBS.filter((r) => r.quals.includes(q)).length).toBeGreaterThanOrEqual(5);
   });
 });
+
+import { JOB_CALENDAR } from './job-calendar';
+describe('government jobs by field', () => {
+  it('has routes for engineers and for doctors and nurses', () => {
+    expect(JOB_CALENDAR.filter((e) => e.fields?.includes('engineer')).length).toBeGreaterThanOrEqual(15);
+    expect(JOB_CALENDAR.filter((e) => e.fields?.includes('medical')).length).toBeGreaterThanOrEqual(7);
+    for (const e of JOB_CALENDAR) expect(e.steps?.length ?? 0).toBeGreaterThan(0);
+  });
+});

@@ -20,6 +20,8 @@ export interface CalendarEntry {
   url: string;
   /** Limited to one state. */
   state?: string;
+  /** Professional fields this suits, for the jobs "Field" filter. */
+  fields?: ('engineer' | 'medical')[];
   /** Words that identify this exam in a notice title, e.g. "CGL|Combined Graduate". */
   match?: string;
   /** No fixed yearly cycle: notified only when there are vacancies. */
