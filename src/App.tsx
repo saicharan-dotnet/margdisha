@@ -5,7 +5,7 @@ import { SEED_OPPORTUNITIES } from './data/seed';
 import { checkIsAdmin, deleteOpportunity, fetchNotices, fetchOpportunities, setNoticeStatus as setNoticeStatusRemote, type Notice, loadUserData, saveOpportunity, saveProfileRemote, setSavedRemote } from './data/remote';
 import { supabase } from './lib/supabase';
 import { LANG_NAMES, type Key, type Lang } from './i18n/strings';
-import { usePersisted, useHashRoute } from './store';
+import { usePersisted, useHashRoute, hrefFor } from './store';
 import { Icon, type IconName } from './components/Icon';
 import { Logo } from './components/Logo';
 import { Home } from './pages/Home';
@@ -47,10 +47,43 @@ function page(route: string) {
   }
 }
 const section = (r: string) => r.split('-')[0];
+
+/** Page title and Google description for each page. */
+const META: Record<string, [string, string]> = {
+  home: ['MargDisha: courses, jobs, scholarships and school admissions in India',
+    'Find what to study after 10th, 12th or a degree, government and private jobs, scholarships, entrance exams and school admissions such as Navodaya, Sainik, Kendriya Vidyalaya and Gurukul. Free, in English, Telugu and Hindi.'],
+  explore: ['What to study next after 10th, 12th, diploma or degree | MargDisha',
+    'Courses and careers you can choose after Class 10, Intermediate (MPC, BiPC, MEC, CEC), diploma, B.Tech, B.Sc, B.Com, B.A. and more.'],
+  'jobs-govt': ['Latest government jobs: SSC, Railways, UPSC, Banks, Police | MargDisha',
+    'Government job notifications from SSC, RRB Railways, UPSC, IBPS, SBI, state PSCs, Army and India Post, with eligibility and last dates.'],
+  'jobs-private': ['Private jobs and internships for freshers | MargDisha', 'Private jobs, work from home roles and internships for freshers in India.'],
+  schools: ['School admissions: Navodaya, Sainik, KV, Gurukul | MargDisha',
+    'When admission forms open for Kendriya Vidyalaya Class 1, Gurukul Class 5 (TGCET, AP), Navodaya Class 6 and 9, Sainik and Military Schools, EMRS and the NMMS scholarship.'],
+  matches: ['Scholarships, entrance exams and opportunities for you | MargDisha', 'Scholarships, entrance exams, skill courses and study abroad options that match your qualification.'],
+  'matches-scholarship': ['Scholarships for students in India | MargDisha', 'Central, Telangana, Andhra Pradesh and private scholarships with eligibility and last dates.'],
+  'matches-exam': ['Entrance exams after 10th and 12th | MargDisha', 'Entrance exams for engineering, medical, polytechnic, degree and government courses.'],
+  updates: ['Latest updates from official websites | MargDisha', 'New notices collected automatically from official government websites every few hours.'],
+  search: ['Search | MargDisha', 'Search jobs, exams, schools and scholarships.'],
+};
+function useMeta(route: string) {
+  useEffect(() => {
+    const key = route.split('?')[0];
+    const [title, desc] = META[key] ?? META[section(key)] ?? META.home;
+    document.title = title;
+    document.querySelector('meta[name="description"]')?.setAttribute('content', desc);
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', title);
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', desc);
+    const canon = document.querySelector('link[rel="canonical"]');
+    if (canon) canon.setAttribute('href', 'https://margdisha.com' + (META[key] ? (key === 'home' ? '/' : '/' + key) : '/'));
+    // Personal pages (profile, admin, dashboard) and search results stay out of Google.
+    document.querySelector('meta[name="robots"]')?.setAttribute('content', META[key] && key !== 'search' ? 'index,follow' : 'noindex,follow');
+  }, [route]);
+}
 const upsert = (list: Opportunity[], o: Opportunity) => (list.some((x) => x.id === o.id) ? list.map((x) => (x.id === o.id ? o : x)) : [o, ...list]);
 
 export function App() {
   const [route, go] = useHashRoute();
+  useMeta(route);
   const [lang, setLang] = usePersisted<Lang>('lang', 'en');
   const [profile, setProfileLocal] = usePersisted<P>('profile', { skills: [], interests: [] });
   const [localOpps, setLocalOpps] = usePersisted<Opportunity[]>('opps-v3', SEED_OPPORTUNITIES);
@@ -127,7 +160,7 @@ export function App() {
     },
     signIn: async (email) => {
       if (!supabase) return 'Sign-in is not available right now.';
-      const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: window.location.origin + window.location.pathname } });
+      const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: window.location.origin + (window.location.protocol === 'file:' ? window.location.pathname : '/') } });
       return error ? error.message : null;
     },
     signOut: async () => { await supabase?.auth.signOut(); },
@@ -144,13 +177,13 @@ export function App() {
       <div className="shell" lang={lang}>
         <header className="top">
           <div className="top-in">
-            <a className="brand" href="#home"><Logo />{t('appName')}</a>
+            <a className="brand" href={hrefFor('home')}><Logo />{t('appName')}</a>
             <nav className="nav-desktop" aria-label="Main">
-              {NAV.map(([r, k]) => <a key={r} href={'#' + r} className={section(route) === section(r) ? 'on' : ''}>{t(k)}</a>)}
+              {NAV.map(([r, k]) => <a key={r} href={hrefFor(r)} className={section(route) === section(r) ? 'on' : ''}>{t(k)}</a>)}
             </nav>
             <div className="top-tools">
-              {isAdmin && <a href="#admin" className={'admin-link desk-only ' + (route === 'admin' ? 'on' : '')}>{t('navAdmin')}</a>}
-              <a href="#profile" className={'admin-link ' + (route === 'profile' ? 'on' : '')}>{user ? t('navProfile') : t('signIn')}</a>
+              {isAdmin && <a href={hrefFor('admin')} className={'admin-link desk-only ' + (route === 'admin' ? 'on' : '')}>{t('navAdmin')}</a>}
+              <a href={hrefFor('profile')} className={'admin-link ' + (route === 'profile' ? 'on' : '')}>{user ? t('navProfile') : t('signIn')}</a>
               <select id="lang" aria-label="Language" value={lang} onChange={(e) => setLang(e.target.value as Lang)}>
                 {(Object.keys(LANG_NAMES) as Lang[]).map((l) => <option key={l} value={l}>{LANG_NAMES[l]}</option>)}
               </select>
@@ -162,7 +195,7 @@ export function App() {
         <footer className="foot">{t('noGuarantee')}</footer>
         <nav className="tabbar" aria-label="Main">
           {NAV.filter((n) => n[3]).map(([r, k, icon]) => (
-            <a key={r} href={'#' + r} className={section(route) === section(r) ? 'on' : ''}>
+            <a key={r} href={hrefFor(r)} className={section(route) === section(r) ? 'on' : ''}>
               <Icon name={icon} size={22} /><span>{t(k)}</span>
             </a>
           ))}

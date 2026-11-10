@@ -5,7 +5,8 @@ import { matchAll } from '../engine/match';
 import { OppCard } from '../components/OppCard';
 import { NoticeFeed } from '../components/NoticeFeed';
 import { Icon } from '../components/Icon';
-import { SCHOOL_CALENDAR, calendarStatus, monthName, monthsUntil, type CalendarEntry } from '../data/school-calendar';
+import { SCHOOL_CALENDAR, monthsUntil } from '../data/school-calendar';
+import { CalendarCard, latestNoticeFor } from '../components/CalendarCard';
 
 /** Which entry classes to show for "my child is in Class N". */
 const CHILD: [string, string[]][] = [
@@ -33,7 +34,6 @@ export function Schools() {
     .filter((e) => (type === 'all' || e.sector === type) && matchesChild(e.joins) && (!e.state || !profile.state || profile.state === e.state))
     .sort((a, b) => monthsUntil(now, a.formsFrom, a.formsTo) - monthsUntil(now, b.formsFrom, b.formsTo));
   const count = (s: string) => SCHOOL_CALENDAR.filter((e) => e.sector === s).length + items.filter((m) => m.opp.sector === s).length;
-  const latestFor = (sector: string) => notices.find((n) => n.status !== 'ignored' && n.sector === sector && n.area !== 'job');
 
   return (
     <section className="page">
@@ -62,7 +62,7 @@ export function Schools() {
       <h2 className="section-h"><Icon name="clock" size={20} /> {t('calTitle')}</h2>
       <p className="small muted">{t('calNote')}</p>
       <div className="cal-grid">
-        {cal.map((e) => <CalendarCard key={e.id} e={e} latest={latestFor(e.sector)} />)}
+        {cal.map((e) => <CalendarCard key={e.id} e={e} latest={latestNoticeFor(notices, e, (a) => a !== 'job')} />)}
       </div>
       {!cal.length && <p className="empty">{t('noResults')}</p>}
 
@@ -76,22 +76,3 @@ export function Schools() {
   );
 }
 
-function CalendarCard({ e, latest }: { e: CalendarEntry; latest?: { title: string; url: string } }) {
-  const { t } = useApp();
-  const st = calendarStatus(e);
-  const span = e.formsFrom === e.formsTo ? monthName(e.formsFrom) : `${monthName(e.formsFrom)} – ${monthName(e.formsTo)}`;
-  return (
-    <article className={'cal-card cal-' + st}>
-      <span className={'cal-pill ' + st}>{st === 'open' ? t('openNow') : st === 'soon' ? t('opensSoon') : `${t('usuallyOpens')} ${monthName(e.formsFrom)}`}</span>
-      <div className="cal-joins">{e.joins}</div>
-      <h3>{e.school}</h3>
-      <dl className="facts">
-        <div><dt>{t('formsUsually')}</dt><dd>{span}</dd></div>
-        <div><dt>{t('selectionLbl')}</dt><dd>{e.selection}</dd></div>
-      </dl>
-      <p className="small"><b>{t('whoCanApply')}:</b> {e.who}</p>
-      {latest && <a className="cal-latest" href={latest.url} target="_blank" rel="noreferrer"><span className="small muted">{t('latestNotice')}</span>{latest.title}</a>}
-      <a className="btn ghost sm cal-link" href={e.url} target="_blank" rel="noreferrer">{t('officialSite')} ↗</a>
-    </article>
-  );
-}

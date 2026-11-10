@@ -13,7 +13,7 @@ export function Updates() {
   const n = (a: Notice['area'] | 'all') => notices.filter((x) => x.status !== 'ignored' && (a === 'all' || x.area === a)).length;
   return (
     <section className="page">
-      <div className="page-head">
+      <div className="page-head updates-head">
         <h1><span className="live-dot" aria-hidden /> {t('latestTitle')}</h1>
       </div>
       <div className="chips scroll">

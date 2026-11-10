@@ -20,6 +20,8 @@ export interface CalendarEntry {
   url: string;
   /** Limited to one state. */
   state?: string;
+  /** Words that identify this exam in a notice title, e.g. "CGL|Combined Graduate". */
+  match?: string;
 }
 
 export const SCHOOL_CALENDAR: CalendarEntry[] = [

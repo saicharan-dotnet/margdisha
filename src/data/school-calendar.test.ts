@@ -28,3 +28,22 @@ describe('school calendar', () => {
     expect(monthName(1)).toBe('Jan');
   });
 });
+
+import { JOB_CALENDAR } from './job-calendar';
+import { latestNoticeFor } from '../components/CalendarCard';
+describe('job calendar', () => {
+  it('has valid entries with a known qualification', () => {
+    for (const e of JOB_CALENDAR) {
+      expect(['10th pass', '12th pass', 'Graduate']).toContain(e.joins);
+      expect(e.formsFrom).toBeGreaterThanOrEqual(1); expect(e.formsTo).toBeLessThanOrEqual(12);
+    }
+  });
+  it('matches the latest notice by exam name within the sector', () => {
+    const cgl = JOB_CALENDAR.find((e) => e.id === 'ssc-cgl')!;
+    const notices = [
+      { title: 'Notice of CHSL 2027', url: 'a', sector: 'SSC' },
+      { title: 'Combined Graduate Level Examination 2027', url: 'b', sector: 'SSC' },
+    ];
+    expect(latestNoticeFor(notices, cgl)?.url).toBe('b');
+  });
+});
