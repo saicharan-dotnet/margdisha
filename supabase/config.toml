@@ -1,0 +1,6 @@
+# Minimal Supabase CLI config, used only to deploy the Edge Function.
+project_id = "margdisha"
+
+[functions.collect-notices]
+# The function checks the caller's secret key itself (new sb_secret_ keys are not JWTs).
+verify_jwt = false
