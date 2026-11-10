@@ -4,6 +4,7 @@ import { GOVT_SECTORS, PRIVATE_SECTORS, type WorkMode } from '../data/types';
 import { matchAll } from '../engine/match';
 import { OppCard } from '../components/OppCard';
 import { Icon } from '../components/Icon';
+import { NoticeFeed } from '../components/NoticeFeed';
 
 export function Jobs({ tab }: { tab: 'govt' | 'private' }) {
   const { t, profile, opps, go } = useApp();
@@ -58,7 +59,8 @@ export function Jobs({ tab }: { tab: 'govt' | 'private' }) {
       )}
       <p className="result-line">{shown.length} {t('resultsCount')}{!profile.level && <> · <button className="link" onClick={() => go('profile')}>{t('completeProfile')}</button></>}</p>
       <div className="grid">{shown.map(({ opp, result }) => <OppCard key={opp.id} opp={opp} result={result} />)}</div>
-      {!shown.length && <p className="empty">Nothing matches these filters.</p>}
+      {!shown.length && <p className="empty">{inTab.length ? t('noResults') : t('verifyingSoon')}</p>}
+      {tab === 'govt' && <NoticeFeed areas={['job', 'exam']} limit={inTab.length ? 6 : 12} more={() => go('updates')} />}
     </section>
   );
 }

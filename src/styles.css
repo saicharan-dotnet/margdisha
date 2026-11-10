@@ -281,3 +281,4 @@ textarea { font: inherit; color: var(--text); background: var(--surface); border
 .inbox-main { display: grid; gap: 4px; min-width: 0; }
 .inbox-main a { font-weight: 600; overflow-wrap: anywhere; }
 @media (max-width: 640px) { .inbox li { flex-direction: column; align-items: stretch; } }
+.home-two.single { grid-template-columns: 1fr; }

@@ -3,15 +3,15 @@ import { useApp } from '../app-context';
 import type { MatchStatus, OpportunityKind } from '../data/types';
 import { matchAll } from '../engine/match';
 import { OppCard } from '../components/OppCard';
+import { NoticeFeed } from '../components/NoticeFeed';
 
 const KINDS: (OpportunityKind | 'all')[] = ['all', 'scholarship', 'govt-job', 'private-job', 'internship', 'exam', 'school-admission', 'skill', 'abroad'];
 const GROUPS: MatchStatus[] = ['likely', 'verify', 'not'];
 
 export function Matches({ initialKind = 'all' }: { initialKind?: OpportunityKind | 'all' }) {
-  const { t, profile, opps } = useApp();
+  const { t, profile, opps, go } = useApp();
   const [kind, setKind] = useState<OpportunityKind | 'all'>(initialKind);
-  const [demo, setDemo] = useState(true);
-  const matched = useMemo(() => matchAll(profile, opps, { includeUnverified: demo }), [profile, opps, demo]);
+  const matched = useMemo(() => matchAll(profile, opps, { includeUnverified: true }), [profile, opps]);
   const shown = matched.filter((m) => kind === 'all' || m.opp.kind === kind);
   return (
     <section className="page">
@@ -20,11 +20,7 @@ export function Matches({ initialKind = 'all' }: { initialKind?: OpportunityKind
       <div className="chips">
         {KINDS.map((k) => <button key={k} className={'chip ' + (k === kind ? 'on' : '')} onClick={() => setKind(k)}>{t(k)}</button>)}
       </div>
-      <label className="inline toggle">
-        <input type="checkbox" checked={demo} onChange={(e) => setDemo(e.target.checked)} />
-        Show unverified sample data (demo only; the live site shows verified items only)
-      </label>
-      {shown.length === 0 && <p className="empty">Nothing to show. {demo ? '' : 'No items have been verified yet. Verify some in Admin, or turn on sample data.'}</p>}
+      {shown.length === 0 && <><p className="empty">{t('verifyingSoon')}</p><NoticeFeed limit={8} more={() => go('updates')} /></>}
       {GROUPS.map((g) => {
         const items = shown.filter((m) => m.result.status === g);
         if (!items.length) return null;

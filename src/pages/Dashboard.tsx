@@ -56,7 +56,6 @@ export function Dashboard() {
           </ul>
         </div>
       </div>
-      <p className="small muted">Coming in later phases: notifications and reminders, career roadmap and learning progress, account sign-in.</p>
     </section>
   );
 }

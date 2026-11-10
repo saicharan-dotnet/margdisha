@@ -53,7 +53,7 @@ export function Schools() {
 
       <p className="result-line">{shown.length} {t('resultsCount')}</p>
       <div className="grid">{shown.map(({ opp, result }) => <OppCard key={opp.id} opp={opp} result={result} />)}</div>
-      {!shown.length && <p className="empty">{t('noResults')}</p>}
+      {!shown.length && <p className="empty">{items.length ? t('noResults') : t('verifyingSoon')}</p>}
 
       <NoticeFeed areas={['school', 'scholarship']} limit={6} />
     </section>

@@ -75,16 +75,15 @@ export function Home() {
         {tiles.map(([cls, route, count, label, sub, icon]) => (
           <button key={cls} className={'feature ' + cls} onClick={() => go(route)}>
             <span className="feature-icon"><Icon name={icon as 'briefcase'} size={22} /></span>
-            <span className="feature-n">{count}</span>
+            {count > 0 && <span className="feature-n">{count}</span>}
             <span className="feature-t">{label}</span>
             <span className="feature-s">{sub}</span>
           </button>
         ))}
       </section>
-      <p className="small muted center">Counts are sample listings in this demo.</p>
 
-      <section className="home-two">
-        <div className="panel">
+      <section className={'home-two' + (closing.length ? '' : ' single')}>
+        {closing.length > 0 && <div className="panel">
           <h2 className="section-h"><Icon name="clock" size={20} /> {t('closingSoon')}</h2>
           <ul className="closing">
             {closing.map((o) => (
@@ -95,9 +94,8 @@ export function Home() {
                 </button>
               </li>
             ))}
-            {!closing.length && <li className="muted">—</li>}
           </ul>
-        </div>
+        </div>}
         <div className="panel">
           <NoticeFeed limit={6} more={() => go('updates')} />
         </div>

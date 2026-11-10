@@ -89,7 +89,11 @@ export function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const opps = source === 'db' && remoteOpps ? remoteOpps : localOpps;
+  const allOpps = source === 'db' && remoteOpps ? remoteOpps : localOpps;
+  // Visitors see only listings an admin has verified against the official notice.
+  // Admins also see drafts and sample entries, so they can work on them.
+  const opps = isAdmin ? allOpps : allOpps.filter((o) => o.status === 'verified' && !o.sample);
+  const hiddenCount = allOpps.length - allOpps.filter((o) => o.status === 'verified' && !o.sample).length;
 
   const state: AppState = {
     lang, setLang, t, opps, saved, go, user, isAdmin, source,
@@ -153,7 +157,7 @@ export function App() {
             </div>
           </div>
         </header>
-        {opps.some((o) => o.sample) && <div className="banner" role="note"><div className="banner-in">{t('sampleBanner')}</div></div>}
+        {isAdmin && hiddenCount > 0 && <div className="banner" role="note"><div className="banner-in">{t('adminPreview').replace('{n}', String(hiddenCount))}</div></div>}
         <main>{page(route)}</main>
         <footer className="foot">{t('noGuarantee')}</footer>
         <nav className="tabbar" aria-label="Main">
