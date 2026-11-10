@@ -26,4 +26,4 @@ npm run build:single # one self-contained HTML file → dist-single/ (shareable 
 - **Admin verification** — draft → in-review → verified (published) / rejected. Publishing needs an https notification link, publication date, reviewer name and confirmation that details match. Last-verified date is shown on cards.
 - **Languages** — English, Telugu, Hindi UI strings (Telugu/Hindi need native-speaker review).
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the architecture and phase plan.
+See [docs/HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md) for a flowchart of how the site is built and works, with learning links for each technology, and [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the original architecture and phase plan.
