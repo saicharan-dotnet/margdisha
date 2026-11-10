@@ -52,6 +52,12 @@ export function Home() {
 
         <h2 className="pick-h">{t('pickLevel')}</h2>
         <div className="level-grid">
+          <button className="level is-school" onClick={() => go('schools')}>
+            <span className="level-tag">{t('forSchool')}</span>
+            <span className="level-name">{t('school-admission')}</span>
+            <span className="level-hint">Class 1 to 11 · Navodaya · KV · Sainik · Gurukul</span>
+            <Icon name="arrow" size={18} />
+          </button>
           {PICK.map((l) => {
             return (
               <button key={l} className="level" onClick={() => {
