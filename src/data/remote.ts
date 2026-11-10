@@ -4,11 +4,14 @@ import { oppToRow, rowToOpp, type OppRow } from './remote-map';
 
 const COLS = 'id,kind,scope,sector,title,provider,summary,criteria,details,deadline,source_url,source_label,published_on,last_verified_on,verified_by,status,sample';
 
+/** Only web links are rendered: a javascript: or data: URL in a row must never reach an href. */
+export const isWebUrl = (u: unknown): u is string => typeof u === 'string' && /^https?:\/\//i.test(u.trim());
+
 export async function fetchOpportunities(): Promise<Opportunity[] | null> {
   if (!supabase) return null;
   const { data, error } = await supabase.from('opportunities').select(COLS).order('deadline', { ascending: true, nullsFirst: false });
   if (error || !data) return null;
-  return (data as unknown as OppRow[]).map(rowToOpp);
+  return (data as unknown as OppRow[]).filter((r) => isWebUrl(r.source_url)).map(rowToOpp);
 }
 
 /** Admin-only (enforced by RLS and the verification trigger in the database). */
@@ -69,7 +72,7 @@ export async function fetchNotices(limit = 300): Promise<Notice[] | null> {
   if (!supabase) return null;
   const { data, error } = await supabase.from('official_notices').select('*').order('first_seen', { ascending: false }).order('id', { ascending: true }).limit(limit);
   if (error || !data) return null;
-  return data as Notice[];
+  return (data as Notice[]).filter((n) => isWebUrl(n.url));
 }
 
 /** Admin-only (enforced by RLS). */

@@ -48,7 +48,8 @@ flowchart TD
 | Part | Where | Notes |
 |---|---|---|
 | Pages | `src/pages/` | Home, Exams, Jobs, Schools, Explore (What next?), Matches, Search, Updates, Admin, About, Privacy, Terms |
-| Exam guide | `src/data/exam-guide.ts` | POLYCET, RGUKT IIIT, JEE, JoSAA, EAPCET, NEET, CUET, ECET, GATE, ICET and more |
+| Exam guide | `src/data/exam-guide.ts` | POLYCET, RGUKT IIIT, JEE, JoSAA, EAPCET, NEET, CUET, ECET, GATE, CCMT, IIT JAM, CPGET, PGCET, NEET PG, GPAT, UGC NET, ICET and more |
+| Security headers | `public/_headers` | HSTS, no framing, no MIME sniffing, strict referrer, browser features off |
 | Job calendar | `src/data/job-calendar.ts` | UPSC, SSC, Railways, banks, postal, defence, TG/AP Groups, police, teachers, power, steel, BHEL and PSUs, DRDO, ISRO, CSIR, BARC, doctors and nurses, TTD, courts, RTC |
 | Private jobs | `src/data/private-jobs.ts` | Ways in by qualification and sector, with how to apply |
 | School calendar | `src/data/school-calendar.ts` | KV Class 1, Gurukul Class 5, Navodaya, Sainik, RMS, EMRS, NMMS |
