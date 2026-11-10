@@ -92,8 +92,30 @@ function useMeta(route: string) {
 }
 const upsert = (list: Opportunity[], o: Opportunity) => (list.some((x) => x.id === o.id) ? list.map((x) => (x.id === o.id ? o : x)) : [o, ...list]);
 
+type Theme = 'light' | 'dark';
+const systemTheme = (): Theme => (window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+/** Light or dark appearance: follows the phone's setting until the visitor picks one. */
+function useTheme(): [Theme, () => void] {
+  const [theme, setTheme] = useState<Theme>(() => {
+    try { const v = localStorage.getItem('margdisha:theme'); if (v === 'light' || v === 'dark') return v; } catch { /* storage blocked */ }
+    return systemTheme();
+  });
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#0f1615' : '#ffffff');
+  }, [theme]);
+  const toggle = () => setTheme((t) => {
+    const next = t === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem('margdisha:theme', next); } catch { /* storage blocked */ }
+    return next;
+  });
+  return [theme, toggle];
+}
+
 export function App() {
   const [route, go] = useHashRoute();
+  const [theme, toggleTheme] = useTheme();
   useMeta(route);
   const [lang, setLang] = usePersisted<Lang>('lang', 'en');
   const [profile, setProfileLocal] = usePersisted<P>('profile', { skills: [], interests: [] });
@@ -195,6 +217,10 @@ export function App() {
             <div className="top-tools">
               {isAdmin && <a href={hrefFor('admin')} className={'admin-link desk-only ' + (route === 'admin' ? 'on' : '')}>{t('navAdmin')}</a>}
               <a href={hrefFor('profile')} className={'admin-link ' + (route === 'profile' ? 'on' : '')}>{user ? t('navProfile') : t('signIn')}</a>
+              <button type="button" className="theme-btn" onClick={toggleTheme}
+                aria-label={theme === 'dark' ? t('lightMode') : t('darkMode')} title={theme === 'dark' ? t('lightMode') : t('darkMode')}>
+                <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={20} />
+              </button>
               <select id="lang" aria-label="Language" value={lang} onChange={(e) => setLang(e.target.value as Lang)}>
                 {(Object.keys(LANG_NAMES) as Lang[]).map((l) => <option key={l} value={l}>{LANG_NAMES[l]}</option>)}
               </select>

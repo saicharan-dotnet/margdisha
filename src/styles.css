@@ -229,7 +229,7 @@ textarea { font: inherit; color: var(--text); background: var(--surface); border
 .hero-search input::placeholder { color: #6b7a77; }
 .hero-search .btn { flex: none; }
 .level-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
-@media (max-width: 520px) { .level-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .level-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .level.is-school { background: linear-gradient(135deg, color-mix(in srgb, var(--school) 12%, var(--surface)), var(--surface)); border-color: color-mix(in srgb, var(--school) 35%, var(--line)); }
 .level.is-school .icon { color: var(--school); }
 .level-tag { justify-self: start; font-size: .68rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--school); margin-bottom: 2px; }
@@ -397,3 +397,7 @@ body {
 .cal-gives { margin: 0; font-size: .9rem; padding: 8px 10px; border-radius: 10px; background: color-mix(in srgb, var(--brand) 8%, var(--surface)); }
 .split { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
 .feature-t { padding-right: 46px; }
+.theme-btn { display: grid; place-items: center; width: 40px; height: 40px; flex: none; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; }
+.theme-btn:hover { border-color: var(--brand); color: var(--brand); }
+@media (max-width: 420px) { .top-in { gap: 8px; } .top-tools { gap: 4px; } .top-tools .admin-link { padding: 8px 6px; } .theme-btn { width: 34px; height: 34px; border-radius: 10px; } .brand { gap: 8px; font-size: 1.08rem; } .top-tools select { padding: 6px 4px; } }
+@media (max-width: 350px) { .brand { font-size: 0; gap: 0; } }
