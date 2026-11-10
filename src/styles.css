@@ -282,3 +282,19 @@ textarea { font: inherit; color: var(--text); background: var(--surface); border
 .inbox-main a { font-weight: 600; overflow-wrap: anywhere; }
 @media (max-width: 640px) { .inbox li { flex-direction: column; align-items: stretch; } }
 .home-two.single { grid-template-columns: 1fr; }
+
+/* School admission calendar */
+.cal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 12px; margin-top: 12px; }
+.cal-card { display: flex; flex-direction: column; gap: 8px; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--line); border-radius: var(--r); padding: 16px; box-shadow: var(--shadow); min-width: 0; }
+.cal-card.cal-open { border-left-color: var(--ok); }
+.cal-card.cal-soon { border-left-color: var(--marigold); }
+.cal-card h3 { font-size: 1.08rem; }
+.cal-pill { align-self: flex-start; font-size: .75rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--surface-2); color: var(--muted); }
+.cal-pill.open { background: var(--ok-bg); color: var(--ok); }
+.cal-pill.soon { background: var(--warn-bg); color: var(--warn); }
+.cal-joins { font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--school); }
+.cal-card .facts { margin: 0; }
+.cal-card p { margin: 0; }
+.cal-latest { display: grid; gap: 2px; padding: 8px 10px; border-radius: 10px; background: var(--surface-2); color: var(--text); text-decoration: none; font-size: .88rem; font-weight: 600; overflow-wrap: anywhere; }
+.cal-latest:hover { color: var(--brand); }
+.cal-link { align-self: flex-start; margin-top: auto; }

@@ -49,6 +49,7 @@ const en = {
   schoolTile: 'Navodaya · Sainik · Kendriya Vidyalaya · Military · Gurukul', newBadge: 'New', today: 'Today', hoursAgo: 'h ago', daysAgo: 'd ago',
   childStudying: 'My child is in', noResults: 'Nothing matches these filters.',
   searchBtn: 'Search', searchTitle: 'Search results', searchEmpty: 'Type what you are looking for, for example "SSC", "Navodaya" or "scholarship".', fromOfficial: 'From official websites',
+  calTitle: 'Admission calendar', calNote: 'When forms usually open, based on past years. Dates change every year, so always confirm on the official website.', openNow: 'Usually open around now', opensSoon: 'Usually opens soon', usuallyOpens: 'Usually opens in', formsUsually: 'Forms usually', whoCanApply: 'Who can apply', selectionLbl: 'Selection', latestNotice: 'Latest official notice', officialSite: 'Official website', verifiedListings: 'Verified admission listings',
 };
 export type Key = keyof typeof en;
 
@@ -95,6 +96,7 @@ const te: Record<Key, string> = {
   schoolTile: 'నవోదయ · సైనిక్ · కేంద్రీయ విద్యాలయ · మిలిటరీ · గురుకులం', newBadge: 'కొత్తది', today: 'ఈరోజు', hoursAgo: 'గం. క్రితం', daysAgo: 'రో. క్రితం',
   childStudying: 'మా పిల్లలు చదువుతున్నది', noResults: 'ఈ ఫిల్టర్లకు సరిపోయేవి ఏమీ లేవు.',
   searchBtn: 'వెతకండి', searchTitle: 'శోధన ఫలితాలు', searchEmpty: 'మీకు కావలసింది టైప్ చేయండి, ఉదా. "SSC", "నవోదయ", "స్కాలర్‌షిప్".', fromOfficial: 'అధికారిక వెబ్‌సైట్ల నుండి',
+  calTitle: 'ప్రవేశాల క్యాలెండర్', calNote: 'గత సంవత్సరాల ఆధారంగా దరఖాస్తులు సాధారణంగా ఎప్పుడు మొదలవుతాయో చూపిస్తుంది. తేదీలు ప్రతి సంవత్సరం మారతాయి, కాబట్టి అధికారిక వెబ్‌సైట్‌లో తప్పక నిర్ధారించుకోండి.', openNow: 'సాధారణంగా ఇప్పుడు జరుగుతుంటాయి', opensSoon: 'త్వరలో మొదలయ్యే అవకాశం', usuallyOpens: 'సాధారణంగా మొదలయ్యేది', formsUsually: 'దరఖాస్తులు సాధారణంగా', whoCanApply: 'ఎవరు దరఖాస్తు చేయవచ్చు', selectionLbl: 'ఎంపిక', latestNotice: 'తాజా అధికారిక నోటీసు', officialSite: 'అధికారిక వెబ్‌సైట్', verifiedListings: 'ధృవీకరించిన ప్రవేశ వివరాలు',
 };
 
 const hi: Record<Key, string> = {
@@ -140,6 +142,7 @@ const hi: Record<Key, string> = {
   schoolTile: 'नवोदय · सैनिक · केंद्रीय विद्यालय · मिलिट्री · गुरुकुल', newBadge: 'नया', today: 'आज', hoursAgo: 'घंटे पहले', daysAgo: 'दिन पहले',
   childStudying: 'मेरा बच्चा पढ़ रहा है', noResults: 'इन फ़िल्टर से कुछ नहीं मिला।',
   searchBtn: 'खोजें', searchTitle: 'खोज परिणाम', searchEmpty: 'जो ढूँढ रहे हैं वह लिखें, जैसे "SSC", "नवोदय" या "छात्रवृत्ति"।', fromOfficial: 'आधिकारिक वेबसाइटों से',
+  calTitle: 'प्रवेश कैलेंडर', calNote: 'पिछले वर्षों के आधार पर फ़ॉर्म आमतौर पर कब खुलते हैं। तारीखें हर साल बदलती हैं, इसलिए आधिकारिक वेबसाइट पर ज़रूर पुष्टि करें।', openNow: 'आमतौर पर इन दिनों खुले रहते हैं', opensSoon: 'जल्द खुलने की संभावना', usuallyOpens: 'आमतौर पर खुलते हैं', formsUsually: 'फ़ॉर्म आमतौर पर', whoCanApply: 'कौन आवेदन कर सकता है', selectionLbl: 'चयन', latestNotice: 'ताज़ा आधिकारिक सूचना', officialSite: 'आधिकारिक वेबसाइट', verifiedListings: 'सत्यापित प्रवेश सूचियाँ',
 };
 
 export const STRINGS: Record<Lang, Record<Key, string>> = { en, te, hi };
