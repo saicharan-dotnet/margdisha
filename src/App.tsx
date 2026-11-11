@@ -56,13 +56,13 @@ function page(route: string) {
 const section = (r: string) => r.split('-')[0];
 
 /** Page title and Google description for each page. */
-const META: Record<string, [string, string]> = {
+export const META: Record<string, [string, string]> = {
   home: ['MargDisha: courses, jobs, scholarships and school admissions in India',
     'Find what to study after 10th, 12th or a degree, government and private jobs, scholarships, entrance exams and school admissions such as Navodaya, Sainik, Kendriya Vidyalaya and Gurukul. Free, in English, Telugu and Hindi.'],
   explore: ['What to study next after 10th, 12th, diploma or degree | MargDisha',
     'Courses and careers you can choose after Class 10, Intermediate (MPC, BiPC, MEC, CEC), diploma, B.Tech, B.Sc, B.Com, B.A. and more.'],
-  'jobs-govt': ['Latest government jobs: SSC, Railways, UPSC, Banks, Police | MargDisha',
-    'Government job notifications from SSC, RRB Railways, UPSC, IBPS, SBI, state PSCs, Army and India Post, with eligibility and last dates.'],
+  'jobs-govt': ['Government jobs: UPSC, SSC, Railways, Banks, PSUs, TG and AP | MargDisha',
+    'When forms usually open, who can apply and how to apply for UPSC, SSC, RRB, IBPS, SBI, TGPSC, APPSC, police, teachers, BHEL, DRDO, ISRO, doctors and nurses, TTD and more.'],
   exams: ['Entrance exams after 10th, Inter and degree: JEE, EAPCET, NEET, POLYCET, GATE | MargDisha',
     'How to apply for JEE Main, JEE Advanced, TG and AP EAPCET, NEET, POLYCET, RGUKT IIIT, ECET, GATE, ICET and more, what each gets you, and how to get into IITs, NITs and IIITs.'],
   'jobs-private': ['Private jobs by qualification and sector | MargDisha', 'Private jobs, apprenticeships and internships for 10th, ITI, 12th, diploma, degree and B.Tech: typical jobs, selection and how to apply.'],
