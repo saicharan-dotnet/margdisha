@@ -3,3 +3,4 @@ dist
 dist-single
 scripts/.gen-seed.mjs
 scripts/.collect-notices.mjs
+dist-ssr
