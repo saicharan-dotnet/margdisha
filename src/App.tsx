@@ -1,3 +1,4 @@
+import { SITE } from './site-config';
 import { useEffect, useMemo, useState } from 'react';
 import { Ctx, translator, type AppState } from './app-context';
 import type { Opportunity, OpportunityKind, Profile as P } from './data/types';
@@ -86,8 +87,9 @@ function useMeta(route: string) {
     document.querySelector('meta[property="og:description"]')?.setAttribute('content', desc);
     const canon = document.querySelector('link[rel="canonical"]');
     if (canon) canon.setAttribute('href', 'https://margdisha.com' + (META[key] ? (key === 'home' ? '/' : '/' + key) : '/'));
-    // Personal pages (profile, admin, dashboard) and search results stay out of Google.
-    document.querySelector('meta[name="robots"]')?.setAttribute('content', META[key] && key !== 'search' ? 'index,follow' : 'noindex,follow');
+    // Personal pages (profile, admin, dashboard), search results and the per-profile matches
+    // pages (empty until listings are verified) stay out of Google.
+    document.querySelector('meta[name="robots"]')?.setAttribute('content', META[key] && key !== 'search' && !key.startsWith('matches') ? 'index,follow' : 'noindex,follow');
   }, [route]);
 }
 const upsert = (list: Opportunity[], o: Opportunity) => (list.some((x) => x.id === o.id) ? list.map((x) => (x.id === o.id ? o : x)) : [o, ...list]);
@@ -230,7 +232,7 @@ export function App() {
         {isAdmin && hiddenCount > 0 && <div className="banner" role="note"><div className="banner-in">{t('adminPreview').replace('{n}', String(hiddenCount))}</div></div>}
         <main>{page(route)}</main>
         <footer className="foot">
-          <nav className="foot-links"><a href={hrefFor('about')}>About</a><a href={hrefFor('privacy')}>Privacy policy</a><a href={hrefFor('terms')}>Terms of use</a></nav>
+          <nav className="foot-links"><a href={hrefFor('about')}>About</a><a href={hrefFor('privacy')}>Privacy policy</a><a href={hrefFor('terms')}>Terms of use</a><a href={'mailto:' + SITE.contactEmail}>Contact</a></nav>
           <p>{t('noGuarantee')}</p>
           <p className="small">© {new Date().getFullYear()} MargDisha</p>
         </footer>
