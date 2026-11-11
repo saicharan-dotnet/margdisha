@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://margdisha.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
-  <url><loc>https://margdisha.com/schools</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
-  <url><loc>https://margdisha.com/exams</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://margdisha.com/jobs-govt</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
-  <url><loc>https://margdisha.com/updates</loc><changefreq>hourly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://margdisha.com/explore</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://margdisha.com/jobs-private</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
-  <url><loc>https://margdisha.com/matches</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
-  <url><loc>https://margdisha.com/matches-scholarship</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://margdisha.com/about</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
-  <url><loc>https://margdisha.com/privacy</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
-  <url><loc>https://margdisha.com/terms</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
-  <url><loc>https://margdisha.com/matches-exam</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://margdisha.com/</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://margdisha.com/schools</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://margdisha.com/exams</loc><lastmod>2026-11-11</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://margdisha.com/jobs-govt</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://margdisha.com/updates</loc><lastmod>2026-11-11</lastmod><changefreq>hourly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://margdisha.com/explore</loc><lastmod>2026-11-11</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://margdisha.com/jobs-private</loc><lastmod>2026-11-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://margdisha.com/about</loc><lastmod>2026-11-11</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://margdisha.com/privacy</loc><lastmod>2026-11-11</lastmod><changefreq>yearly</changefreq><priority>0.2</priority></url>
+  <url><loc>https://margdisha.com/terms</loc><lastmod>2026-11-11</lastmod><changefreq>yearly</changefreq><priority>0.2</priority></url>
 </urlset>
