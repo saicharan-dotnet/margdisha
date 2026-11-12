@@ -1,0 +1,22 @@
+name: Check official links
+
+# Every Monday at 9:00 AM IST, open every official-site link on MargDisha.
+# The run fails (and GitHub emails you) only if a link is clearly gone (404 or the site no longer exists).
+on:
+  schedule:
+    - cron: '30 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - run: node scripts/check-links.mjs
