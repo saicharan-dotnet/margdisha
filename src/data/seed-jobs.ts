@@ -74,7 +74,7 @@ export const SEED_JOBS: Opportunity[] = [
     title: 'Women & child welfare field posts (sample entry)', provider: 'State women & child welfare department',
     summary: 'Illustrative district-level posts for local women candidates.',
     criteria: { minLevel: 'class10', genders: ['female'], minAge: 21, maxAge: 35, manualChecks: ['Resident of the same village / ward'] },
-    deadline: '2026-11-18', source: { url: 'https://wcd.nic.in', label: 'Ministry of Women & Child Development' } }),
+    deadline: '2026-11-18', source: { url: 'https://wcd.gov.in', label: 'Ministry of Women & Child Development' } }),
 
   p({ id: 'pvt-bpo-telugu', sector: 'Customer Support', location: 'Hyderabad / Vijayawada', workMode: 'onsite', experience: 'Fresher',
     title: 'Customer support executive – Telugu & English (sample entry)', provider: 'Example services company (placeholder)',

@@ -162,7 +162,7 @@ export const PRIVATE_JOBS: PrivateRoute[] = [
       'Register online and take the career aptitude test.',
       'Clear the interview, complete the training and join as a full-time employee.',
     ],
-    links: [{ label: 'HCLTech TechBee', url: 'https://www.hcltech.com/techbee' }],
+    links: [{ label: 'HCLTech TechBee', url: 'https://www.hcltechbee.com' }],
   },
 
   // ---- BPO ----
