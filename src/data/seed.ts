@@ -108,7 +108,7 @@ const BASE: Opportunity[] = [
     summary: 'Illustrative entry for state group services posts in Telangana.',
     criteria: { minLevel: 'ug', minAge: 18, maxAge: 44, states: ['Telangana'], ageRelaxation: { OBC: 5, SC: 5, ST: 5 },
       manualChecks: ['Local / non-local status rules'] },
-    deadline: '2027-01-31', source: { url: 'https://www.tspsc.gov.in', label: 'TSPSC official website' }, tags: ['state PSC'],
+    deadline: '2027-01-31', source: { url: 'https://www.tgpsc.gov.in', label: 'TGPSC official website' }, tags: ['state PSC'],
   },
   {
     id: 'job-apprentice', sector: 'Apprenticeship', location: 'Across India', kind: 'govt-job', scope: 'Central', sample: true, status: 'draft',
@@ -164,7 +164,7 @@ const BASE: Opportunity[] = [
     summary: 'Illustrative entry for state engineering, agriculture and pharmacy entrance exams in Telangana and Andhra Pradesh.',
     criteria: { minLevel: 'inter', allowPursuing: true, streams: ['MPC', 'BiPC'], states: ['Telangana', 'Andhra Pradesh'],
       manualChecks: ['Local area status'] },
-    deadline: '2027-04-15', source: { url: 'https://tsche.ac.in', label: 'Telangana State Council of Higher Education' }, tags: ['engineering', 'pharmacy'],
+    deadline: '2027-04-15', source: { url: 'https://tgche.ac.in', label: 'Telangana Council of Higher Education' }, tags: ['engineering', 'pharmacy'],
   },
   {
     id: 'exam-cuet', kind: 'exam', scope: 'Central', sample: true, status: 'draft',

@@ -1,5 +1,5 @@
 // Weekly check that every official-site link on MargDisha still opens.
-// Fails (so GitHub emails the owner) only when a link is clearly gone: 404/410 or the site name no longer exists.
+// Fails (so GitHub emails the owner) only when a link is clearly gone: a page that returns 404/410, or a site name that no longer exists.
 // Slow, blocked or certificate-problem sites are listed as warnings, since many government sites are flaky or block foreign servers.
 import { readFileSync, readdirSync, statSync, appendFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -18,7 +18,7 @@ const urls = new Map();
 for (const f of files) {
   for (const m of readFileSync(f, 'utf8').matchAll(/https?:\/\/[^\s'"`)<>\\]+/g)) {
     const u = m[0].replace(/[.,;]+$/, '');
-    if (SKIP.test(u) || u.includes('${')) continue;
+    if (SKIP.test(u) || /[${}]/.test(u)) continue;
     if (!urls.has(u)) urls.set(u, f);
   }
 }
@@ -30,7 +30,8 @@ async function check(u) {
     try {
       const r = await fetch(u, { redirect: 'follow', headers: { 'user-agent': UA, accept: 'text/html,*/*' }, signal: AbortSignal.timeout(25000) });
       r.body?.cancel().catch(() => {});
-      if (r.status === 404 || r.status === 410) return { kind: 'broken', note: `HTTP ${r.status}` };
+      // A 404 on a site's home page usually means it blocks servers outside India, not that the site is gone.
+      if ((r.status === 404 || r.status === 410) && new URL(u).pathname.length > 1) return { kind: 'broken', note: `HTTP ${r.status}` };
       if (r.status >= 400) last = { kind: 'warn', note: `HTTP ${r.status}` };
       else return { kind: 'ok', note: `HTTP ${r.status}` };
     } catch (e) {

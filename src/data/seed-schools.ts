@@ -48,7 +48,7 @@ export const SEED_SCHOOLS: Opportunity[] = [
       'Seat reservation for the home state, SC, ST, OBC and defence wards',
     ] },
     documents: ['Birth certificate', 'Domicile certificate', 'Category certificate if any'],
-    source: { url: 'https://exams.nta.ac.in/AISSEE/', label: 'NTA, AISSEE page' }, tags: ['defence', 'residential'],
+    source: { url: 'https://exams.nta.nic.in/sainik-school-society/', label: 'NTA, AISSEE page' }, tags: ['defence', 'residential'],
   },
   {
     ...base, id: 'school-aissee-9', sector: 'Sainik', entryClass: 'Class 9',
@@ -60,7 +60,7 @@ export const SEED_SCHOOLS: Opportunity[] = [
       'Age limit for Class 9 as given in this year\'s notice (usually around 13 to 15 years)',
       'Whether girls can apply for Class 9 at the school you choose',
     ] },
-    source: { url: 'https://exams.nta.ac.in/AISSEE/', label: 'NTA, AISSEE page' }, tags: ['defence', 'residential'],
+    source: { url: 'https://exams.nta.nic.in/sainik-school-society/', label: 'NTA, AISSEE page' }, tags: ['defence', 'residential'],
   },
   {
     ...base, id: 'school-rms-cet', sector: 'Military School', entryClass: 'Class 6 and Class 9',
