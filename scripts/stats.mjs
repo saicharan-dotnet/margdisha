@@ -20,7 +20,7 @@ for (let page = 1; page < 200; page++) {
   if (users.length < 1000) break;
 }
 async function count(table) {
-  const r = await fetch(`${URL}/rest/v1/${table}?select=*`, { method: 'HEAD', headers: { ...h, prefer: 'count=exact', range: '0-0' } });
+  const r = await fetch(`${URL}/rest/v1/${table}?select=*`, { method: 'HEAD', headers: { apikey: KEY, prefer: 'count=exact', range: '0-0' } });
   return r.headers.get('content-range')?.split('/')[1] ?? `error ${r.status}`;
 }
 const lines = [
