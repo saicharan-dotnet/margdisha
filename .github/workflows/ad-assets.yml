@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       set:
-        description: 'What to make: photo (pictures + voices) or 3d (3D cartoon pictures)'
+        description: 'What to make: photo (pictures + voices), 3d (3D cartoon) or 3dreal (semi-realistic 3D)'
         default: 'photo'
 
 permissions:
@@ -29,9 +29,9 @@ jobs:
       - name: Keep pictures already made
         run: |
           git fetch -q origin ad-assets && git worktree add -q branch origin/ad-assets
-          mkdir -p ad-out && [ -d branch/3d ] && cp -r branch/3d ad-out/ || true
+          mkdir -p ad-out && for d in 3d 3dreal; do [ -d branch/$d ] && cp -r branch/$d ad-out/ || true; done
       - run: |
-          if [ "${{ github.event.inputs.set }}" = "3d" ]; then node scripts/ad/generate-3d.mjs; else node scripts/ad/generate.mjs; fi
+          if [ "${{ github.event.inputs.set }}" != "photo" ]; then SET="${{ github.event.inputs.set }}" node scripts/ad/generate-3d.mjs; else node scripts/ad/generate.mjs; fi
         env:
           VERTEX_API_KEY: ${{ secrets.VERTEX_API_KEY }}
           GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}

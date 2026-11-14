@@ -1,17 +1,21 @@
 // 3D cartoon versions of Ravi and Priya for the ad (Gemini image model via the Vertex key).
-// Output goes to ad-out/3d/. Run by the "Make ad assets" workflow with set=3d.
+// Output goes to ad-out/<set>/. Run by the "Make ad assets" workflow with set=3d or set=3dreal.
 import { mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
-const KEY = process.env.VERTEX_API_KEY; const OUT = 'ad-out/3d'; mkdirSync(OUT, { recursive: true });
+const KEY = process.env.VERTEX_API_KEY; const SET = process.env.SET || '3d'; const OUT = `ad-out/${SET}`; mkdirSync(OUT, { recursive: true });
 const log = []; const note = (s) => { console.log(s); log.push(s); };
-const STYLE = 'High-quality 3D animated movie style, stylized cartoon characters with big expressive eyes, soft subsurface skin, cinematic lighting, vertical 9:16 frame. No text, no logos, no watermark.';
+const STYLES = {
+  '3d': 'High-quality 3D animated movie style, stylized cartoon characters with big expressive eyes, soft subsurface skin, cinematic lighting, vertical 9:16 frame. No text, no logos, no watermark.',
+  '3dreal': 'Semi-realistic 3D CGI render like a high-end video game cinematic: realistic human proportions and natural-sized eyes, detailed realistic skin with pores and subsurface scattering, realistic hair strands and fabric, cinematic warm afternoon lighting, shallow depth of field, vertical 9:16 frame. Clearly a 3D render, not a photo. No text, no logos, no watermark.',
+};
+const STYLE = STYLES[SET] || STYLES['3d'];
 const WHO = 'Two Indian college students about 19 years old: on the left RAVI, a boy with short black hair, light blue shirt and khaki trousers; on the right PRIYA, a girl with long black hair in a single braid, orange kurta and small red bindi.';
 const SHOTS = [
   ['scene-confused', null, `${STYLE} ${WHO} They sit side by side on a wooden bench on a sunny green college campus with big trees and a college building behind. Both look worried and confused, Ravi holds a printed result sheet and scratches his head, Priya rests her chin on her hand.`],
-  ['ravi', 'scene-confused', `Using the same 3D cartoon style and the exact same character design, make a vertical 9:16 medium close-up of RAVI alone (the boy in the light blue shirt) sitting on the same bench, facing the camera and slightly turned to his left, face clearly visible and well lit, mouth closed, slightly worried expression, campus softly blurred behind. No text.`],
-  ['priya', 'scene-confused', `Using the same 3D cartoon style and the exact same character design, make a vertical 9:16 medium close-up of PRIYA alone (the girl in the orange kurta with the braid) sitting on the same bench, facing the camera and slightly turned to her right, face clearly visible and well lit, mouth closed, thoughtful expression, campus softly blurred behind. No text.`],
-  ['scene-idea', 'scene-confused', `Edit this image: same 3D cartoon characters, same faces, clothes and place. Priya now holds up her smartphone excitedly with a bright "I have an idea" smile, Ravi turns to look at it curiously. No text.`],
-  ['scene-phone', 'scene-confused', `Edit this image: same 3D cartoon characters, same faces, clothes and place. Both lean in together, smiling, looking at Priya's smartphone screen. No text.`],
-  ['scene-happy', 'scene-confused', `Edit this image: same 3D cartoon characters, same faces, clothes and place. Both are smiling happily and relieved, Ravi gives a big thumbs up, Priya holds her phone. No text.`],
+  ['ravi', 'scene-confused', `Using the same 3D style and the exact same character design, make a vertical 9:16 medium close-up (head and upper chest filling the top half of the frame) of RAVI alone (the boy in the light blue shirt) sitting on the same bench, facing the camera and slightly turned to his left, face clearly visible and well lit, mouth closed, slightly worried expression, campus softly blurred behind. No text.`],
+  ['priya', 'scene-confused', `Using the same 3D style and the exact same character design, make a vertical 9:16 medium close-up (head and upper chest filling the top half of the frame) of PRIYA alone (the girl in the orange kurta with the braid) sitting on the same bench, facing the camera and slightly turned to her right, face clearly visible and well lit, mouth closed, thoughtful expression, campus softly blurred behind. No text.`],
+  ['scene-idea', 'scene-confused', `Edit this image: same 3D characters, same faces, clothes and place. Priya now holds up her smartphone excitedly with a bright "I have an idea" smile, Ravi turns to look at it curiously. No text.`],
+  ['scene-phone', 'scene-confused', `Edit this image: same 3D characters, same faces, clothes and place. Both lean in together, smiling, looking at Priya's smartphone screen. No text.`],
+  ['scene-happy', 'scene-confused', `Edit this image: same 3D characters, same faces, clothes and place. Both are smiling happily and relieved, Ravi gives a big thumbs up, Priya holds her phone. No text.`],
 ];
 async function gen(prompt, refPath) {
   const parts = [{ text: prompt }];
