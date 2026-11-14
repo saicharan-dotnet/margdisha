@@ -1,0 +1,22 @@
+name: Sign-up counts
+
+# Run by hand (Actions tab -> Sign-up counts -> Run workflow) to see how many people have signed up.
+# Prints counts only, never names or emails.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - run: node scripts/stats.mjs
+        env:
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
