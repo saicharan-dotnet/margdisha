@@ -10,7 +10,7 @@ on:
         description: 'Voice lines to animate (comma-separated)'
         default: 'r1,p1,r2,p2,p3,r3,p4,r4,p5,r5,p6'
       set:
-        description: 'photo (AI photos) or 3d (3D cartoon)'
+        description: 'photo (AI photos), 3d (3D cartoon) or 3dreal (semi-realistic 3D)'
         default: 'photo'
 
 permissions:
@@ -55,7 +55,12 @@ jobs:
         name: Animate ${{ matrix.line }}
         run: |
           L=${{ matrix.line }}
-          if [ "${{ github.event.inputs.set }}" = "3d" ]; then
+          EXPR=1.1
+          if [ "${{ github.event.inputs.set }}" = "3dreal" ]; then
+            EXPR=1.3
+            if [ "${L:0:1}" = r ]; then ffmpeg -y -loglevel error -i assets/3dreal/ravi.png -vf crop=432:768:184:280,scale=540:960 face.png
+            else ffmpeg -y -loglevel error -i assets/3dreal/priya.png -vf crop=432:768:184:264,scale=540:960 face.png; fi
+          elif [ "${{ github.event.inputs.set }}" = "3d" ]; then
             if [ "${L:0:1}" = r ]; then ffmpeg -y -loglevel error -i assets/3d/ravi.png -vf crop=432:768:142:338,scale=540:960 face.png
             else ffmpeg -y -loglevel error -i assets/3d/priya.png -vf crop=432:768:194:312,scale=540:960 face.png; fi
           else
@@ -64,7 +69,7 @@ jobs:
           fi
           ffmpeg -y -loglevel error -i assets/$L.wav -af "silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.05,areverse,silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.08,areverse" -ar 16000 -ac 1 line.wav
           cd st
-          python inference.py --driven_audio ../line.wav --source_image ../face.png --result_dir ../out --still --preprocess full --size 256 --expression_scale 1.1 --enhancer gfpgan --cpu
+          python inference.py --driven_audio ../line.wav --source_image ../face.png --result_dir ../out --still --preprocess full --size 256 --expression_scale $EXPR --enhancer gfpgan --cpu
           mkdir -p ../talk && cp "$(ls -t ../out/*.mp4 ../out/*/*.mp4 2>/dev/null | head -1)" ../talk/$L.mp4
           ls -la ../talk
       - if: steps.want.outputs.go == 'true'
@@ -90,7 +95,7 @@ jobs:
           merge-multiple: true
       - name: Save to the ad-assets branch
         run: |
-          D=talk; [ "${{ github.event.inputs.set }}" = "3d" ] && D=talk3d
+          D=talk; [ "${{ github.event.inputs.set }}" != "photo" ] && D=talk${{ github.event.inputs.set }}
           mkdir -p $D && cp dl/*.mp4 $D/ 2>/dev/null || true
           ls -la $D
           git config user.name "github-actions[bot]"
