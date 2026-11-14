@@ -1,0 +1,89 @@
+name: Make talking faces
+
+# Run by hand. Uses the free open-source SadTalker model to make Ravi and Priya's faces
+# speak each voice line from the ad-assets branch, then saves the clips to ad-assets/talk.
+# The SadTalker job only has read access; it never sees any secrets and never changes the website.
+on:
+  workflow_dispatch:
+    inputs:
+      lines:
+        description: 'Voice lines to animate (comma-separated)'
+        default: 'r1,p1,r2,p2,p3,r3,p4,r4,p5,r5,p6'
+
+permissions:
+  contents: read
+
+jobs:
+  talk:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        line: [r1, p1, r2, p2, p3, r3, p4, r4, p5, r5, p6]
+    steps:
+      - name: Skip lines not asked for
+        id: want
+        run: echo "go=${{ contains(format(',{0},', github.event.inputs.lines), format(',{0},', matrix.line)) }}" >> "$GITHUB_OUTPUT"
+      - if: steps.want.outputs.go == 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: ad-assets
+          path: assets
+          persist-credentials: false
+      - if: steps.want.outputs.go == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+      - if: steps.want.outputs.go == 'true'
+        name: Install SadTalker
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
+          git clone -q --depth 1 https://github.com/OpenTalker/SadTalker.git st
+          cd st
+          pip install -q torch==1.12.1+cpu torchvision==0.13.1+cpu torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cpu
+          grep -viE '^(gradio|torch|torchvision)' requirements.txt > req.txt
+          pip install -q -r req.txt
+          bash scripts/download_models.sh > /dev/null 2>&1
+          ls checkpoints gfpgan/weights || true
+      - if: steps.want.outputs.go == 'true'
+        name: Animate ${{ matrix.line }}
+        run: |
+          L=${{ matrix.line }}
+          if [ "${L:0:1}" = r ]; then IMG=ravi-face.png; else IMG=priya-face.png; fi
+          ffmpeg -y -loglevel error -i assets/$IMG -vf scale=512:512 face.png
+          ffmpeg -y -loglevel error -i assets/$L.wav -af "silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.05,areverse,silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.08,areverse" -ar 16000 -ac 1 line.wav
+          cd st
+          python inference.py --driven_audio ../line.wav --source_image ../face.png --result_dir ../out --still --preprocess full --size 256 --expression_scale 1.0 --cpu
+          mkdir -p ../talk && cp "$(ls -t ../out/*.mp4 ../out/*/*.mp4 2>/dev/null | head -1)" ../talk/$L.mp4
+          ls -la ../talk
+      - if: steps.want.outputs.go == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: talk-${{ matrix.line }}
+          path: talk/${{ matrix.line }}.mp4
+
+  save:
+    needs: talk
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ad-assets
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: talk-*
+          path: dl
+          merge-multiple: true
+      - name: Save to the ad-assets branch
+        run: |
+          mkdir -p talk && cp dl/*.mp4 talk/ 2>/dev/null || true
+          ls -la talk
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add talk && git commit -q -m "Talking faces from run ${{ github.run_id }}" && git push -q origin ad-assets || echo "nothing to save"
