@@ -16,7 +16,7 @@ const SHOTS = [
 async function gen(prompt, refPath) {
   const parts = [{ text: prompt }];
   if (refPath) parts.unshift({ inlineData: { mimeType: 'image/png', data: readFileSync(refPath).toString('base64') } });
-  for (const model of ['gemini-2.5-flash-image', 'gemini-2.5-flash-image-preview']) {
+  for (const model of ['gemini-2.5-flash-image', 'gemini-2.5-flash-image', 'gemini-2.5-flash-image', 'gemini-2.5-flash-image']) {
     const r = await fetch(`https://aiplatform.googleapis.com/v1/publishers/google/models/${model}:generateContent?key=${KEY}`, {
       method: 'POST', headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ contents: [{ role: 'user', parts }], generationConfig: { responseModalities: ['IMAGE'], imageConfig: { aspectRatio: '9:16' } } }),
@@ -24,12 +24,14 @@ async function gen(prompt, refPath) {
     const j = await r.json().catch(() => ({}));
     const img = j.candidates?.[0]?.content?.parts?.find((p) => p.inlineData)?.inlineData?.data;
     if (img) return { img, model };
+    if (r.status === 429) { note('  busy (429), waiting 40s'); await new Promise((ok) => setTimeout(ok, 40000)); continue; }
     note(`  ${model}: HTTP ${r.status} ${JSON.stringify(j.error?.message ?? j.candidates?.[0]?.finishReason ?? '').slice(0, 200)}`);
   }
   return null;
 }
 if (!KEY) note('VERTEX_API_KEY is not set');
 else for (const [name, ref, prompt] of SHOTS) {
+  if (existsSync(`${OUT}/${name}.png`)) { note(`3d ${name}: already made`); continue; }
   const rp = ref ? `${OUT}/${ref}.png` : null;
   const res = await gen(prompt, rp && existsSync(rp) ? rp : null);
   if (res) { writeFileSync(`${OUT}/${name}.png`, Buffer.from(res.img, 'base64')); note(`3d ${name}: ok (${res.model})`); } else note(`3d ${name}: FAILED`);

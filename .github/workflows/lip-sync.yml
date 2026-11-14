@@ -9,6 +9,9 @@ on:
       lines:
         description: 'Voice lines to animate (comma-separated)'
         default: 'r1,p1,r2,p2,p3,r3,p4,r4,p5,r5,p6'
+      set:
+        description: 'photo (AI photos) or 3d (3D cartoon)'
+        default: 'photo'
 
 permissions:
   contents: read
@@ -52,8 +55,13 @@ jobs:
         name: Animate ${{ matrix.line }}
         run: |
           L=${{ matrix.line }}
-          if [ "${L:0:1}" = r ]; then IMG=ravi-face.png; else IMG=priya-face.png; fi
-          ffmpeg -y -loglevel error -i assets/$IMG -vf scale=512:512 face.png
+          if [ "${{ github.event.inputs.set }}" = "3d" ]; then
+            if [ "${L:0:1}" = r ]; then ffmpeg -y -loglevel error -i assets/3d/ravi.png -vf crop=432:768:142:338,scale=540:960 face.png
+            else ffmpeg -y -loglevel error -i assets/3d/priya.png -vf crop=432:768:194:312,scale=540:960 face.png; fi
+          else
+            if [ "${L:0:1}" = r ]; then IMG=ravi-face.png; else IMG=priya-face.png; fi
+            ffmpeg -y -loglevel error -i assets/$IMG -vf scale=512:512 face.png
+          fi
           ffmpeg -y -loglevel error -i assets/$L.wav -af "silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.05,areverse,silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.08,areverse" -ar 16000 -ac 1 line.wav
           cd st
           python inference.py --driven_audio ../line.wav --source_image ../face.png --result_dir ../out --still --preprocess full --size 256 --expression_scale 1.1 --enhancer gfpgan --cpu
@@ -82,8 +90,9 @@ jobs:
           merge-multiple: true
       - name: Save to the ad-assets branch
         run: |
-          mkdir -p talk && cp dl/*.mp4 talk/ 2>/dev/null || true
-          ls -la talk
+          D=talk; [ "${{ github.event.inputs.set }}" = "3d" ] && D=talk3d
+          mkdir -p $D && cp dl/*.mp4 $D/ 2>/dev/null || true
+          ls -la $D
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add talk && git commit -q -m "Talking faces from run ${{ github.run_id }}" && git push -q origin ad-assets || echo "nothing to save"
+          git add -A; git commit -q -m "Talking faces from run ${{ github.run_id }}" && git push -q origin ad-assets || echo "nothing to save"

@@ -26,6 +26,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
+      - name: Keep pictures already made
+        run: |
+          git fetch -q origin ad-assets && git worktree add -q branch origin/ad-assets
+          mkdir -p ad-out && [ -d branch/3d ] && cp -r branch/3d ad-out/ || true
       - run: |
           if [ "${{ github.event.inputs.set }}" = "3d" ]; then node scripts/ad/generate-3d.mjs; else node scripts/ad/generate.mjs; fi
         env:
@@ -33,7 +37,6 @@ jobs:
           GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
       - name: Save to the ad-assets branch
         run: |
-          git fetch -q origin ad-assets && git worktree add -q branch origin/ad-assets
           cp -r ad-out/. branch/
           cd branch
           git config user.name "github-actions[bot]"
