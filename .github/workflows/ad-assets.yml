@@ -5,6 +5,10 @@ name: Make ad assets
 # ad-assets branch. Nothing here changes the website.
 on:
   workflow_dispatch:
+    inputs:
+      set:
+        description: 'What to make: photo (pictures + voices) or 3d (3D cartoon pictures)'
+        default: 'photo'
 
 permissions:
   contents: write
@@ -22,16 +26,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-      - run: node scripts/ad/generate.mjs
+      - run: |
+          if [ "${{ github.event.inputs.set }}" = "3d" ]; then node scripts/ad/generate-3d.mjs; else node scripts/ad/generate.mjs; fi
         env:
           VERTEX_API_KEY: ${{ secrets.VERTEX_API_KEY }}
           GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
       - name: Save to the ad-assets branch
         run: |
-          cd ad-out
-          git init -q -b ad-assets
+          git fetch -q origin ad-assets && git worktree add -q branch origin/ad-assets
+          cp -r ad-out/. branch/
+          cd branch
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -q -m "Ad assets from run ${{ github.run_id }}"
-          git push -f -q "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" ad-assets
+          git commit -q -m "Ad assets from run ${{ github.run_id }}" || exit 0
+          git push -q origin HEAD:ad-assets
