@@ -1,0 +1,6 @@
+3d scene-confused: ok (gemini-2.5-flash-image)
+3d ravi: ok (gemini-2.5-flash-image)
+3d priya: ok (gemini-2.5-flash-image)
+3d scene-idea: ok (gemini-2.5-flash-image)
+3d scene-phone: ok (gemini-2.5-flash-image)
+3d scene-happy: ok (gemini-2.5-flash-image)
