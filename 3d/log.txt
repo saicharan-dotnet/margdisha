@@ -1,10 +1,6 @@
-3d scene-confused: ok (gemini-2.5-flash-image)
-3d ravi: ok (gemini-2.5-flash-image)
-3d priya: ok (gemini-2.5-flash-image)
-3d scene-idea: ok (gemini-2.5-flash-image)
-  gemini-2.5-flash-image: HTTP 429 "Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details."
-  gemini-2.5-flash-image-preview: HTTP 404 "Publisher model `projects/820387411354/locations/us-central1/publishers/google/models/gemini-2.5-flash-image-preview` was not found or your project does not have access to it. Ensure you are using a 
-3d scene-phone: FAILED
-  gemini-2.5-flash-image: HTTP 429 "Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details."
-  gemini-2.5-flash-image-preview: HTTP 404 "Publisher model `projects/820387411354/locations/us-central1/publishers/google/models/gemini-2.5-flash-image-preview` was not found or your project does not have access to it. Ensure you are using a 
-3d scene-happy: FAILED
+3d scene-confused: already made
+3d ravi: already made
+3d priya: already made
+3d scene-idea: already made
+3d scene-phone: ok (gemini-2.5-flash-image)
+3d scene-happy: ok (gemini-2.5-flash-image)
