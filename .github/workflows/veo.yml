@@ -1,0 +1,41 @@
+name: Make Veo clips
+
+# Run by hand. PAID: makes talking video clips with Google Veo, billed to the Google Cloud
+# project behind the VERTEX_API_KEY secret. Saves them to ad-assets/veo. Never changes the website.
+on:
+  workflow_dispatch:
+    inputs:
+      clips:
+        description: 'Clips to make (c1,c2,c3,c4)'
+        default: 'c1'
+      model:
+        description: 'veo-3.0-fast-generate-001 (cheaper) or veo-3.0-generate-001'
+        default: 'veo-3.0-fast-generate-001'
+
+permissions:
+  contents: write
+
+jobs:
+  veo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Get the pictures
+        run: git fetch -q origin ad-assets && git worktree add -q assets origin/ad-assets
+      - run: node scripts/ad/veo.mjs
+        env:
+          VERTEX_API_KEY: ${{ secrets.VERTEX_API_KEY }}
+          CLIPS: ${{ github.event.inputs.clips }}
+          MODEL: ${{ github.event.inputs.model }}
+      - name: Save to the ad-assets branch
+        run: |
+          mkdir -p assets/veo && cp ad-out/veo/* assets/veo/
+          cd assets
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A && git commit -q -m "Veo clips from run ${{ github.run_id }}" || exit 0
+          git push -q origin HEAD:ad-assets
