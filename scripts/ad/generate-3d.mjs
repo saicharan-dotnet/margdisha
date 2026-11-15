@@ -17,6 +17,16 @@ const SHOTS = [
   ['scene-phone', 'scene-confused', `Edit this image: same 3D characters, same faces, clothes and place. Both lean in together, smiling, looking at Priya's smartphone screen. No text.`],
   ['scene-happy', 'scene-confused', `Edit this image: same 3D characters, same faces, clothes and place. Both are smiling happily and relieved, Ravi gives a big thumbs up, Priya holds her phone. No text.`],
 ];
+// Same close-up, different feelings, so each voice line can start from the right face.
+const MOODS = [
+  ['ravi-worried', 'ravi', 'Edit this image: keep everything identical (same character, same pose, same framing, same background, same lighting). Change ONLY his facial expression to clearly worried and stressed: eyebrows pulled up and together, slight frown, tense lips. Mouth closed. No text.'],
+  ['ravi-excited', 'ravi', 'Edit this image: keep everything identical (same character, same pose, same framing, same background, same lighting). Change ONLY his facial expression to excited and amazed: eyebrows raised, eyes wide and bright, big open smile. No text.'],
+  ['ravi-happy', 'ravi', 'Edit this image: keep everything identical (same character, same pose, same framing, same background, same lighting). Change ONLY his facial expression to happy and relieved: warm natural smile, relaxed eyebrows, eyes slightly crinkled. Mouth closed. No text.'],
+  ['priya-worried', 'priya', 'Edit this image: keep everything identical (same character, same pose, same framing, same background, same lighting). Change ONLY her facial expression to clearly worried and confused: eyebrows pulled up and together, slight frown. Mouth closed. No text.'],
+  ['priya-excited', 'priya', 'Edit this image: keep everything identical (same character, same pose, same framing, same background, same lighting). Change ONLY her facial expression to excited, like she just had a great idea: eyebrows raised, eyes wide and sparkling, big bright smile. No text.'],
+  ['priya-happy', 'priya', 'Edit this image: keep everything identical (same character, same pose, same framing, same background, same lighting). Change ONLY her facial expression to happy and confident: warm natural smile, relaxed eyebrows. Mouth closed. No text.'],
+];
+if (process.env.MOODS === '1') SHOTS.push(...MOODS);
 async function gen(prompt, refPath) {
   const parts = [{ text: prompt }];
   if (refPath) parts.unshift({ inlineData: { mimeType: 'image/png', data: readFileSync(refPath).toString('base64') } });
