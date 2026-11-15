@@ -10,7 +10,7 @@ on:
         description: 'Voice lines to animate (comma-separated)'
         default: 'r1,p1,r2,p2,p3,r3,p4,r4,p5,r5,p6'
       set:
-        description: 'photo (AI photos), 3d (3D cartoon) or 3dreal (semi-realistic 3D)'
+        description: 'photo, 3d (3D cartoon), 3dreal (semi-realistic 3D) or 3dmood (semi-realistic with expressions and head movement)'
         default: 'photo'
 
 permissions:
@@ -55,8 +55,15 @@ jobs:
         name: Animate ${{ matrix.line }}
         run: |
           L=${{ matrix.line }}
-          EXPR=1.1
-          if [ "${{ github.event.inputs.set }}" = "3dreal" ]; then
+          EXPR=1.1; STILL=--still; POSE=0
+          if [ "${{ github.event.inputs.set }}" = "3dmood" ]; then
+            # each line starts from the face that matches its feeling; head moves naturally
+            EXPR=1.3; STILL=""
+            case $L in r1|r2) M=ravi-worried;; p1) M=priya-worried;; p2) M=priya-excited;; r3) M=ravi-excited;; r*) M=ravi-happy;; p*) M=priya-happy;; esac
+            case $L in r*) C=crop=432:768:184:280;; p*) C=crop=432:768:184:264;; esac
+            case $L in r1) POSE=12;; p1) POSE=20;; r2) POSE=31;; p2) POSE=7;; p3) POSE=40;; r3) POSE=3;; p4) POSE=18;; r4) POSE=27;; p5) POSE=35;; r5) POSE=9;; p6) POSE=22;; esac
+            ffmpeg -y -loglevel error -i assets/3dreal/$M.png -vf $C,scale=540:960 face.png
+          elif [ "${{ github.event.inputs.set }}" = "3dreal" ]; then
             EXPR=1.3
             if [ "${L:0:1}" = r ]; then ffmpeg -y -loglevel error -i assets/3dreal/ravi.png -vf crop=432:768:184:280,scale=540:960 face.png
             else ffmpeg -y -loglevel error -i assets/3dreal/priya.png -vf crop=432:768:184:264,scale=540:960 face.png; fi
@@ -69,7 +76,7 @@ jobs:
           fi
           ffmpeg -y -loglevel error -i assets/$L.wav -af "silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.05,areverse,silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.08,areverse" -ar 16000 -ac 1 line.wav
           cd st
-          python inference.py --driven_audio ../line.wav --source_image ../face.png --result_dir ../out --still --preprocess full --size 256 --expression_scale $EXPR --enhancer gfpgan --cpu
+          python inference.py --driven_audio ../line.wav --source_image ../face.png --result_dir ../out $STILL --pose_style $POSE --preprocess full --size 256 --expression_scale $EXPR --enhancer gfpgan --cpu
           mkdir -p ../talk && cp "$(ls -t ../out/*.mp4 ../out/*/*.mp4 2>/dev/null | head -1)" ../talk/$L.mp4
           ls -la ../talk
       - if: steps.want.outputs.go == 'true'
