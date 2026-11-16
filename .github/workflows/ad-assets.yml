@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       set:
-        description: 'What to make: photo (pictures + voices), 3d (3D cartoon) 3dreal (semi-realistic 3D) promo (16:9 commercial scenes) or promo-voice (its narrator)'
+        description: 'What to make: photo (pictures + voices), 3d (3D cartoon) 3dreal (semi-realistic 3D) promo / promoreal (16:9 commercial scenes) or promo-voice (its narrator)'
         default: 'photo'
 
 permissions:
@@ -29,7 +29,7 @@ jobs:
       - name: Keep pictures already made
         run: |
           git fetch -q origin ad-assets && git worktree add -q branch origin/ad-assets
-          mkdir -p ad-out && for d in 3d 3dreal promo; do [ -d branch/$d ] && cp -r branch/$d ad-out/ || true; done
+          mkdir -p ad-out && for d in 3d 3dreal promo promoreal; do [ -d branch/$d ] && cp -r branch/$d ad-out/ || true; done
       - run: |
           if [ "${{ github.event.inputs.set }}" = "promo-voice" ]; then node scripts/ad/narrate.mjs
           elif [ "${{ github.event.inputs.set }}" != "photo" ]; then SET="${{ github.event.inputs.set }}" MOODS=1 node scripts/ad/generate-3d.mjs; else node scripts/ad/generate.mjs; fi
