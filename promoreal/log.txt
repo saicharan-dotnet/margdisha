@@ -1,0 +1,5 @@
+3d r-cross: ok (gemini-2.5-flash-image)
+3d r-beam: ok (gemini-2.5-flash-image)
+3d r-path: ok (gemini-2.5-flash-image)
+  gemini-2.5-flash-image: HTTP 200 "NO_IMAGE"
+3d r-ui: ok (gemini-2.5-flash-image)
