@@ -4,6 +4,8 @@ import type { MatchStatus, OpportunityKind } from '../data/types';
 import { matchAll } from '../engine/match';
 import { OppCard } from '../components/OppCard';
 import { NoticeFeed } from '../components/NoticeFeed';
+import { SCHOLARSHIPS, SCH_LEVELS, SCH_SCOPES, type SchLevel, type SchScope } from '../data/scholarships';
+import { ScholarshipCard } from '../components/ScholarshipCard';
 
 const KINDS: (OpportunityKind | 'all')[] = ['all', 'scholarship', 'govt-job', 'private-job', 'internship', 'exam', 'school-admission', 'skill', 'abroad'];
 const GROUPS: MatchStatus[] = ['likely', 'verify', 'not'];
@@ -13,6 +15,10 @@ export function Matches({ initialKind = 'all' }: { initialKind?: OpportunityKind
   const [kind, setKind] = useState<OpportunityKind | 'all'>(initialKind);
   const matched = useMemo(() => matchAll(profile, opps, { includeUnverified: true }), [profile, opps]);
   const shown = matched.filter((m) => kind === 'all' || m.opp.kind === kind);
+  const [scope, setScope] = useState<SchScope | 'all'>(() => (profile.state === 'Telangana' || profile.state === 'Andhra Pradesh' ? profile.state : 'all'));
+  const [lvl, setLvl] = useState<SchLevel | 'all'>('all');
+  const sch = SCHOLARSHIPS.filter((s) => (scope === 'all' || s.scope === scope || (scope !== 'Private' && s.scope === 'Central')) && (lvl === 'all' || s.levels.includes(lvl)));
+  const guide = kind === 'scholarship';
   return (
     <section className="page">
       <h1>{t('navMatches')}</h1>
@@ -20,7 +26,20 @@ export function Matches({ initialKind = 'all' }: { initialKind?: OpportunityKind
       <div className="chips">
         {KINDS.map((k) => <button key={k} className={'chip ' + (k === kind ? 'on' : '')} onClick={() => setKind(k)}>{t(k)}</button>)}
       </div>
-      {shown.length === 0 && <><p className="empty">{t('verifyingSoon')}</p><NoticeFeed limit={8} more={() => go('updates')} /></>}
+      {guide && (
+        <div className="group">
+          <h2>{t('schGuideTitle')} <span className="count">{sch.length}</span></h2>
+          <p className="muted small">{t('schGuideIntro')}</p>
+          <div className="chips">
+            {(['all', ...SCH_SCOPES] as const).map((k) => <button key={k} className={'chip ' + (k === scope ? 'on' : '')} onClick={() => setScope(k)}>{k === 'all' ? t('all') : k}</button>)}
+          </div>
+          <div className="chips">
+            {(['all', ...SCH_LEVELS] as const).map((k) => <button key={k} className={'chip ' + (k === lvl ? 'on' : '')} onClick={() => setLvl(k)}>{k === 'all' ? t('all') : k}</button>)}
+          </div>
+          <div className="cal-grid">{sch.map((s) => <ScholarshipCard key={s.id} s={s} />)}</div>
+        </div>
+      )}
+      {shown.length === 0 && !guide && <><p className="empty">{t('verifyingSoon')}</p><NoticeFeed limit={8} more={() => go('updates')} /></>}
       {GROUPS.map((g) => {
         const items = shown.filter((m) => m.result.status === g);
         if (!items.length) return null;
