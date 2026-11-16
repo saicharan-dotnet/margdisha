@@ -26,14 +26,26 @@ const MOODS = [
   ['priya-excited', 'priya', 'Edit this image: keep everything identical (same character, same pose, same framing, same background, same lighting). Change ONLY her facial expression to excited, like she just had a great idea: eyebrows raised, eyes wide and sparkling, big bright smile. No text.'],
   ['priya-happy', 'priya', 'Edit this image: keep everything identical (same character, same pose, same framing, same background, same lighting). Change ONLY her facial expression to happy and confident: warm natural smile, relaxed eyebrows. Mouth closed. No text.'],
 ];
-if (process.env.MOODS === '1') SHOTS.push(...MOODS);
+// 16:9 commercial: a student lost at a crossroads of signposts, a golden compass beam shows the way.
+const PSTYLE = 'Stylized 3D animated feature film style with vibrant Pixar-inspired lighting, high-detail 3D textures, soft depth of field, cinematic composition, widescreen 16:9 frame. No logos, no watermark.';
+const KID = 'A young Indian student about 17 years old with short neat black hair, a white school shirt with rolled sleeves, navy trousers and a navy backpack.';
+const PROMO = [
+  ['p-crossroads', null, `${PSTYLE} ${KID} He stands small in the centre of a glowing digital crossroads at cool blue twilight, surrounded by many floating, tangled, crooked signposts pointing in every direction. Five big signs clearly read "10th", "12th", "Exams", "Jobs" and "Scholarships" in clean bold letters. Mist, floating particles, faint glowing grid lines on the ground. He looks up at them overwhelmed and confused. Wide shot. No other text.`],
+  ['p-beam', 'p-crossroads', `Edit this image: same student, same crossroads, same signposts with the same words, same camera. A warm golden beam of light shaped like a glowing compass descends from the sky above him, casting warm golden light on him and the signs; the tangled signs start to straighten and glow gold. He looks up in wonder. No other text.`],
+  ['p-path', 'p-crossroads', `${PSTYLE} The same student seen from behind and slightly to the side, stepping forward confidently onto a sleek glowing golden pathway that stretches far ahead. Along and at the end of the path stand glowing 3D portals (tall arches of light) showing a grand school, a university with a clock tower, an Indian government building with a dome, and a modern glass office tower. Warm sunrise light, golden sky, floating light particles. No text.`],
+  ['p-ui', 'p-crossroads', `${PSTYLE} The same student in a medium shot on the glowing golden pathway at warm sunrise, smiling confidently, his left hand raised as if touching a floating hologram. The RIGHT half of the frame is open soft-focus sunrise sky and path with glowing portals far behind, left empty for a hologram to be added later. No hologram, no text.`],
+  ['p-sunrise', 'p-path', `${PSTYLE} Very wide establishing shot: the glowing golden pathway winding toward the glowing portals of a school, university, government building and modern office under a huge warm sunrise, the small figure of the student walking on it far away. Lots of calm open sky in the upper half. No text.`],
+];
+const ASPECT = SET === 'promo' ? '16:9' : '9:16';
+if (SET === 'promo') SHOTS.splice(0, SHOTS.length, ...PROMO);
+else if (process.env.MOODS === '1') SHOTS.push(...MOODS);
 async function gen(prompt, refPath) {
   const parts = [{ text: prompt }];
   if (refPath) parts.unshift({ inlineData: { mimeType: 'image/png', data: readFileSync(refPath).toString('base64') } });
   for (const model of ['gemini-2.5-flash-image', 'gemini-2.5-flash-image', 'gemini-2.5-flash-image', 'gemini-2.5-flash-image']) {
     const r = await fetch(`https://aiplatform.googleapis.com/v1/publishers/google/models/${model}:generateContent?key=${KEY}`, {
       method: 'POST', headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ contents: [{ role: 'user', parts }], generationConfig: { responseModalities: ['IMAGE'], imageConfig: { aspectRatio: '9:16' } } }),
+      body: JSON.stringify({ contents: [{ role: 'user', parts }], generationConfig: { responseModalities: ['IMAGE'], imageConfig: { aspectRatio: ASPECT } } }),
     });
     const j = await r.json().catch(() => ({}));
     const img = j.candidates?.[0]?.content?.parts?.find((p) => p.inlineData)?.inlineData?.data;
