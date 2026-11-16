@@ -13,6 +13,7 @@ export function PrivateCard({ r }: { r: PrivateRoute }) {
         <div><dt>{t('selectionLbl')}</dt><dd>{r.selection}</dd></div>
       </dl>
       <p className="small"><b>{t('eligibilityLbl')}:</b> {r.who}</p>
+      {r.experienced && <p className="small"><b>{t('experiencedLbl')}:</b> {r.experienced}</p>}
       {r.note && <p className="small muted">{r.note}</p>}
       <details className="cal-steps">
         <summary>{t('howToApply')}</summary>

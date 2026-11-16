@@ -28,6 +28,8 @@ export interface PrivateRoute {
   steps: string[];
   links: { label: string; url: string }[];
   note?: string;
+  /** How people with work experience get in (lateral hiring). */
+  experienced?: string;
   state?: 'Telangana' | 'Andhra Pradesh';
 }
 
@@ -167,7 +169,23 @@ export const PRIVATE_JOBS: PrivateRoute[] = [
 
   // ---- Big IT companies, one by one ----
   {
-    id: 'co-tcs', title: 'TCS: freshers through the TCS National Qualifier Test (NQT)', sector: 'IT and software',
+    id: 'it-experienced', title: 'Experienced in IT? How to switch to a big company', sector: 'IT and software',
+    quals: ['Diploma', 'Degree', 'BTech'],
+    roles: 'Software engineer, senior engineer, tester, support engineer, cloud, data, SAP and team lead roles at TCS, Infosys, Wipro, HCLTech, Tech Mahindra, Cognizant, Accenture, Capgemini, Deloitte, IBM and others',
+    who: 'Anyone with 1 year or more of work experience in IT, support or a related field',
+    selection: 'Recruiter call, one or two technical interviews, a managerial round, HR and salary discussion, then background verification',
+    steps: [
+      'Update your resume with your projects, tools and skills, and keep your profile current on job portals.',
+      'Search the official careers page of each company by skill and city, and apply there directly.',
+      'Ask friends or former colleagues working there for an employee referral; it often gets you shortlisted faster.',
+      'Prepare for the technical interviews on the skills in your resume, and be ready to explain your projects.',
+      'Keep your offer letter, relieving letter, last 3 payslips and Form 16 ready for background verification.',
+    ],
+    links: [{ label: 'LinkedIn Jobs', url: 'https://www.linkedin.com/jobs/' }, { label: 'Naukri', url: 'https://www.naukri.com' }],
+    note: 'Real companies never charge money for interviews or offers. Offer letters come only from the company\'s official email domain; check any doubtful offer on the company\'s own careers page.',
+  },
+  {
+    id: 'co-tcs', title: 'TCS: freshers (NQT) and experienced hires', sector: 'IT and software',
     quals: ['Degree', 'BTech'],
     roles: 'Assistant system engineer trainee and similar roles (often called Ninja, Digital and Prime levels by the score you get)',
     who: 'B.Tech, B.E., M.Tech, MCA and M.Sc final-year students and recent graduates; some drives are also open to B.Sc, BCA and other degrees',
@@ -180,9 +198,10 @@ export const PRIVATE_JOBS: PrivateRoute[] = [
     ],
     links: [{ label: 'TCS careers', url: 'https://www.tcs.com/careers' }, { label: 'TCS NQT', url: 'https://www.tcsion.com/hub/national-qualifier-test/' }],
     note: 'Programme names, eligibility and dates change every year, so always check the official careers page.',
+    experienced: 'Experienced people apply through the TCS careers page (experienced professionals section, on the TCS iBegin portal). Search openings by your skill (for example Java, testing, SAP, cloud, data) and city on the official careers page, or ask a friend working there for an employee referral. Usually a recruiter call, one or two technical interviews, a managerial round and HR, then document and background checks. Keep your relieving letters, payslips and Form 16 ready, and expect to discuss your notice period.',
   },
   {
-    id: 'co-infosys', title: 'Infosys: system engineer and specialist roles', sector: 'IT and software',
+    id: 'co-infosys', title: 'Infosys: freshers and experienced hires', sector: 'IT and software',
     quals: ['Degree', 'BTech'],
     roles: 'System engineer, digital specialist engineer and specialist programmer (higher pay for strong coders)',
     who: 'B.E., B.Tech, M.E., M.Tech, MCA and M.Sc graduates, usually through campus or off-campus drives; check the percentage and backlog rules for your year',
@@ -195,9 +214,10 @@ export const PRIVATE_JOBS: PrivateRoute[] = [
     ],
     links: [{ label: 'Infosys careers', url: 'https://www.infosys.com/careers/' }],
     note: 'Programme names, eligibility and dates change every year, so always check the official careers page.',
+    experienced: 'Experienced people apply for lateral roles (technology analyst, technology lead, consultant and more) on the Infosys careers page. Search openings by your skill (for example Java, testing, SAP, cloud, data) and city on the official careers page, or ask a friend working there for an employee referral. Usually a recruiter call, one or two technical interviews, a managerial round and HR, then document and background checks. Keep your relieving letters, payslips and Form 16 ready, and expect to discuss your notice period.',
   },
   {
-    id: 'co-wipro', title: 'Wipro: Elite National Talent Hunt and WILP', sector: 'IT and software',
+    id: 'co-wipro', title: 'Wipro: Elite NTH, WILP and experienced hires', sector: 'IT and software',
     quals: ['Degree', 'BTech'],
     roles: 'Project engineer (B.Tech/M.Tech/MCA), or work-and-study roles for B.Sc and BCA graduates through the Work Integrated Learning Programme (WILP)',
     who: 'Engineering graduates for Elite NTH; B.Sc and BCA graduates (often with Maths) for WILP. A minimum percentage and no backlogs are usually required.',
@@ -210,9 +230,10 @@ export const PRIVATE_JOBS: PrivateRoute[] = [
     ],
     links: [{ label: 'Wipro careers', url: 'https://careers.wipro.com' }],
     note: 'Programme names, eligibility and dates change every year, so always check the official careers page.',
+    experienced: 'Experienced people apply for lateral roles on Wipro careers. Search openings by your skill (for example Java, testing, SAP, cloud, data) and city on the official careers page, or ask a friend working there for an employee referral. Usually a recruiter call, one or two technical interviews, a managerial round and HR, then document and background checks. Keep your relieving letters, payslips and Form 16 ready, and expect to discuss your notice period.',
   },
   {
-    id: 'co-hcltech', title: 'HCLTech: graduate engineer trainees', sector: 'IT and software',
+    id: 'co-hcltech', title: 'HCLTech: freshers and experienced hires', sector: 'IT and software',
     quals: ['Degree', 'BTech'],
     roles: 'Graduate engineer trainee, software engineer and support roles',
     who: 'B.E., B.Tech, MCA and M.Sc graduates through campus and off-campus drives. For 12th pass, see HCLTech TechBee above.',
@@ -224,9 +245,10 @@ export const PRIVATE_JOBS: PrivateRoute[] = [
     ],
     links: [{ label: 'HCLTech careers', url: 'https://www.hcltech.com/careers' }],
     note: 'Programme names, eligibility and dates change every year, so always check the official careers page.',
+    experienced: 'Experienced people apply on HCLTech careers; HCLTech also runs weekend walk-in drives for specific skills, announced on the same page. Search openings by your skill (for example Java, testing, SAP, cloud, data) and city on the official careers page, or ask a friend working there for an employee referral. Usually a recruiter call, one or two technical interviews, a managerial round and HR, then document and background checks. Keep your relieving letters, payslips and Form 16 ready, and expect to discuss your notice period.',
   },
   {
-    id: 'co-techm', title: 'Tech Mahindra: associate software engineer', sector: 'IT and software',
+    id: 'co-techm', title: 'Tech Mahindra: freshers and experienced hires', sector: 'IT and software',
     quals: ['Degree', 'BTech'],
     roles: 'Associate software engineer and similar trainee roles, plus support and BPO roles for other graduates',
     who: 'B.E., B.Tech, MCA and M.Sc graduates for engineering roles; any graduate for many support roles',
@@ -238,9 +260,10 @@ export const PRIVATE_JOBS: PrivateRoute[] = [
     ],
     links: [{ label: 'Tech Mahindra careers', url: 'https://careers.techmahindra.com' }],
     note: 'Programme names, eligibility and dates change every year, so always check the official careers page.',
+    experienced: 'Experienced people apply on Tech Mahindra careers; it also holds walk-in drives for support and voice roles. Search openings by your skill (for example Java, testing, SAP, cloud, data) and city on the official careers page, or ask a friend working there for an employee referral. Usually a recruiter call, one or two technical interviews, a managerial round and HR, then document and background checks. Keep your relieving letters, payslips and Form 16 ready, and expect to discuss your notice period.',
   },
   {
-    id: 'co-cognizant', title: 'Cognizant: GenC fresher programmes', sector: 'IT and software',
+    id: 'co-cognizant', title: 'Cognizant: GenC freshers and experienced hires', sector: 'IT and software',
     quals: ['Degree', 'BTech'],
     roles: 'Programmer analyst trainee under GenC, GenC Next and GenC Pro (higher levels for stronger coders)',
     who: 'B.E., B.Tech, M.E., M.Tech, MCA and M.Sc graduates; some roles for B.Sc and BCA',
@@ -252,9 +275,10 @@ export const PRIVATE_JOBS: PrivateRoute[] = [
     ],
     links: [{ label: 'Cognizant careers', url: 'https://careers.cognizant.com/in/en' }],
     note: 'Programme names, eligibility and dates change every year, so always check the official careers page.',
+    experienced: 'Experienced people apply for lateral roles on Cognizant careers. Search openings by your skill (for example Java, testing, SAP, cloud, data) and city on the official careers page, or ask a friend working there for an employee referral. Usually a recruiter call, one or two technical interviews, a managerial round and HR, then document and background checks. Keep your relieving letters, payslips and Form 16 ready, and expect to discuss your notice period.',
   },
   {
-    id: 'co-accenture', title: 'Accenture: associate software engineer', sector: 'IT and software',
+    id: 'co-accenture', title: 'Accenture: freshers and experienced hires', sector: 'IT and software',
     quals: ['Degree', 'BTech'],
     roles: 'Associate software engineer (ASE) and related trainee roles; also operations roles for other graduates',
     who: 'B.E., B.Tech, M.E., M.Tech, MCA and M.Sc graduates for ASE; any graduate for many operations roles',
@@ -266,9 +290,10 @@ export const PRIVATE_JOBS: PrivateRoute[] = [
     ],
     links: [{ label: 'Accenture India careers', url: 'https://www.accenture.com/in-en/careers' }],
     note: 'Programme names, eligibility and dates change every year, so always check the official careers page.',
+    experienced: 'Experienced people apply on Accenture India careers; referrals from current employees are common here. Search openings by your skill (for example Java, testing, SAP, cloud, data) and city on the official careers page, or ask a friend working there for an employee referral. Usually a recruiter call, one or two technical interviews, a managerial round and HR, then document and background checks. Keep your relieving letters, payslips and Form 16 ready, and expect to discuss your notice period.',
   },
   {
-    id: 'co-capgemini', title: 'Capgemini: analyst and senior analyst', sector: 'IT and software',
+    id: 'co-capgemini', title: 'Capgemini: freshers and experienced hires', sector: 'IT and software',
     quals: ['Degree', 'BTech'],
     roles: 'Analyst and senior analyst (software) trainee roles',
     who: 'B.E., B.Tech, M.E., M.Tech, MCA and M.Sc graduates',
@@ -280,9 +305,10 @@ export const PRIVATE_JOBS: PrivateRoute[] = [
     ],
     links: [{ label: 'Capgemini India careers', url: 'https://www.capgemini.com/in-en/careers/' }],
     note: 'Programme names, eligibility and dates change every year, so always check the official careers page.',
+    experienced: 'Experienced people apply on Capgemini India careers. Search openings by your skill (for example Java, testing, SAP, cloud, data) and city on the official careers page, or ask a friend working there for an employee referral. Usually a recruiter call, one or two technical interviews, a managerial round and HR, then document and background checks. Keep your relieving letters, payslips and Form 16 ready, and expect to discuss your notice period.',
   },
   {
-    id: 'co-deloitte', title: 'Deloitte: analyst roles (consulting, tax, audit and technology)', sector: 'IT and software',
+    id: 'co-deloitte', title: 'Deloitte: analysts and experienced hires (consulting, tax, audit, technology)', sector: 'IT and software',
     quals: ['Degree', 'BTech'],
     roles: 'Analyst and associate analyst roles in technology consulting, tax, audit and risk',
     who: 'B.Tech and MCA for technology roles; B.Com, BBA and CA students for tax, audit and finance roles. Mostly campus hiring, with some off-campus openings.',
@@ -294,6 +320,7 @@ export const PRIVATE_JOBS: PrivateRoute[] = [
     ],
     links: [{ label: 'Deloitte India careers', url: 'https://www.deloitte.com/in/en/careers.html' }],
     note: 'Programme names, eligibility and dates change every year, so always check the official careers page.',
+    experienced: 'Experienced people apply for consultant, senior consultant and manager roles on Deloitte India careers (technology, tax, audit, risk). Search openings by your skill (for example Java, testing, SAP, cloud, data) and city on the official careers page, or ask a friend working there for an employee referral. Usually a recruiter call, one or two technical interviews, a managerial round and HR, then document and background checks. Keep your relieving letters, payslips and Form 16 ready, and expect to discuss your notice period.',
   },
   {
     id: 'co-ibm-lti', title: 'IBM, LTIMindtree and other large IT companies', sector: 'IT and software',
@@ -308,6 +335,7 @@ export const PRIVATE_JOBS: PrivateRoute[] = [
     ],
     links: [{ label: 'IBM careers', url: 'https://www.ibm.com/careers' }, { label: 'LTIMindtree careers', url: 'https://www.ltimindtree.com/careers/' }],
     note: 'Never pay anyone for a job offer or "training fee". These companies hire for free; offers only come from their official email domain.',
+    experienced: 'Experienced people apply on each company\'s careers page. Search openings by your skill (for example Java, testing, SAP, cloud, data) and city on the official careers page, or ask a friend working there for an employee referral. Usually a recruiter call, one or two technical interviews, a managerial round and HR, then document and background checks. Keep your relieving letters, payslips and Form 16 ready, and expect to discuss your notice period.',
   },
 
   // ---- BPO ----
