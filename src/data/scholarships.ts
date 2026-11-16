@@ -2,15 +2,17 @@
 // These are not live vacancies: each entry says who it is for, what it gives, when forms usually open and
 // how to apply, with official links. Amounts and rules change, so every card asks people to check the official page.
 
-export type SchScope = 'Central' | 'Telangana' | 'Andhra Pradesh' | 'Private';
+export type SchScope = 'Central' | 'Telangana' | 'Andhra Pradesh' | 'Private' | 'Study abroad';
 export type SchLevel = 'School' | 'Inter' | 'Diploma' | 'Degree' | 'Engineering' | 'PG';
-export const SCH_SCOPES: SchScope[] = ['Central', 'Telangana', 'Andhra Pradesh', 'Private'];
+export const SCH_SCOPES: SchScope[] = ['Central', 'Telangana', 'Andhra Pradesh', 'Private', 'Study abroad'];
 export const SCH_LEVELS: SchLevel[] = ['School', 'Inter', 'Diploma', 'Degree', 'Engineering', 'PG'];
 
 export interface ScholarshipGuide {
   id: string;
   title: string;
   scope: SchScope;
+  /** For a state scheme listed under another scope (such as Telangana's overseas scholarships). */
+  state?: 'Telangana' | 'Andhra Pradesh';
   levels: SchLevel[];
   /** What the student gets. */
   gives: string;
@@ -206,5 +208,151 @@ export const SCHOLARSHIPS: ScholarshipGuide[] = [
     ],
     links: [{ label: 'Buddy4Study', url: 'https://www.buddy4study.com' }, { label: 'Vidyasaarathi', url: 'https://www.vidyasaarathi.co.in' }],
     note: 'Applying for a scholarship is always free. Never pay anyone who promises a scholarship for a fee.',
+  },
+  // ---- Study abroad (open to students from anywhere in India) ----
+  {
+    id: 'abroad-nos', title: 'National Overseas Scholarship (Government of India)', scope: 'Study abroad',
+    levels: ['Degree', 'Engineering', 'PG'],
+    gives: 'Tuition fees, living allowance, air fare, visa fee and medical insurance for a master\'s or PhD abroad',
+    who: 'SC, denotified, nomadic and semi-nomadic tribe, landless agricultural labourer and traditional artisan category students with 60 percent or more in the qualifying degree, under 35 years of age, family income up to ₹8 lakh a year, and admission to a top-ranked university abroad. A separate National Overseas Scholarship is run for ST students by the Ministry of Tribal Affairs.',
+    when: 'Usually opens once a year; check the portal from February to May',
+    steps: [
+      'Get an admission offer from a foreign university ranked within the top 500 in the QS world rankings.',
+      'Apply on the National Overseas Scholarship portal with your degree marks, caste and income certificates and admission letter.',
+      'Selected students get a sanction letter; the ministry pays fees and allowances through the Indian embassy.',
+    ],
+    links: [{ label: 'National Overseas Scholarship portal', url: 'https://nosmsje.gov.in' }, { label: 'Ministry of Tribal Affairs (for ST)', url: 'https://tribal.nic.in' }],
+    note: CHECK,
+  },
+  {
+    id: 'abroad-ts-overseas', title: 'Telangana overseas scholarships (Ambedkar, Jyothiba Phule and CM Overseas Vidya Nidhi)', scope: 'Study abroad', state: 'Telangana',
+    levels: ['Degree', 'Engineering', 'PG'],
+    gives: 'Up to ₹20 lakh for a master\'s or PhD abroad, plus air fare',
+    who: 'Telangana SC and ST students (Ambedkar Overseas Vidya Nidhi), BC and EBC students (Mahatma Jyothiba Phule Overseas Vidya Nidhi) and minority students (Chief Minister\'s Overseas Scholarship), with 60 percent or more in the degree, a GRE or GMAT and an IELTS or TOEFL score, admission abroad and family income up to ₹5 lakh a year',
+    when: 'Usually twice a year (spring and fall intakes)',
+    steps: [
+      'Get admission to a university in a country listed in the scheme (such as the USA, UK, Canada, Australia, Germany, Singapore or New Zealand).',
+      'Apply on Telangana ePASS under the overseas scholarship section with your degree, test scores, admission letter, passport and visa.',
+      'Attend the selection and document check; the money is paid in instalments.',
+    ],
+    links: [{ label: 'Telangana ePASS', url: 'https://telanganaepass.cgg.gov.in' }], note: CHECK,
+  },
+  {
+    id: 'abroad-fulbright', title: 'Fulbright-Nehru Master\'s Fellowships (USA)', scope: 'Study abroad',
+    levels: ['Degree', 'Engineering'],
+    gives: 'A fully funded master\'s in the USA: tuition, living costs, air fare and health cover',
+    who: 'Indians with a bachelor\'s degree (four-year degree, or a master\'s or a three-year degree plus a postgraduate diploma) and at least three years of work experience in the chosen field, who plan to return to India',
+    when: 'Usually opens in February; last date around May',
+    steps: [
+      'Choose a field the fellowship covers (such as arts, environment, economics, public health, management or urban planning).',
+      'Apply online on the USIEF website with essays, recommendation letters and your degree marks.',
+      'Shortlisted candidates are interviewed, then USIEF helps with US university admission.',
+    ],
+    links: [{ label: 'USIEF (Fulbright in India)', url: 'https://www.usief.org.in' }], note: CHECK,
+  },
+  {
+    id: 'abroad-chevening', title: 'Chevening Scholarships (UK)', scope: 'Study abroad',
+    levels: ['Degree', 'Engineering'],
+    gives: 'A fully funded one-year master\'s in the UK: tuition, living allowance, air fare and visa',
+    who: 'Indian citizens with a bachelor\'s degree and at least two years of work experience, who will return to India for two years after the course',
+    when: 'Usually August to early November, for courses starting the next September',
+    steps: [
+      'Pick three eligible one-year master\'s courses at UK universities.',
+      'Apply on the Chevening website with four essays and references.',
+      'Shortlisted candidates are interviewed at the British High Commission; you must get an unconditional university offer by the deadline.',
+    ],
+    links: [{ label: 'Chevening', url: 'https://www.chevening.org' }], note: CHECK,
+  },
+  {
+    id: 'abroad-commonwealth', title: 'Commonwealth Scholarships (UK)', scope: 'Study abroad',
+    levels: ['PG', 'Degree', 'Engineering'],
+    gives: 'Full funding for a master\'s or PhD in the UK',
+    who: 'Indian graduates with a first-class or high second-class degree; Indian candidates are nominated through the Ministry of Education',
+    when: 'Usually August to October',
+    steps: [
+      'Watch for the nomination notice from the Ministry of Education (Department of Higher Education).',
+      'Apply through the ministry and on the Commonwealth Scholarship Commission\'s online system.',
+      'Shortlisted candidates are interviewed before final selection in the UK.',
+    ],
+    links: [{ label: 'Commonwealth Scholarship Commission', url: 'https://cscuk.fcdo.gov.uk' }], note: CHECK,
+  },
+  {
+    id: 'abroad-daad', title: 'DAAD scholarships (Germany)', scope: 'Study abroad',
+    levels: ['Degree', 'Engineering', 'PG'],
+    gives: 'A monthly stipend (about €934 for master\'s students and €1,300 for PhD students), travel allowance and health insurance; most public universities in Germany charge little or no tuition',
+    who: 'Indian graduates for master\'s programmes (many development-related courses need two years of work experience) and postgraduates for PhD and research stays',
+    when: 'Depends on the programme; many close between August and October',
+    steps: [
+      'Search the DAAD scholarship database for programmes open to Indian applicants.',
+      'Prepare your degree certificates, CV, motivation letter, recommendation letters and English or German test scores.',
+      'Apply through the DAAD portal or the university, as the programme says.',
+    ],
+    links: [{ label: 'DAAD India', url: 'https://www.daad.in' }], note: CHECK,
+  },
+  {
+    id: 'abroad-erasmus', title: 'Erasmus Mundus Joint Master\'s scholarships (Europe)', scope: 'Study abroad',
+    levels: ['Degree', 'Engineering'],
+    gives: 'Full scholarship for a one- or two-year master\'s studied in two or more European countries: tuition, travel and a monthly allowance',
+    who: 'Graduates from any country, including India; each programme sets its own subject and marks rules',
+    when: 'Usually October to February, for courses starting the next September',
+    steps: [
+      'Browse the Erasmus Mundus catalogue and pick up to three programmes.',
+      'Apply directly to each programme\'s consortium website with your documents.',
+      'Selected students receive the scholarship along with admission.',
+    ],
+    links: [{ label: 'Erasmus+ (European Commission)', url: 'https://erasmus-plus.ec.europa.eu' }], note: CHECK,
+  },
+  {
+    id: 'abroad-mext', title: 'MEXT Japanese Government Scholarship', scope: 'Study abroad',
+    levels: ['Inter', 'Degree', 'Engineering', 'PG'],
+    gives: 'Full tuition, a monthly allowance and air fare to study in Japan (undergraduate, college of technology or research student)',
+    who: 'Indian students who have finished Class 12 (for undergraduate study) or a degree (for research and master\'s study), within the age limits',
+    when: 'Usually April to June, through the Embassy of Japan in India',
+    steps: [
+      'Watch the Embassy of Japan in India website for the MEXT notice.',
+      'Apply with your marks, a study plan and recommendation letters.',
+      'Write the screening tests and attend the interview at the embassy or consulate.',
+    ],
+    links: [{ label: 'Embassy of Japan in India', url: 'https://www.in.emb-japan.go.jp' }], note: CHECK,
+  },
+  {
+    id: 'abroad-hungaricum', title: 'Stipendium Hungaricum (Hungary)', scope: 'Study abroad',
+    levels: ['Inter', 'Degree', 'Engineering', 'PG'],
+    gives: 'Free tuition, a monthly stipend, a hostel place or housing allowance and medical insurance for bachelor\'s, master\'s or PhD study in Hungary',
+    who: 'Indian students after Class 12 (bachelor\'s) or after a degree (master\'s and PhD); India nominates candidates through the Ministry of Education',
+    when: 'Usually November to January',
+    steps: [
+      'Choose up to two courses on the Stipendium Hungaricum website.',
+      'Apply online on the scholarship portal before the deadline.',
+      'Apply for nomination through the Ministry of Education\'s scholarship portal when it opens; universities then hold entrance exams or interviews.',
+    ],
+    links: [{ label: 'Stipendium Hungaricum', url: 'https://stipendiumhungaricum.hu' }], note: CHECK,
+  },
+  {
+    id: 'abroad-inlaks', title: 'Inlaks Shivdasani scholarships', scope: 'Study abroad',
+    levels: ['Degree', 'Engineering', 'PG'],
+    gives: 'Up to about US$100,000 for tuition, living costs and travel at top universities in the USA, UK and Europe',
+    who: 'Indians under 30 with a good degree from an Indian university, living in India, who already hold or are applying for admission at a top foreign university',
+    when: 'Usually January to March',
+    steps: [
+      'Apply for admission at top universities abroad.',
+      'Apply online on the Inlaks website with your degree, essays and references.',
+      'Shortlisted candidates are interviewed in India.',
+    ],
+    links: [{ label: 'Inlaks Foundation', url: 'https://www.inlaksfoundation.org' }], note: CHECK,
+  },
+  {
+    id: 'abroad-loan-scholarships', title: 'J.N. Tata Endowment and K.C. Mahindra loan scholarships', scope: 'Study abroad',
+    levels: ['Degree', 'Engineering', 'PG'],
+    gives: 'Interest-free or low-cost loan scholarships (often a few lakh rupees) toward postgraduate study abroad, plus travel grants',
+    who: 'Indian graduates with good marks who have admission or are applying for a master\'s or PhD abroad',
+    when: 'J.N. Tata usually January to March; K.C. Mahindra usually March to April',
+    steps: [
+      'Apply online on each trust\'s website with marks, test scores and admission letters.',
+      'Attend the interview if shortlisted.',
+      'Repay the loan scholarship after the course, as the trust\'s rules say.',
+    ],
+    links: [{ label: 'J.N. Tata Endowment', url: 'https://www.jntataendowment.org' }, { label: 'K.C. Mahindra Education Trust', url: 'https://www.kcmet.org' }],
+    note: CHECK,
   },
 ];
