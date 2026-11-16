@@ -10,6 +10,8 @@ import { EXAM_GUIDE } from '../data/exam-guide';
 import { SCHOOL_CALENDAR, type CalendarEntry } from '../data/school-calendar';
 import { PRIVATE_JOBS } from '../data/private-jobs';
 import { PrivateCard } from '../components/PrivateCard';
+import { SCHOLARSHIPS } from '../data/scholarships';
+import { ScholarshipCard } from '../components/ScholarshipCard';
 
 const GUIDES: CalendarEntry[] = [...EXAM_GUIDE, ...JOB_CALENDAR, ...SCHOOL_CALENDAR];
 
@@ -23,7 +25,7 @@ const ALIASES: Record<string, string> = {
   'pcest': 'polycet', 'vizag': 'vizag', 'steel': 'steel', 'teacher': 'teach', 'dsc': 'dsc', 'tet': 'tet', 'mba': 'mba', 'mtech': 'm.tech', 'btech': 'b.tech',
   'private': 'private', 'it': 'it', 'software': 'software', 'bpo': 'bpo', 'apprentice': 'apprentice', 'internship': 'intern', 'delivery': 'delivery', 'pharma': 'pharma', 'nurse': 'nurs', 'iti': 'iti', 'doctor': 'mbbs', 'doctors': 'mbbs', 'nursing': 'nurs', 'ttd': 'ttd', 'tirumala': 'tirumala', 'bhel': 'bhel', 'csir': 'csir', 'drdo': 'drdo', 'isro': 'isro', 'hospital': 'hospital', 'engineer': 'engineer',
   'డాక్టర్': 'mbbs', 'डॉक्टर': 'mbbs', 'నర్సు': 'nurs', 'नर्स': 'nurs', 'ఇంజినీర్': 'engineer', 'इंजीनियर': 'engineer',
-  'ప్రైవేట్': 'private', 'प्राइवेट': 'private',
+  'ప్రైవేట్': 'private', 'प्राइवेट': 'private', 'epass': 'epass', 'nmms': 'nmms', 'nsp': 'scholarship', 'inspire': 'inspire', 'jnanabhumi': 'jnanabhumi', 'fee': 'fee',
 };
 
 export function Search({ initial }: { initial: string }) {
@@ -37,6 +39,7 @@ export function Search({ initial }: { initial: string }) {
   [profile, opps, q]);
   const guides = GUIDES.filter((e) => hit([e.school, e.sector, e.joins, e.who, e.gives, e.note, e.state, e.selection, e.url, e.match].join(' '))).slice(0, 12);
   const privs = PRIVATE_JOBS.filter((r) => hit(['private', r.title, r.sector, r.roles, r.who, r.quals.join(' '), r.state].join(' '))).slice(0, 8);
+  const schs = SCHOLARSHIPS.filter((x) => hit(['scholarship', x.title, x.scope, x.levels.join(' '), x.who, x.gives, x.id].join(' '))).slice(0, 8);
   const found = notices.filter((n) => n.status !== 'ignored' && hit(`${n.title} ${n.source_name} ${n.sector ?? ''}`)).slice(0, 20);
 
   return (
@@ -49,10 +52,10 @@ export function Search({ initial }: { initial: string }) {
       </form>
       {!words.length ? <p className="empty">{t('searchEmpty')}</p> : (
         <>
-          <p className="result-line">{results.length + guides.length + privs.length + found.length} {t('resultsCount')}</p>
-          {(guides.length > 0 || privs.length > 0) && <>
+          <p className="result-line">{results.length + guides.length + privs.length + schs.length + found.length} {t('resultsCount')}</p>
+          {(guides.length > 0 || privs.length > 0 || schs.length > 0) && <>
             <h2 className="section-h">{t('guidesFound')}</h2>
-            <div className="cal-grid">{guides.map((e) => <CalendarCard key={e.id} e={e} />)}{privs.map((r) => <PrivateCard key={r.id} r={r} />)}</div>
+            <div className="cal-grid">{guides.map((e) => <CalendarCard key={e.id} e={e} />)}{privs.map((r) => <PrivateCard key={r.id} r={r} />)}{schs.map((x) => <ScholarshipCard key={x.id} s={x} />)}</div>
           </>}
           <div className="grid">{results.map(({ opp, result }) => <OppCard key={opp.id} opp={opp} result={result} />)}</div>
           {found.length > 0 && (
@@ -70,7 +73,7 @@ export function Search({ initial }: { initial: string }) {
               </ul>
             </div>
           )}
-          {!results.length && !found.length && !guides.length && !privs.length && <p className="empty">{t('noResults')}</p>}
+          {!results.length && !found.length && !guides.length && !privs.length && !schs.length && <p className="empty">{t('noResults')}</p>}
         </>
       )}
     </section>
