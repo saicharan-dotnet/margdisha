@@ -1,0 +1,5 @@
+3d p-crossroads: ok (gemini-2.5-flash-image)
+3d p-beam: ok (gemini-2.5-flash-image)
+3d p-path: ok (gemini-2.5-flash-image)
+3d p-ui: ok (gemini-2.5-flash-image)
+3d p-sunrise: ok (gemini-2.5-flash-image)
