@@ -38,8 +38,18 @@ const PROMO = [
   ['p-beam2', 'p-cross2', `Edit this image: same student, same crossroads, same signposts with exactly the same words, same camera. A warm golden beam of light shaped like a glowing compass descends from the sky above him, casting warm golden light on him and the signs; the tangled signs start to straighten and glow gold. He looks up in wonder. No other text.`],
   ['p-sunrise', 'p-path', `${PSTYLE} Very wide establishing shot: the glowing golden pathway winding toward the glowing portals of a school, university, government building and modern office under a huge warm sunrise, the small figure of the student walking on it far away. Lots of calm open sky in the upper half. No text.`],
 ];
-const ASPECT = SET === 'promo' ? '16:9' : '9:16';
+// Photorealistic version of the same commercial (live-action look with VFX).
+const RSTYLE = 'Photorealistic cinematic live-action film still with high-end photorealistic VFX, shot on ARRI Alexa Mini LF with a 35mm lens, natural skin texture, realistic hair, shallow depth of field, volumetric haze, 16:9 widescreen. Not a cartoon, not 3D animation. No logos, no watermark.';
+const RKID = 'A real 18-year-old Indian student with short neat black hair, wearing a crisp white school shirt, navy blue tie, dark trousers and a dark backpack.';
+const PROMOREAL = [
+  ['r-cross', null, `${RSTYLE} ${RKID} He stands in the centre of a dark, misty, reflective studio space at night, full body visible. Floating around him in 3D space are translucent frosted-glass holographic arrow signs with subtle glowing blue edges, pointing in different directions. Exactly five signs, each clearly labelled in clean bold white letters: "10th", "12th", "Exams", "Jobs", "Scholarships". He looks up at the floating signs with an authentic, concerned expression. Cool blue tones. No other text.`],
+  ['r-beam', 'r-cross', `Edit this image: same real student, same pose, same signs with exactly the same words, same camera. Overhead, a realistic golden holographic compass projects warm amber volumetric light rays downward, lighting dust motes in the air and turning the frosted-glass arrows from cool blue to warm sunlit gold. Warm natural rim light on his face and clothes; his expression changes from worry to awe and hope. Subtle 35mm anamorphic lens flare. No other text.`],
+  ['r-path', null, `${RSTYLE} Over-the-shoulder wide shot from behind the same kind of student (white school shirt, navy tie, dark trousers, backpack, short black hair) standing on a sleek dark reflective glass walkway lined with warm golden LED strips. Ahead of him stand five tall glowing rectangular light portals side by side against a real golden-hour sunset sky. Inside each portal is a real-world view, from left to right: an Indian government building with a dome, a prestigious school campus, a historic Indian university clock tower (centre, tallest portal), a modern glass corporate skyscraper, and a modern IT office park. Leave clear sky above each portal. Realistic reflections on the floor. No text.`],
+  ['r-ui', 'r-path', `${RSTYLE} Medium shot of the same real student (white school shirt, navy tie, backpack) walking slowly along the illuminated golden glass walkway at sunset, on the LEFT third of the frame, smiling naturally and gesturing with his left hand toward the empty space on the RIGHT side of the frame. The right half of the frame is soft sunset bokeh with the glowing portals far behind, left empty for a floating interface to be added later. Authentic skin tones, natural fabric. No interface, no text.`],
+];
+const ASPECT = SET.startsWith('promo') ? '16:9' : '9:16';
 if (SET === 'promo') SHOTS.splice(0, SHOTS.length, ...PROMO);
+else if (SET === 'promoreal') SHOTS.splice(0, SHOTS.length, ...PROMOREAL);
 else if (process.env.MOODS === '1') SHOTS.push(...MOODS);
 async function gen(prompt, refPath) {
   const parts = [{ text: prompt }];
