@@ -17,8 +17,11 @@ export function Matches({ initialKind = 'all' }: { initialKind?: OpportunityKind
   const shown = matched.filter((m) => kind === 'all' || m.opp.kind === kind);
   const [scope, setScope] = useState<SchScope | 'all'>(() => (profile.state === 'Telangana' || profile.state === 'Andhra Pradesh' ? profile.state : 'all'));
   const [lvl, setLvl] = useState<SchLevel | 'all'>('all');
-  const sch = SCHOLARSHIPS.filter((s) => (scope === 'all' || s.scope === scope || (scope !== 'Private' && s.scope === 'Central')) && (lvl === 'all' || s.levels.includes(lvl)));
-  const guide = kind === 'scholarship';
+  const abroad = kind === 'abroad';
+  const guide = kind === 'scholarship' || abroad;
+  const inScope = (s: (typeof SCHOLARSHIPS)[number]) => abroad ? s.scope === 'Study abroad'
+    : scope === 'all' || s.scope === scope || s.state === scope || ((scope === 'Telangana' || scope === 'Andhra Pradesh') && s.scope === 'Central');
+  const sch = SCHOLARSHIPS.filter((s) => inScope(s) && (lvl === 'all' || s.levels.includes(lvl)));
   return (
     <section className="page">
       <h1>{t('navMatches')}</h1>
@@ -30,9 +33,9 @@ export function Matches({ initialKind = 'all' }: { initialKind?: OpportunityKind
         <div className="group">
           <h2>{t('schGuideTitle')} <span className="count">{sch.length}</span></h2>
           <p className="muted small">{t('schGuideIntro')}</p>
-          <div className="chips">
+          {!abroad && <div className="chips">
             {(['all', ...SCH_SCOPES] as const).map((k) => <button key={k} className={'chip ' + (k === scope ? 'on' : '')} onClick={() => setScope(k)}>{k === 'all' ? t('all') : k}</button>)}
-          </div>
+          </div>}
           <div className="chips">
             {(['all', ...SCH_LEVELS] as const).map((k) => <button key={k} className={'chip ' + (k === lvl ? 'on' : '')} onClick={() => setLvl(k)}>{k === 'all' ? t('all') : k}</button>)}
           </div>

@@ -34,7 +34,7 @@ export function Home() {
     ['school', 'schools', n((k) => k === 'school-admission'), t('school-admission'), t('schoolTile'), 'school'],
     ['exam', 'exams', 0, t('examsTitle'), t('examsTile'), 'exam'],
     ['pvt', 'jobs-private', n((k) => k === 'private-job' || k === 'internship'), `${t('private-job')} & ${t('internship')}`, 'Freshers · Work from home · Near you', 'briefcase'],
-    ['sch', 'matches-scholarship', n((k) => k === 'scholarship'), t('scholarship'), 'Central · Telangana · Andhra Pradesh · Private', 'shield'],
+    ['sch', 'matches-scholarship', n((k) => k === 'scholarship'), t('scholarship'), 'Central · Telangana · Andhra Pradesh · Private · Abroad', 'shield'],
   ];
 
   return (

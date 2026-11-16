@@ -69,7 +69,7 @@ export const META: Record<string, [string, string]> = {
   schools: ['School admissions: Navodaya, Sainik, KV, Gurukul | MargDisha',
     'When admission forms open for Kendriya Vidyalaya Class 1, Gurukul Class 5 (TGCET, AP), Navodaya Class 6 and 9, Sainik and Military Schools, EMRS and the NMMS scholarship.'],
   matches: ['Scholarships, entrance exams and opportunities for you | MargDisha', 'Scholarships, entrance exams, skill courses and study abroad options that match your qualification.'],
-  'matches-scholarship': ['Scholarships for students in India | MargDisha', 'Central, Telangana, Andhra Pradesh and private scholarships with eligibility and last dates.'],
+  'matches-scholarship': ['Scholarships for students in India | MargDisha', 'Central, Telangana, Andhra Pradesh, private and study-abroad scholarships with eligibility, amounts and how to apply.'],
   'matches-exam': ['Entrance exams after 10th and 12th | MargDisha', 'Entrance exams for engineering, medical, polytechnic, degree and government courses.'],
   updates: ['Latest updates from official websites | MargDisha', 'New notices collected automatically from official government websites every few hours.'],
   about: ['About MargDisha', 'What MargDisha is, where its information comes from, and how to contact us.'],
