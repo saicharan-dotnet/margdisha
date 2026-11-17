@@ -31,7 +31,7 @@ console.log(`${all.length} notices read, ${fresh.length} new and usable, making 
 const RULES = `You write scripts for 15-second vertical YouTube Shorts for MargDisha.com, a free Indian website that helps students and parents find school admissions, entrance exams, scholarships and government and private jobs, and links to official notices.
 Use ONLY the facts in the notice title and source below. Never invent dates, numbers of posts, fees, eligibility or deadlines. Never promise selection, admission or a job. Expand common abbreviations only if certain (for example SSC = Staff Selection Commission). Keep it energetic, clear Indian English.
 Return JSON with:
-- usable: false if the title is not a real notice students would care about (for example a menu link, tender, RTI, court case, or unclear text); else true
+- usable: true ONLY if the notice is something a student, parent or job seeker can act on: an application or registration opening, recruitment, admission, admit card, exam date or schedule, result, answer key, merit list, counselling, cut-off or scholarship. false for news stories, events, speeches, visits, awards, tenders, RTI, court cases, internal circulars, menu links or unclear text
 - name: the exam, scheme or organisation in at most 22 characters (for example "NVS", "SSC CGL 2026", "TS ePASS")
 - badge: what happened in at most 18 characters, chosen from words in the title (for example "Result Out", "Admit Card", "Apply Now", "Answer Key", "New Notice")
 - hook: a punchy hook of at most 34 characters

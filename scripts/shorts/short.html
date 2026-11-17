@@ -74,7 +74,7 @@ window.setT=function(t){
   $('flash').style.opacity=Math.exp(-Math.pow((t-1.85)/.25,2))*.7;
   const b=back(ramp(t,2.3,2.8));$('badge').style.opacity=ramp(t,2.3,2.5);$('badge').style.transform=`scale(${.4+.6*b})`;
   $('upd').style.opacity=ramp(t,2.7,3.2);
-  SUBS.forEach((s,i)=>{$('sb'+i).style.opacity=Math.min(ramp(t,s[0]-.05,s[0]+.15),1-ramp(t,s[1]-.05,s[1]+.12),1-ramp(t,ctaAt-.2,ctaAt))});
+  SUBS.forEach((s,i)=>{$('sb'+i).style.opacity=Math.min(ramp(t,s[0]-.05,s[0]+.15),1-ramp(t,s[1]-.05,s[1]+.12),1-ramp(t,ctaAt-.2,ctaAt),ramp(t,1.4,1.7))});
   const c=out(ramp(t,ctaAt,ctaAt+.5));$('cta').style.opacity=c;$('cta').style.transform=`translateY(${(1-c)*24}px)`;
   $('black').style.opacity=ramp(t,END-.5,END);
   cx.clearRect(0,0,540,960);
