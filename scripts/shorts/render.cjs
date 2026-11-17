@@ -25,7 +25,7 @@ const sh = (cmd, args) => execFileSync(cmd, args, { stdio: ['ignore', 'pipe', 'i
     sh('ffmpeg', ['-loglevel', 'error', '-y', '-framerate', '30', '-i', path.join(fr, '%04d.jpg'), '-i', path.join(dir, 'music.wav'), '-i', path.join(dir, 'v.wav'),
       '-filter_complex', `[2]adelay=${V0 * 1000}|${V0 * 1000},aresample=44100,pan=stereo|c0=c0|c1=c0,highpass=f=80,acompressor=threshold=-18dB:ratio=3:attack=5:release=80,volume=1.6,apad,asplit[v1][sc];[1]volume=0.5[m];[m][sc]sidechaincompress=threshold=0.02:ratio=8:attack=20:release=450[duck];[duck][v1]amix=inputs=2:normalize=0,loudnorm=I=-14:TP=-1.5,atrim=0:${END}[a]`,
       '-map', '0:v', '-map', '[a]', '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '192k', '-t', String(END), '-movflags', '+faststart', mp4]);
-    fs.writeFileSync(path.join(OUT, `short-${id}.txt`), `TITLE\n${job.title}\n\nDESCRIPTION\n${job.description}\n\nTAGS\n${job.tags.join(', ')}\n`);
+    fs.writeFileSync(path.join(OUT, `short-${id}.txt`), `TITLE\n${job.title}\n\nDESCRIPTION\n${job.description}\n\nTAGS\n${job.tags.join(', ')}\n\nPINNED COMMENT (post it under the video, then pin it)\n${job.comment || ''}\n`);
     fs.rmSync(fr, { recursive: true, force: true });
     console.log(`rendered ${mp4} (${END.toFixed(1)} s)`);
   }

@@ -82,12 +82,14 @@ for (const n of picks) {
   writeFileSync(`${dir}/voice.wav`, audio);
   let title = cut(g.youtube_title, 70); if (!/#Shorts$/.test(title)) title = cut(title.replace(/\s*#Shorts$/i, ''), 61) + ' #Shorts';
   const tags = [...new Set(['MargDisha', 'EducationUpdates', 'Shorts', ...(g.tags || []).map((t) => String(t).replace(/^#/, '').trim()).filter(Boolean)])].slice(0, 12);
-  const description = [cut(g.summary, 400), '',
-    `Official notice: ${n.url}`, `Source: ${n.source_name}`, '',
+  // The description has no web links (YouTube blocks them on new channels, and Shorts links are not clickable).
+  // The links go in a separate comment for the uploader to post and pin.
+  const description = [cut(g.summary, 400), '', `Source: ${n.source_name}. Official link in the pinned comment.`, '',
     'MargDisha collects official notices and links you to the official website for free. Always read the full official notification before applying. We do not guarantee selection or admission.', '',
-    'Find exams, jobs, school admissions and scholarships free: https://margdisha.com', '', tags.map((t) => '#' + t.replace(/\s+/g, '')).join(' ')].join('\n');
+    'Exams, jobs, school admissions and scholarships, free on MargDisha.', '', tags.map((t) => '#' + t.replace(/\s+/g, '')).join(' ')].join('\n');
+  const comment = [`Official notice: ${n.url}`, 'More free updates: https://margdisha.com'].join('\n');
   const job = { id: n.id, area: n.area, areaLabel: AREA[n.area] || 'Updates', source: n.source_name, noticeTitle: n.title, url: n.url,
-    name: cut(g.name, 24), badge: cut(g.badge, 20), hook: cut(g.hook, 40), update: cut(g.update, 90), voiceover: vo, title, description, tags };
+    name: cut(g.name, 24), badge: cut(g.badge, 20), hook: cut(g.hook, 40), update: cut(g.update, 90), voiceover: vo, title, description, comment, tags };
   writeFileSync(`${dir}/job.json`, JSON.stringify(job, null, 2));
   console.log(`  ok: ${title}`); made.push(n.id); done.add(n.id);
 }
