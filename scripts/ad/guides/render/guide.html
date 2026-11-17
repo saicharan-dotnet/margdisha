@@ -1,8 +1,8 @@
 <!doctype html>
 <html><head><meta charset="utf-8">
 <style>
-@font-face{font-family:'NTel';src:url('../fonts/NotoSansTelugu.ttf')}
-@font-face{font-family:'NDev';src:url('../fonts/NotoSansDevanagari.ttf')}
+@font-face{font-family:'NTel';src:url('../fonts/NotoSansTelugu.ttf');font-weight:100 900}
+@font-face{font-family:'NDev';src:url('../fonts/NotoSansDevanagari.ttf');font-weight:100 900}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1920px;height:1080px;overflow:hidden;background:#061614;font-family:'Inter Display','Inter','NTel','NDev',sans-serif;color:#fff}
 #bgbase{position:absolute;inset:0;background:radial-gradient(1300px 900px at 70% 35%,#16463f 0%,#0b2522 50%,#051311 100%)}
@@ -56,6 +56,8 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:#061614;font-fam
 .e-free{font:700 38px 'Inter','NTel','NDev';color:#e8f5f2}
 .e-sub{display:inline-flex;align-items:center;gap:16px;font:800 40px 'Inter';background:#e62117;padding:14px 36px;border-radius:999px;box-shadow:0 10px 40px rgba(230,33,23,.45)}
 .e-sub small{font:700 30px 'Inter';opacity:.9}
+.Lte *{font-family:'NTel','NDev','Inter Display','Inter',sans-serif !important}.Lhi *{font-family:'NDev','NTel','Inter Display','Inter',sans-serif !important}
+.L .t-h{font-size:92px;line-height:1.15;letter-spacing:-1px}.L .p-h{font-size:66px;line-height:1.2;letter-spacing:-1px;top:150px}.L .p-bar{top:262px}.L .card{font-size:34px;line-height:1.35;min-height:100px}.L .w-left .p-h{font-size:62px}.L .chip{font-size:30px}.L .subt{font-size:36px;line-height:1.4;top:960px}
 .subt{position:absolute;left:120px;right:120px;top:968px;text-align:center;font:700 40px/1.25 'Inter Display';text-shadow:0 2px 14px rgba(0,0,0,.95),0 0 3px #000;opacity:0}
 #flash{position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(255,245,215,1),rgba(255,205,110,.5) 40%,transparent 75%);opacity:0;mix-blend-mode:screen}
 #black{position:absolute;inset:0;background:#000;opacity:1}
@@ -78,13 +80,14 @@ const ramp=(t,a,b)=>cl((t-a)/(b-a));
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const G=window.G, TL=window.TL; const END=TL.end; const SC=G.scenes;
 const COVER=`url(${G.cover}.png)`;
+if(G.lang&&G.lang!=='en')document.body.classList.add('L','L'+G.lang);
 $('bgimg').style.backgroundImage=`url(${G.cover}-blur.jpg)`; $('gt').textContent=G.title;
 const CHECK='<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
 // scene windows: [from, to, voiceStart, voiceDur]
 const W=SC.map((s,i)=>{const [vs,vd]=TL.v[i];const from=i==0?0:vs-.45;const to=i==SC.length-1?END:TL.v[i+1][0]-.45;return [from,to,vs,vd]});
 $('scenes').innerHTML=SC.map((s,i)=>{
   if(s.type==='title')return `<div class="scene" id="sc${i}"><div class="t-img" id="ti${i}" style="background-image:${COVER}"></div><div class="t-sh"></div>
-    <div class="t-box"><span class="t-k">Free guide</span><div class="t-h">${esc(G.title)}</div><div class="t-s">${esc(G.sub)}</div></div></div>`;
+    <div class="t-box"><span class="t-k">${G.lang==='te'?'ఉచిత గైడ్':G.lang==='hi'?'मुफ़्त गाइड':'Free guide'}</span><div class="t-h">${esc(G.title)}</div><div class="t-s">${esc(G.sub)}</div></div></div>`;
   if(s.type==='points'||s.type==='steps')return `<div class="scene" id="sc${i}"><div class="p-h">${esc(s.h)}</div><div class="p-bar"></div>
     <div class="p-list">${s.items.map((x,j)=>`<div class="card"><span class="ic">${s.type==='steps'?j+1:CHECK}</span><span>${esc(x)}</span></div>`).join('')}</div>
     <div class="p-img"><div style="background-image:${COVER};background-position:${G.pos||"62% 50%"}"></div></div></div>`;
@@ -92,8 +95,8 @@ $('scenes').innerHTML=SC.map((s,i)=>{
     <div class="w-win"><div class="w-bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><div class="w-url"><b>margdisha.com</b>${esc(G.web[1])}</div></div><div class="w-view"><img src="shots/${G.web[0]}"></div></div></div>`;
   return `<div class="scene" id="sc${i}"><div class="e-row"><img src="logo.png"><div>MargDisha</div></div>
     <div class="e-c" style="top:450px"><span class="e-url">margdisha.com</span></div>
-    <div class="e-c e-free" style="top:600px">100% free · Official links · English · తెలుగు · हिन्दी</div>
-    <div class="e-c" style="top:700px"><span class="e-sub">▶ Subscribe <small>@margdishaindia</small></span></div></div>`;
+    <div class="e-c e-free" style="top:600px">${G.lang==='te'?'100% ఉచితం · అధికారిక లింకులు · తెలుగు · English · हिन्दी':G.lang==='hi'?'100% मुफ़्त · आधिकारिक लिंक · हिन्दी · English · తెలుగు':'100% free · Official links · English · తెలుగు · हिन्दी'}</div>
+    <div class="e-c" style="top:700px"><span class="e-sub">▶ ${G.lang==='te'?'సబ్‌స్క్రైబ్':G.lang==='hi'?'सब्सक्राइब':'Subscribe'} <small>@margdishaindia</small></span></div></div>`;
 }).join('');
 // subtitles: about 8 words per chunk, timed by word share
 const SUBS=[];
