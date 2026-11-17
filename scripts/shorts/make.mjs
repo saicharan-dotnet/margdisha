@@ -41,12 +41,16 @@ Return JSON with:
 - summary: two sentences summarising the notice for the video description, only from the title and source
 - tags: 6 to 10 short tags without # (include MargDisha and the exam or organisation name)`;
 
+// Text models to try, newest first; the first one this Google project can use is kept.
+const MODELS = (process.env.TEXT_MODELS || 'gemini-3-flash-preview,gemini-3.0-flash,gemini-2.5-flash,gemini-2.5-flash-lite,gemini-2.0-flash-001,gemini-flash-latest').split(',');
 async function gemini(n) {
   const body = { contents: [{ role: 'user', parts: [{ text: `${RULES}\n\nNotice title: ${n.title}\nSource: ${n.source_name}\nArea: ${AREA[n.area] || n.area}\nOfficial link: ${n.url}` }] }],
     generationConfig: { responseMimeType: 'application/json', temperature: 0.4 } };
-  for (let i = 0; i < 4; i++) {
-    const res = await fetch(`https://aiplatform.googleapis.com/v1/publishers/google/models/gemini-2.5-flash:generateContent?key=${VKEY}`,
+  for (let i = 0; i < 6; i++) {
+    const model = MODELS[0];
+    const res = await fetch(`https://aiplatform.googleapis.com/v1/publishers/google/models/${model}:generateContent?key=${VKEY}`,
       { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+    if (res.status === 404 && MODELS.length > 1) { console.log(`  ${model} not available, trying ${MODELS[1]}`); MODELS.shift(); i--; continue; }
     const j = await res.json().catch(() => ({}));
     const txt = j.candidates?.[0]?.content?.parts?.map((p) => p.text || '').join('') || '';
     if (txt) { try { return JSON.parse(txt.replace(/^```json|```$/g, '')); } catch { console.log('  bad JSON', txt.slice(0, 200)); } }
@@ -67,7 +71,8 @@ const made = [];
 for (const n of picks) {
   console.log(`- [${n.area}] ${n.title} (${n.source_name})`);
   const g = await gemini(n);
-  if (!g || g.usable === false) { console.log('  skipped (not usable)'); done.add(n.id); continue; }
+  if (!g) { console.log('  skipped (script failed, will retry next run)'); continue; }
+  if (g.usable === false) { console.log('  skipped (not a useful notice)'); done.add(n.id); continue; }
   let vo = String(g.voiceover || '').trim();
   if (!/Marg Disha dot com\.?$/i.test(vo)) vo = vo.replace(/[.!]?$/, '.') + ' Check the official notice free on Marg Disha dot com.';
   if (vo.split(/\s+/).length > 44) { console.log('  skipped (voiceover too long)'); continue; }
