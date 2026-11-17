@@ -49,8 +49,17 @@ const PROMOREAL = [
   ['r-path', null, `${RSTYLE} Over-the-shoulder wide shot from behind the same kind of student (white school shirt, navy tie, dark trousers, backpack, short black hair) standing on a sleek dark reflective glass walkway lined with warm golden LED strips. Ahead of him stand five tall glowing rectangular light portals side by side against a real golden-hour sunset sky. Inside each portal is a real-world view, from left to right: an Indian government building with a dome, a prestigious school campus, a historic Indian university clock tower (centre, tallest portal), a modern glass corporate skyscraper, and a modern IT office park. Leave clear sky above each portal. Realistic reflections on the floor. No text.`],
   ['r-ui', 'r-path', `${RSTYLE} Medium shot of the same real student (white school shirt, navy tie, backpack) walking slowly along the illuminated golden glass walkway at sunset, on the LEFT third of the frame, smiling naturally and gesturing with his left hand toward the empty space on the RIGHT side of the frame. The right half of the frame is soft sunset bokeh with the glowing portals far behind, left empty for a floating interface to be added later. Authentic skin tones, natural fabric. No interface, no text.`],
 ];
+// 9:16 scholarship Reel (photorealistic): worry about fees, discovery on the phone, relief with a parent.
+const SSTYLE = 'Photorealistic cinematic film still, shot on a 35mm cinema lens, authentic natural skin texture, realistic hair and clothing, shallow depth of field, vertical 9:16 frame. Not a cartoon, not 3D. No logos, no watermark.';
+const GIRL = 'an Indian 17-year-old girl student who just finished 12th class, long black hair in a neat braid, wearing a simple light-blue cotton kurta';
+const SCHOLAR = [
+  ['s-worry', null, `${SSTYLE} Medium close-up of ${GIRL}, sitting at a wooden study table at home in dim warm evening lamp light, looking stressed and worried while holding a college admission brochure in one hand and a calculator in the other; a few fee papers on the table. Keep the top 15 percent and the bottom 25 percent of the frame plain and uncluttered (dark wall above, plain table below). No readable text.`],
+  ['s-phone', 's-worry', `${SSTYLE} Over-the-shoulder shot from behind the same girl (same braid, same light-blue kurta) at the same study table, holding a smartphone and tapping its bright screen with her thumb. Warm golden light from the phone fills the room. Keep the CENTRE of the frame above the phone open, softly blurred and uncluttered so graphics can be added later. The phone screen is a plain bright glow with no readable text.`],
+  ['s-happy', 's-worry', `${SSTYLE} Medium shot of the same girl (same braid, same light-blue kurta) smiling brightly next to her proud mother (Indian woman about 45, in a cotton saree) in a sunlit Indian living room, both holding one smartphone together, warm morning sunlight streaming through the window. Their faces are in the upper half of the frame; the lower-middle part of the frame is clean, simple background (sofa and floor) for text to be added. No readable text.`],
+];
 const ASPECT = SET.startsWith('promo') ? '16:9' : '9:16';
-if (SET === 'promo') SHOTS.splice(0, SHOTS.length, ...PROMO);
+if (SET === 'scholar') SHOTS.splice(0, SHOTS.length, ...SCHOLAR);
+else if (SET === 'promo') SHOTS.splice(0, SHOTS.length, ...PROMO);
 else if (SET === 'promoreal') SHOTS.splice(0, SHOTS.length, ...PROMOREAL);
 else if (process.env.MOODS === '1') SHOTS.push(...MOODS);
 async function gen(prompt, refPath) {

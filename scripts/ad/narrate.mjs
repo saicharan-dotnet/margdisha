@@ -1,9 +1,10 @@
 // Narrator voice lines for the 16:9 commercial (Google Text-to-Speech, Indian English).
 // Run by the "Make ad assets" workflow with set=promo-voice. Output: ad-out/promo/v<n>-<m|f>.wav
 import { mkdirSync, writeFileSync } from 'node:fs';
-const TTS = process.env.GOOGLE_TTS_API_KEY; const OUT = 'ad-out/promo'; mkdirSync(OUT, { recursive: true });
+const TTS = process.env.GOOGLE_TTS_API_KEY; const NARR = process.env.NARR || 'promo'; const OUT = `ad-out/${NARR}`; mkdirSync(OUT, { recursive: true });
 const log = []; const note = (s) => { console.log(s); log.push(s); };
-const LINES = {
+const ALL = {};
+ALL.promo = {
   v1: 'Tenth done. Twelfth done.',
   v2: 'Now... which way?',
   v3: 'Marg Disha shows you the way.',
@@ -11,6 +12,12 @@ const LINES = {
   v5: 'Every path, step by step. All in one free website.',
   v6: 'Marg Disha dot com. Your way after tenth, twelfth, and degree.',
 };
+ALL.scholar = {
+  v1: "Don't let college or school fees stop your dreams after tenth, Inter, or degree.",
+  v2: 'On Marg Disha dot com, just select your qualification and discover Central, Telangana, Andhra Pradesh, and private scholarships you can apply for.',
+  v3: 'One hundred percent free, with direct official links, in English, Telugu, and Hindi. Check your scholarships today at Marg Disha dot com!',
+};
+const LINES = ALL[NARR] || ALL.promo;
 const VOICES = { m: ['en-IN-Chirp3-HD-Charon', 'en-IN-Neural2-B'], f: ['en-IN-Chirp3-HD-Kore', 'en-IN-Neural2-A'] };
 async function speak(text, who) {
   for (const name of VOICES[who]) {
