@@ -16,7 +16,7 @@ on:
         default: '3'
       voice:
         description: 'Google voice (en-IN-Chirp3-HD-Charon = male, en-IN-Chirp3-HD-Kore = female)'
-        default: 'en-IN-Chirp3-HD-Charon'
+        default: 'en-IN-Chirp3-HD-Kore'
 
 permissions:
   contents: write
@@ -45,7 +45,7 @@ jobs:
           GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
           COUNT: ${{ github.event.inputs.count || '3' }}
           DAYS: ${{ github.event.inputs.days || '3' }}
-          VOICE: ${{ github.event.inputs.voice || 'en-IN-Chirp3-HD-Charon' }}
+          VOICE: ${{ github.event.inputs.voice || 'en-IN-Chirp3-HD-Kore' }}
       - name: Render the videos
         run: |
           if [ "$(cat shorts-out/made.json)" = "[]" ]; then echo "No new Shorts today."; exit 0; fi

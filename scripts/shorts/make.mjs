@@ -8,7 +8,7 @@ const PUB = 'sb_publishable_DsgrdpIRi7RHuOwtqi6RWw_vC7uRw91'; // public read key
 const VKEY = process.env.VERTEX_API_KEY, TTS = process.env.GOOGLE_TTS_API_KEY;
 const COUNT = Number(process.env.COUNT || 3);
 const DAYS = Number(process.env.DAYS || 3);
-const VOICE = process.env.VOICE || 'en-IN-Chirp3-HD-Charon';
+const VOICE = process.env.VOICE || 'en-IN-Chirp3-HD-Kore';
 const STATE = process.env.STATE || 'state/processed.json';
 const OUT = 'shorts-out'; mkdirSync(OUT, { recursive: true });
 const done = new Set(existsSync(STATE) ? JSON.parse(readFileSync(STATE, 'utf8')) : []);
