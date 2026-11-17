@@ -63,18 +63,30 @@ SCHOLAR.push(
   ['s-phone2', 's-worry2', `${SSTYLE} ${FULL} Over-the-shoulder shot from behind the same girl (same braid, same light-blue kurta) at the same study table, her shoulder and braid in the lower right, holding a smartphone in the lower part of the frame and tapping its bright screen. Warm golden light from the phone fills the room. The upper and middle part of the frame is the softly blurred room, open and uncluttered. The phone screen is a plain bright glow with no readable text.`],
   ['s-happy2', 's-worry2', `${SSTYLE} ${FULL} The same girl (same braid, same light-blue kurta) smiling brightly, standing close beside her proud mother (Indian woman about 45 in a cotton saree) in a sunlit Indian living room, the mother's arm around her shoulder, both looking at one smartphone the girl holds, warm morning sunlight streaming through the window behind. Their faces in the upper-middle part of the frame, framed from the waist up. No readable text.`],
 );
+// 3D scholarship ads: a 16:9 commercial (k-*) and a 9:16 Reel (v-*), same student and style.
+const KSTYLE = 'Stylized 3D animated feature film style with vibrant Pixar-inspired cinematic lighting, expressive character, clean high-detail 3D textures, soft depth of field. No logos, no watermark, no readable text.';
+const KSTU = 'a young Indian college student about 18, short neat black hair, wearing a college uniform: white shirt, navy blazer with no logo, navy trousers';
+const KEYS = [
+  ['k-desk', null, `${KSTYLE} Widescreen 16:9. ${KSTU} sits at a study desk in his room in cool blue evening light, a desk lamp, a few papers and a closed laptop, looking worried and overwhelmed, hand on his forehead. He is in the centre; lots of empty dark air around him on both sides and above, for floating graphics to be added later. Full frame, no borders.`, '16:9'],
+  ['k-desk-gold', 'k-desk', `Edit this image: same student, same room, same camera. A warm golden glow now comes from in front of him (from below the camera), lighting his face gold; the room turns from cool blue to warm amber. His expression changes to amazed and hopeful, eyes wide, small smile, hand lowered. No text.`, '16:9'],
+  ['k-path', 'k-desk', `${KSTYLE} Widescreen 16:9. Wide shot from behind: the same student (white shirt, navy blazer, short black hair) walking with his proud mother (in a saree) and father (in a shirt) along a bright glowing golden pathway that leads up to grand gates of a sunlit Indian university campus with a clock tower and green lawns, warm sunrise sky, golden light particles in the air. Lots of open sky in the upper third. Full frame, no borders.`, '16:9'],
+  ['v-desk', 'k-desk', `${KSTYLE} Vertical 9:16 portrait composition that fills the entire frame edge to edge, no borders. Medium shot of the same student (white shirt, navy blazer, short black hair) standing in his room in dim cool-blue twilight light, holding a tall stack of college fee brochures against his chest, looking overwhelmed and worried. Plenty of empty air around his head and on the sides for floating graphics. No text.`, '9:16'],
+  ['v-glow', 'k-desk-gold', `${KSTYLE} Vertical 9:16 portrait composition that fills the entire frame edge to edge, no borders. A soft, out-of-focus warm golden abstract background: blurred room with golden bokeh lights and floating light particles, brighter in the centre. No people, no objects in focus, no text.`, '9:16'],
+  ['v-gates', 'k-path', `${KSTYLE} Vertical 9:16 portrait composition that fills the entire frame edge to edge, no borders. Wide tracking shot of the same smiling student (white shirt, navy blazer) walking confidently through grand sunlit university gates, his proud mother (saree) and father beside him, all three seen from the front and smiling, warm morning sun and gentle lens flare behind them, golden light. The upper quarter of the frame is open bright sky. No text.`, '9:16'],
+];
 const ASPECT = SET.startsWith('promo') ? '16:9' : '9:16';
-if (SET === 'scholar') SHOTS.splice(0, SHOTS.length, ...SCHOLAR);
+if (SET === 'keys3d') SHOTS.splice(0, SHOTS.length, ...KEYS);
+else if (SET === 'scholar') SHOTS.splice(0, SHOTS.length, ...SCHOLAR);
 else if (SET === 'promo') SHOTS.splice(0, SHOTS.length, ...PROMO);
 else if (SET === 'promoreal') SHOTS.splice(0, SHOTS.length, ...PROMOREAL);
 else if (process.env.MOODS === '1') SHOTS.push(...MOODS);
-async function gen(prompt, refPath) {
+async function gen(prompt, refPath, aspect = ASPECT) {
   const parts = [{ text: prompt }];
   if (refPath) parts.unshift({ inlineData: { mimeType: 'image/png', data: readFileSync(refPath).toString('base64') } });
   for (const model of ['gemini-2.5-flash-image', 'gemini-2.5-flash-image', 'gemini-2.5-flash-image', 'gemini-2.5-flash-image']) {
     const r = await fetch(`https://aiplatform.googleapis.com/v1/publishers/google/models/${model}:generateContent?key=${KEY}`, {
       method: 'POST', headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ contents: [{ role: 'user', parts }], generationConfig: { responseModalities: ['IMAGE'], imageConfig: { aspectRatio: ASPECT } } }),
+      body: JSON.stringify({ contents: [{ role: 'user', parts }], generationConfig: { responseModalities: ['IMAGE'], imageConfig: { aspectRatio: aspect } } }),
     });
     const j = await r.json().catch(() => ({}));
     const img = j.candidates?.[0]?.content?.parts?.find((p) => p.inlineData)?.inlineData?.data;
@@ -85,10 +97,10 @@ async function gen(prompt, refPath) {
   return null;
 }
 if (!KEY) note('VERTEX_API_KEY is not set');
-else for (const [name, ref, prompt] of SHOTS) {
+else for (const [name, ref, prompt, aspect] of SHOTS) {
   if (existsSync(`${OUT}/${name}.png`)) { note(`3d ${name}: already made`); continue; }
   const rp = ref ? `${OUT}/${ref}.png` : null;
-  const res = await gen(prompt, rp && existsSync(rp) ? rp : null);
+  const res = await gen(prompt, rp && existsSync(rp) ? rp : null, aspect || ASPECT);
   if (res) { writeFileSync(`${OUT}/${name}.png`, Buffer.from(res.img, 'base64')); note(`3d ${name}: ok (${res.model})`); } else note(`3d ${name}: FAILED`);
 }
 writeFileSync(`${OUT}/log.txt`, log.join('\n') + '\n');
