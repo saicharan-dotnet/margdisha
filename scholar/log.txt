@@ -1,0 +1,4 @@
+  gemini-2.5-flash-image: HTTP 200 "NO_IMAGE"
+3d s-worry: ok (gemini-2.5-flash-image)
+3d s-phone: ok (gemini-2.5-flash-image)
+3d s-happy: ok (gemini-2.5-flash-image)
