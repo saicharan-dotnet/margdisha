@@ -1,0 +1,4 @@
+3d g-sainik: ok (gemini-2.5-flash-image)
+3d g-kv: ok (gemini-2.5-flash-image)
+3d g-scholar: ok (gemini-2.5-flash-image)
+3d g-career: ok (gemini-2.5-flash-image)
