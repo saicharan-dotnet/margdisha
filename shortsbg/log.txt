@@ -1,0 +1,4 @@
+3d bg-school: ok (gemini-2.5-flash-image)
+3d bg-job: ok (gemini-2.5-flash-image)
+3d bg-exam: ok (gemini-2.5-flash-image)
+3d bg-scholarship: ok (gemini-2.5-flash-image)
