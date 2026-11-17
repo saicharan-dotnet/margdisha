@@ -232,7 +232,7 @@ export function App() {
         {isAdmin && hiddenCount > 0 && <div className="banner" role="note"><div className="banner-in">{t('adminPreview').replace('{n}', String(hiddenCount))}</div></div>}
         <main>{page(route)}</main>
         <footer className="foot">
-          <nav className="foot-links"><a href={hrefFor('about')}>About</a><a href={hrefFor('privacy')}>Privacy policy</a><a href={hrefFor('terms')}>Terms of use</a><a href={'mailto:' + SITE.contactEmail}>Contact</a></nav>
+          <nav className="foot-links"><a href={hrefFor('about')}>About</a><a href={hrefFor('privacy')}>Privacy policy</a><a href={hrefFor('terms')}>Terms of use</a><a href={'mailto:' + SITE.contactEmail}>Contact</a><a href={SITE.youtube} target="_blank" rel="noreferrer">YouTube</a></nav>
           <p>{t('noGuarantee')}</p>
           <p className="small">© {new Date().getFullYear()} MargDisha</p>
         </footer>

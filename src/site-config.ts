@@ -6,5 +6,6 @@ export const SITE = {
   name: 'MargDisha',
   url: 'https://margdisha.com',
   contactEmail: 'contact@margdisha.com',
+  youtube: 'https://www.youtube.com/@margdishaindia',
   updated: '10 November 2026',
 };
