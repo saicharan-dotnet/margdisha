@@ -1,0 +1,7 @@
+3d k-desk: ok (gemini-2.5-flash-image)
+3d k-desk-gold: ok (gemini-2.5-flash-image)
+3d k-path: ok (gemini-2.5-flash-image)
+3d v-desk: ok (gemini-2.5-flash-image)
+  gemini-2.5-flash-image: HTTP 200 "NO_IMAGE"
+3d v-glow: ok (gemini-2.5-flash-image)
+3d v-gates: ok (gemini-2.5-flash-image)
