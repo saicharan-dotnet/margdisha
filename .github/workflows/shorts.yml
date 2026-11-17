@@ -1,0 +1,77 @@
+name: Notice Shorts
+
+# Every morning, turn the newest official notices into ready-to-post 15-20 second vertical
+# YouTube Shorts (video + title, description and tags) and publish them as a GitHub release
+# for a person to check and upload. Nothing is posted to YouTube automatically.
+on:
+  schedule:
+    - cron: '30 1 * * *'   # 07:00 IST
+  workflow_dispatch:
+    inputs:
+      count:
+        description: 'How many Shorts to make'
+        default: '3'
+      days:
+        description: 'Only notices first seen in the last N days'
+        default: '3'
+      voice:
+        description: 'Google voice (en-IN-Chirp3-HD-Charon = male, en-IN-Chirp3-HD-Kore = female)'
+        default: 'en-IN-Chirp3-HD-Charon'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: shorts
+  cancel-in-progress: false
+
+jobs:
+  make:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Load the list of notices already made into Shorts
+        run: |
+          mkdir -p state
+          if git fetch -q origin shorts-state 2>/dev/null; then git show origin/shorts-state:processed.json > state/processed.json || true; fi
+      - name: Pick notices, write scripts, record voices
+        run: node scripts/shorts/make.mjs
+        env:
+          VERTEX_API_KEY: ${{ secrets.VERTEX_API_KEY }}
+          GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
+          COUNT: ${{ github.event.inputs.count || '3' }}
+          DAYS: ${{ github.event.inputs.days || '3' }}
+          VOICE: ${{ github.event.inputs.voice || 'en-IN-Chirp3-HD-Charon' }}
+      - name: Render the videos
+        run: |
+          if [ "$(cat shorts-out/made.json)" = "[]" ]; then echo "No new Shorts today."; exit 0; fi
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg python3-numpy > /dev/null
+          npm i -g --silent playwright@1.49.1 && npx -y playwright@1.49.1 install --with-deps chromium > /dev/null
+          NODE_PATH=$(npm root -g) node scripts/shorts/render.cjs
+      - name: Publish as a release for review
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ls shorts-out/short-*.mp4 >/dev/null 2>&1 || { echo "Nothing to publish."; exit 0; }
+          tag="shorts-$(date -u +%Y%m%d-%H%M)"
+          {
+            echo "Draft YouTube Shorts made from new official notices. **Check each one against the official link before uploading.**"
+            echo
+            for f in shorts-out/short-*.txt; do echo "---"; echo '```'; cat "$f"; echo '```'; done
+          } > notes.md
+          gh release create "$tag" shorts-out/short-*.mp4 shorts-out/short-*.txt --title "Notice Shorts $(TZ=Asia/Kolkata date '+%d %b %Y')" --notes-file notes.md --prerelease
+          echo "Release: https://github.com/${{ github.repository }}/releases/tag/$tag" >> "$GITHUB_STEP_SUMMARY"
+      - name: Remember which notices are done
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          cp state/processed.json /tmp/processed.json
+          if git fetch -q origin shorts-state 2>/dev/null; then git checkout -q -B shorts-state origin/shorts-state; else git checkout -q --orphan shorts-state && git rm -rq --cached . && git clean -fdq -e shorts-out; fi
+          cp /tmp/processed.json processed.json
+          git add processed.json
+          git commit -q -m "Shorts made up to run ${{ github.run_id }}" || exit 0
+          git push -q origin HEAD:shorts-state
