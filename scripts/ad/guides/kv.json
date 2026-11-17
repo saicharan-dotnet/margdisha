@@ -1,0 +1,105 @@
+{
+ "title": "Kendriya Vidyalaya admission",
+ "sub": "Balvatika · Class 1 · Class 2 to 11",
+ "cover": "g-kv",
+ "web": [
+  "schools-kv.png",
+  "/schools"
+ ],
+ "scenes": [
+  {
+   "type": "title",
+   "say": "Want admission in a Kendriya Vidyalaya? Here is the complete guide for parents, class by class."
+  },
+  {
+   "type": "points",
+   "h": "What is a Kendriya Vidyalaya?",
+   "items": [
+    "Central government schools",
+    "CBSE syllabus",
+    "More than a thousand schools across India",
+    "Low fees"
+   ],
+   "say": "Kendriya Vidyalayas are central government schools that follow the CBSE syllabus. There are more than a thousand of them across India, and the fees are low."
+  },
+  {
+   "type": "points",
+   "h": "Balvatika and Class 1",
+   "items": [
+    "Online registration",
+    "Usually March to April",
+    "Lottery within priority categories",
+    "Class 1: at least 6 years old"
+   ],
+   "say": "For Balvatika and Class 1, registration is online, usually in March and April. Children are selected by lottery within priority categories. For Class 1, the child must be at least six years old on the cut-off date."
+  },
+  {
+   "type": "points",
+   "h": "Who gets priority?",
+   "items": [
+    "Children of central government employees first",
+    "Then central PSU and state government staff",
+    "Then all other families",
+    "Reserved seats under RTE and for SC, ST, OBC"
+   ],
+   "say": "Children of central government employees get the highest priority. Next come central P S U and state government staff, and then all other families. Some seats are also reserved under the Right to Education Act, and for SC, ST and OBC children."
+  },
+  {
+   "type": "points",
+   "h": "Class 2 and above",
+   "items": [
+    "Only where seats are vacant",
+    "Register at the school, offline",
+    "Usually in April"
+   ],
+   "say": "For Class 2 and above, admission is only where seats are vacant. You register at the school itself, usually in April."
+  },
+  {
+   "type": "points",
+   "h": "Class 11",
+   "items": [
+    "After Class 10 results",
+    "Based on Class 10 marks",
+    "Depends on the streams the school offers"
+   ],
+   "say": "For Class 11, admission happens after the Class 10 results, based on marks and the streams the school offers."
+  },
+  {
+   "type": "steps",
+   "h": "How to apply for Class 1",
+   "items": [
+    "Read this year's notice on the KVS website",
+    "Register online and fill in the form",
+    "Upload the documents",
+    "Check the lottery lists",
+    "Visit the school with original documents"
+   ],
+   "say": "To apply for Class 1, read this year's notice on the K V S website, register online, fill in the form and upload the documents. Then check the lottery lists, and if your child is selected, visit the school with the original documents."
+  },
+  {
+   "type": "points",
+   "h": "Keep these ready",
+   "items": [
+    "Birth certificate",
+    "Residence proof",
+    "Parent's service certificate, for priority",
+    "Category certificate, if any"
+   ],
+   "say": "Keep these documents ready: the birth certificate, residence proof, the parent's service certificate if you claim priority, and a category certificate if you have one."
+  },
+  {
+   "type": "web",
+   "h": "Check it free on MargDisha",
+   "items": [
+    "Schools → KV",
+    "When forms usually open",
+    "Official link"
+   ],
+   "say": "On Marg Disha dot com, open Schools and choose K V to see when forms usually open for each class, with the official link."
+  },
+  {
+   "type": "end",
+   "say": "Everything is free on Marg Disha dot com, in English, Telugu and Hindi. Subscribe for more guides like this."
+  }
+ ]
+}

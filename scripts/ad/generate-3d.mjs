@@ -83,8 +83,16 @@ const SBG = [
   ['bg-exam', null, `${BSTYLE} A focused Indian teenage student (about 17) at a study desk with neat stacks of books and a pencil, a window behind with soft dawn light, looking up with a hopeful, determined expression.`],
   ['bg-scholarship', null, `${BSTYLE} A happy Indian college student (about 19) holding a graduation cap, with her proud father beside her, on a sunlit university lawn with a clock tower softly blurred far behind.`],
 ];
+const GSTYLE = 'Stylized 3D animated feature film style with vibrant Pixar-inspired cinematic lighting, warm hopeful mood, high-detail 3D textures, soft depth of field. Widescreen 16:9 composition that fills the ENTIRE frame edge to edge: no black bars, no borders. The characters stand in the RIGHT half of the frame; the LEFT half is soft, out-of-focus open background with gentle golden light. No readable text, no logos, no flags.';
+const GUIDES = [
+  ['g-sainik', null, `${GSTYLE} An Indian boy and girl, about 11 years old, in neat khaki cadet-style school uniforms with berets, standing proudly at attention on the parade ground of a grand old residential school with red-brick buildings and tall trees, golden morning sun.`, '16:9'],
+  ['g-kv', null, `${GSTYLE} Happy Indian children about 6 to 10 years old in simple school uniforms with backpacks, walking hand in hand with their mother towards the gate of a clean, green central government school campus with white buildings, warm morning light.`, '16:9'],
+  ['g-scholar', null, `${GSTYLE} A joyful Indian college student (about 19) holding a glowing golden scroll tied with a ribbon, with a softly glowing globe, books and a graduation cap floating gently around her, warm golden light.`, '16:9'],
+  ['g-career', null, `${GSTYLE} A thoughtful Indian teenager (about 15) with a school bag looking up at softly glowing floating holographic icons of a stethoscope, a gear, a laptop, a balance scale, a graduation cap and books, each on its own glowing path, warm sunrise light.`, '16:9'],
+];
 const ASPECT = SET.startsWith('promo') ? '16:9' : '9:16';
 if (SET === 'shortsbg') SHOTS.splice(0, SHOTS.length, ...SBG);
+else if (SET === 'guides') SHOTS.splice(0, SHOTS.length, ...GUIDES);
 else if (SET === 'keys3d') SHOTS.splice(0, SHOTS.length, ...KEYS);
 else if (SET === 'scholar') SHOTS.splice(0, SHOTS.length, ...SCHOLAR);
 else if (SET === 'promo') SHOTS.splice(0, SHOTS.length, ...PROMO);

@@ -1,0 +1,104 @@
+{
+ "title": "Scholarships for Indian students",
+ "sub": "School to PhD · Study abroad",
+ "cover": "g-scholar",
+ "web": [
+  "matches-scholarship.png",
+  "/matches-scholarship"
+ ],
+ "scenes": [
+  {
+   "type": "title",
+   "say": "Worried about fees? There are many scholarships for Indian students, from school to PhD, and even to study abroad. Let's go through them."
+  },
+  {
+   "type": "points",
+   "h": "Central government",
+   "items": [
+    "Post-matric: SC, ST, OBC, minority",
+    "Pre-matric: Class 9 and 10",
+    "NMMS: ₹12,000 a year, Class 9 to 12",
+    "Most are on the National Scholarship Portal"
+   ],
+   "say": "From the central government, there are post-matric scholarships for SC, ST, OBC and minority students after Class 10, and pre-matric scholarships for Class 9 and 10. N M M S gives twelve thousand rupees a year from Class 9 to 12. Most of these are on the National Scholarship Portal."
+  },
+  {
+   "type": "points",
+   "h": "For girls and science",
+   "items": [
+    "AICTE Pragati: girls in technical courses",
+    "AICTE Saksham: students with disabilities",
+    "INSPIRE-SHE: science degrees"
+   ],
+   "say": "A I C T E Pragati helps girls in technical courses, and Saksham helps students with disabilities. INSPIRE SHE supports top students who study science degrees."
+  },
+  {
+   "type": "points",
+   "h": "Telangana and Andhra Pradesh",
+   "items": [
+    "Telangana ePASS: fees and scholarship",
+    "AP: fee support through Jnanabhumi",
+    "For eligible lower-income students"
+   ],
+   "say": "In Telangana, e PASS pays college fees fully or partly and gives a scholarship for food and hostel costs. In Andhra Pradesh, fee support is given through the Jnanabhumi portal. Both are for eligible students from lower income families."
+  },
+  {
+   "type": "points",
+   "h": "Private scholarships",
+   "items": [
+    "Reliance Foundation",
+    "Kotak Kanya, for girls",
+    "LIC Golden Jubilee",
+    "Buddy4Study and Vidyasaarathi list more"
+   ],
+   "say": "Private companies and trusts also give scholarships, like Reliance Foundation, Kotak Kanya for girls, and L I C Golden Jubilee. Sites like Buddy4Study and Vidyasaarathi list many more."
+  },
+  {
+   "type": "points",
+   "h": "Master's and PhD",
+   "items": [
+    "GATE scholarship during M.Tech",
+    "UGC-NET and CSIR-NET JRF for PhD",
+    "PM Research Fellowship (PMRF)",
+    "ICMR, DBT and ICSSR fellowships"
+   ],
+   "say": "For a master's, students who qualify GATE get a monthly scholarship during their M Tech. For a PhD, the NET J R F, the Prime Minister's Research Fellowship, and fellowships from I C M R, D B T and I C S S R pay a monthly amount."
+  },
+  {
+   "type": "points",
+   "h": "Study abroad",
+   "items": [
+    "National Overseas Scholarship",
+    "Fulbright: USA",
+    "Chevening: UK",
+    "DAAD: Germany · Erasmus+: Europe"
+   ],
+   "say": "To study abroad, there is the National Overseas Scholarship from the Government of India, and international ones like Fulbright for the USA, Chevening for the UK, DAAD for Germany, and Erasmus Plus for Europe."
+  },
+  {
+   "type": "steps",
+   "h": "How to apply",
+   "items": [
+    "Keep income, caste and bank details ready",
+    "Apply only on the official portal",
+    "Apply before the deadline, renew every year",
+    "Never pay anyone for a scholarship"
+   ],
+   "say": "Keep your income certificate, caste certificate and bank details ready. Apply only on the official portal, before the deadline, and renew every year if your scholarship needs it. Never pay anyone who promises you a scholarship."
+  },
+  {
+   "type": "web",
+   "h": "Find yours free on MargDisha",
+   "items": [
+    "Pick your state and level",
+    "See what you can apply for",
+    "Official links"
+   ],
+   "say": "On Marg Disha dot com, choose your state and level to see the scholarships you can apply for, with the official links."
+  },
+  {
+   "type": "end",
+   "say": "Everything is free on Marg Disha dot com, in English, Telugu and Hindi. Subscribe for more guides like this."
+  }
+ ]
+}

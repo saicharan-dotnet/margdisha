@@ -1,0 +1,100 @@
+{
+ "title": "After 10th: what next?",
+ "sub": "Every option and where it leads",
+ "cover": "g-career",
+ "web": [
+  "explore.png",
+  "/explore"
+ ],
+ "scenes": [
+  {
+   "type": "title",
+   "say": "Just finished Class 10? Choosing what to study next is a big decision. Here are all your options, and where each one leads."
+  },
+  {
+   "type": "points",
+   "h": "Intermediate MPC",
+   "items": [
+    "Maths, Physics, Chemistry",
+    "Leads to B.Tech, B.Sc, B.Arch, NDA",
+    "Exams: JEE Main, EAPCET, NDA"
+   ],
+   "say": "Intermediate M P C, with maths, physics and chemistry, leads to engineering, B Sc, architecture and the N D A. Key exams are JEE Main, EAPCET and N D A."
+  },
+  {
+   "type": "points",
+   "h": "Intermediate BiPC",
+   "items": [
+    "Biology, Physics, Chemistry",
+    "Leads to MBBS, BDS, Pharmacy, Nursing, Agriculture",
+    "Exams: NEET UG, EAPCET"
+   ],
+   "say": "Bi P C, with biology, physics and chemistry, leads to medicine, dentistry, pharmacy, nursing and agriculture. The key exams are NEET UG and EAPCET."
+  },
+  {
+   "type": "points",
+   "h": "MEC and CEC (Commerce)",
+   "items": [
+    "Commerce and economics",
+    "Leads to B.Com, BBA, CA, CMA, CS",
+    "Careers: accountant, banker, analyst"
+   ],
+   "say": "M E C and C E C are commerce streams. They lead to B Com, B B A, and professional courses like C A, C M A and C S."
+  },
+  {
+   "type": "points",
+   "h": "Intermediate HEC",
+   "items": [
+    "History, Economics, Civics",
+    "Leads to B.A., 5-year LLB, BSW",
+    "Civil services, law, journalism, teaching"
+   ],
+   "say": "H E C, with history, economics and civics, leads to B A, five year law, and social work. It's a strong base for civil services, law, journalism and teaching."
+  },
+  {
+   "type": "points",
+   "h": "Polytechnic diploma",
+   "items": [
+    "3 years",
+    "Entrance: POLYCET",
+    "Then jobs, or B.Tech from 2nd year (ECET)"
+   ],
+   "say": "A polytechnic diploma takes three years. You join through POLYCET. After it, you can work as a technician or junior engineer, or join B Tech directly in the second year through E CET."
+  },
+  {
+   "type": "points",
+   "h": "ITI trade courses",
+   "items": [
+    "1 to 2 years",
+    "Electrician, fitter, mechanic, welder",
+    "Then apprenticeship and jobs"
+   ],
+   "say": "I T I trade courses take one to two years, in trades like electrician, fitter, mechanic and welder. They lead to apprenticeships and quick jobs."
+  },
+  {
+   "type": "steps",
+   "h": "How to choose",
+   "items": [
+    "Which subjects do you enjoy?",
+    "Which career do you want?",
+    "Talk to parents and teachers",
+    "Check entrance exam dates early"
+   ],
+   "say": "To choose, think about which subjects you enjoy and what career you want. Talk to your parents and teachers, and check entrance exam dates early."
+  },
+  {
+   "type": "web",
+   "h": "See every option on MargDisha",
+   "items": [
+    "What next? → Class 10",
+    "Duration, careers, exams",
+    "English · తెలుగు · हिन्दी"
+   ],
+   "say": "On Marg Disha dot com, open What next, pick Class 10, and see every option with its duration, careers and entrance exams."
+  },
+  {
+   "type": "end",
+   "say": "Everything is free on Marg Disha dot com, in English, Telugu and Hindi. Subscribe for more guides like this."
+  }
+ ]
+}

@@ -1,0 +1,115 @@
+{
+ "title": "Sainik School admission",
+ "sub": "Class 6 and Class 9 · AISSEE",
+ "cover": "g-sainik",
+ "web": [
+  "schools-sainik.png",
+  "/schools"
+ ],
+ "scenes": [
+  {
+   "type": "title",
+   "say": "Want your child to study in a Sainik School? In this video, we explain the full admission process, step by step."
+  },
+  {
+   "type": "points",
+   "h": "What are Sainik Schools?",
+   "items": [
+    "Residential schools",
+    "CBSE syllabus",
+    "Prepare students for NDA and officer careers",
+    "Schools in almost every state"
+   ],
+   "say": "Sainik Schools are residential schools that prepare students to join the National Defence Academy and become officers. They follow the CBSE syllabus, and there are Sainik Schools in almost every state."
+  },
+  {
+   "type": "points",
+   "h": "Which classes?",
+   "items": [
+    "Class 6: usually 10 to 12 years old",
+    "Class 9: studying Class 8, usually 13 to 15",
+    "Girls can apply for Class 6",
+    "Class 9 for girls: depends on the school"
+   ],
+   "say": "Admission happens in two classes. Class 6, for children who are usually around 10 to 12 years old, and Class 9, for children studying Class 8, usually around 13 to 15. Girls can apply for Class 6. For Class 9, it depends on the school."
+  },
+  {
+   "type": "points",
+   "h": "The entrance exam: AISSEE",
+   "items": [
+    "Conducted by NTA",
+    "Class 6: maths, intelligence, language, GK",
+    "Class 9: maths, intelligence, English, science, social studies",
+    "Then a medical check"
+   ],
+   "say": "Admission is through one entrance exam, the All India Sainik Schools Entrance Examination, or A I S S E E, conducted by the National Testing Agency. The Class 6 paper has maths, intelligence, language and general knowledge. The Class 9 paper has maths, intelligence, English, science and social studies. Selected children then have a medical check."
+  },
+  {
+   "type": "points",
+   "h": "When to apply",
+   "items": [
+    "Forms: usually November to January",
+    "Exam: usually January to April",
+    "Then results and counselling"
+   ],
+   "say": "Application forms usually open around November and close in January. The exam is usually held between January and April. Dates change every year, so always check this year's notice."
+  },
+  {
+   "type": "points",
+   "h": "Seats and reservation",
+   "items": [
+    "Most seats for children of the home state",
+    "Reserved seats for SC, ST and OBC",
+    "Seats for children of defence personnel"
+   ],
+   "say": "Most seats in each Sainik School are kept for children from that state. There are also reserved seats for SC, ST and OBC children, and for children of defence personnel. The exact numbers are in the notice."
+  },
+  {
+   "type": "steps",
+   "h": "How to apply",
+   "items": [
+    "Read the AISSEE notice on the NTA website",
+    "Register online and fill in the form",
+    "Upload photo, signature and certificates",
+    "Pay the fee, keep the confirmation",
+    "Download the admit card before the exam"
+   ],
+   "say": "To apply, read the notice on the N T A website. Register online, fill in the form, and upload the photo, signature and certificates. Pay the fee and keep the confirmation page. Later, download the admit card before the exam."
+  },
+  {
+   "type": "points",
+   "h": "Keep these ready",
+   "items": [
+    "Birth certificate",
+    "Domicile certificate",
+    "Category certificate, if any",
+    "Recent photo and signature"
+   ],
+   "say": "Keep these documents ready: the birth certificate, domicile certificate, a category certificate if you have one, and a recent photo and signature."
+  },
+  {
+   "type": "points",
+   "h": "What about fees?",
+   "items": [
+    "Sainik Schools charge fees",
+    "State and central scholarships help many students",
+    "Check the fees of the school you choose"
+   ],
+   "say": "Sainik Schools do charge fees, but many students get help from state and central scholarships. Check the fee details of the school you choose."
+  },
+  {
+   "type": "web",
+   "h": "Check it free on MargDisha",
+   "items": [
+    "Schools → Sainik",
+    "When forms usually open",
+    "Official link"
+   ],
+   "say": "On Marg Disha dot com, open Schools and choose Sainik to see when forms usually open, with the official link. You'll also find Navodaya, Kendriya Vidyalaya and Gurukul admissions."
+  },
+  {
+   "type": "end",
+   "say": "Everything is free on Marg Disha dot com, in English, Telugu and Hindi. Subscribe for more guides like this."
+  }
+ ]
+}

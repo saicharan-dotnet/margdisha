@@ -1,6 +1,6 @@
 // Narrator voice lines for the 16:9 commercial (Google Text-to-Speech, Indian English).
 // Run by the "Make ad assets" workflow with set=promo-voice. Output: ad-out/promo/v<n>-<m|f>.wav
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 const TTS = process.env.GOOGLE_TTS_API_KEY; const NARR = process.env.NARR || 'promo'; const OUT = `ad-out/${NARR}`; mkdirSync(OUT, { recursive: true });
 const log = []; const note = (s) => { console.log(s); log.push(s); };
 const ALL = {};
@@ -32,6 +32,13 @@ ALL.intro = {
   v7: 'On this channel, we share new official notices in short videos, always with the official link.',
   v8: 'Everything is free, in English, Telugu, and Hindi. Subscribe, and visit Marg Disha dot com.',
 };
+// Long guide videos: NARR=guide-<name> reads scripts/ad/guides/<name>.json and records each scene's line (female voice only).
+let WHO = ['m', 'f'];
+if (NARR.startsWith('guide-')) {
+  const g = JSON.parse(readFileSync(new URL(`./guides/${NARR.slice(6)}.json`, import.meta.url), 'utf8'));
+  ALL[NARR] = Object.fromEntries(g.scenes.map((sc, i) => [`v${String(i + 1).padStart(2, '0')}`, sc.say]));
+  WHO = ['f'];
+}
 const LINES = ALL[NARR] || ALL.promo;
 const VOICES = { m: ['en-IN-Chirp3-HD-Charon', 'en-IN-Neural2-B'], f: ['en-IN-Chirp3-HD-Kore', 'en-IN-Neural2-A'] };
 async function speak(text, who) {
@@ -47,7 +54,7 @@ async function speak(text, who) {
   return null;
 }
 if (!TTS) note('GOOGLE_TTS_API_KEY is not set');
-else for (const who of ['m', 'f']) for (const [k, text] of Object.entries(LINES)) {
+else for (const who of WHO) for (const [k, text] of Object.entries(LINES)) {
   const res = await speak(text, who);
   if (res) { writeFileSync(`${OUT}/${k}-${who}.wav`, Buffer.from(res.audio, 'base64')); note(`voice ${k}-${who}: ok (${res.name})`); }
   else note(`voice ${k}-${who}: FAILED`);
