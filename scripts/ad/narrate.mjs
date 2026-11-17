@@ -17,6 +17,11 @@ ALL.scholar = {
   v2: 'On Marg Disha dot com, just select your qualification and discover Central, Telangana, Andhra Pradesh, and private scholarships you can apply for.',
   v3: 'One hundred percent free, with direct official links, in English, Telugu, and Hindi. Check your scholarships today at Marg Disha dot com!',
 };
+ALL.fees = {
+  v1: 'Worried about school or college fees after tenth, Inter, or degree?',
+  v2: 'Just pick your qualification on Marg Disha dot com, and find Central, Telangana, Andhra Pradesh, and private scholarships that match you.',
+  v3: 'One hundred percent free, with direct official links, in English, Telugu, and Hindi. Check your matches today!',
+};
 const LINES = ALL[NARR] || ALL.promo;
 const VOICES = { m: ['en-IN-Chirp3-HD-Charon', 'en-IN-Neural2-B'], f: ['en-IN-Chirp3-HD-Kore', 'en-IN-Neural2-A'] };
 async function speak(text, who) {
