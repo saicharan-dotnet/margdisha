@@ -36,6 +36,7 @@ jobs:
           elif [ "${{ github.event.inputs.set }}" = "fees-voice" ]; then NARR=fees node scripts/ad/narrate.mjs
           elif [ "${{ github.event.inputs.set }}" = "intro-voice" ]; then NARR=intro node scripts/ad/narrate.mjs
           elif [ "${{ github.event.inputs.set }}" = "guides-voice" ]; then for g in scripts/ad/guides/*.json; do NARR=guide-$(basename $g .json) node scripts/ad/narrate.mjs; done
+          elif [ "${{ github.event.inputs.set }}" = "guides-voice-lang" ]; then for g in scripts/ad/guides/*.te.json scripts/ad/guides/*.hi.json; do NARR=guide-$(basename $g .json) node scripts/ad/narrate.mjs; done
           elif [ "${{ github.event.inputs.set }}" != "photo" ]; then SET="${{ github.event.inputs.set }}" MOODS=1 node scripts/ad/generate-3d.mjs; else node scripts/ad/generate.mjs; fi
         env:
           VERTEX_API_KEY: ${{ secrets.VERTEX_API_KEY }}
