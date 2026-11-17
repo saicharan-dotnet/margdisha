@@ -22,6 +22,16 @@ ALL.fees = {
   v2: 'Just pick your qualification on Marg Disha dot com, and find Central, Telangana, Andhra Pradesh, and private scholarships that match you.',
   v3: 'One hundred percent free, with direct official links, in English, Telugu, and Hindi. Check your matches today!',
 };
+ALL.intro = {
+  v1: 'Finished tenth, Inter, or a degree, and not sure what comes next? You are not alone.',
+  v2: 'Welcome to Marg Disha. Free guidance for students and parents across India.',
+  v3: 'Find which courses you can study after tenth, twelfth, or your degree, and where they lead.',
+  v4: 'School admissions like Navodaya, Sainik, Kendriya Vidyalaya, and Gurukul, with the steps to apply.',
+  v5: 'Entrance exams, government jobs, and jobs at big companies like TCS, Infosys, and Wipro, for freshers and experienced people.',
+  v6: 'Scholarships from the Central government, Telangana, Andhra Pradesh, and private trusts. Even for Masters, PhD, and study abroad.',
+  v7: 'On this channel, we share new official notices in short videos, always with the official link.',
+  v8: 'Everything is free, in English, Telugu, and Hindi. Subscribe, and visit Marg Disha dot com.',
+};
 const LINES = ALL[NARR] || ALL.promo;
 const VOICES = { m: ['en-IN-Chirp3-HD-Charon', 'en-IN-Neural2-B'], f: ['en-IN-Chirp3-HD-Kore', 'en-IN-Neural2-A'] };
 async function speak(text, who) {

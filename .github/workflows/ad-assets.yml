@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       set:
-        description: 'What to make: photo (pictures + voices), 3d (3D cartoon) 3dreal (semi-realistic 3D) promo / promoreal (16:9 commercial scenes) promo-voice (its narrator), scholar (9:16 scholarship Reel) scholar-voice, keys3d (3D scholarship ads) or fees-voice'
+        description: 'What to make: photo (pictures + voices), 3d (3D cartoon) 3dreal (semi-realistic 3D) promo / promoreal (16:9 commercial scenes) promo-voice (its narrator), scholar (9:16 scholarship Reel) scholar-voice, keys3d (3D scholarship ads) fees-voice or intro-voice (channel intro narrator)'
         default: 'photo'
 
 permissions:
@@ -34,6 +34,7 @@ jobs:
           if [ "${{ github.event.inputs.set }}" = "promo-voice" ]; then node scripts/ad/narrate.mjs
           elif [ "${{ github.event.inputs.set }}" = "scholar-voice" ]; then NARR=scholar node scripts/ad/narrate.mjs
           elif [ "${{ github.event.inputs.set }}" = "fees-voice" ]; then NARR=fees node scripts/ad/narrate.mjs
+          elif [ "${{ github.event.inputs.set }}" = "intro-voice" ]; then NARR=intro node scripts/ad/narrate.mjs
           elif [ "${{ github.event.inputs.set }}" != "photo" ]; then SET="${{ github.event.inputs.set }}" MOODS=1 node scripts/ad/generate-3d.mjs; else node scripts/ad/generate.mjs; fi
         env:
           VERTEX_API_KEY: ${{ secrets.VERTEX_API_KEY }}
