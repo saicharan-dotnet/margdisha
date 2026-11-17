@@ -63,7 +63,7 @@ jobs:
             echo
             for f in shorts-out/short-*.txt; do echo "---"; echo '```'; cat "$f"; echo '```'; done
           } > notes.md
-          gh release create "$tag" shorts-out/short-*.mp4 shorts-out/short-*.txt --title "Notice Shorts $(TZ=Asia/Kolkata date '+%d %b %Y')" --notes-file notes.md --prerelease
+          gh release create "$tag" shorts-out/short-*.mp4 shorts-out/short-*.txt --title "Notice Shorts $(TZ=Asia/Kolkata date '+%d %b %Y')" --notes-file notes.md
           echo "Release: https://github.com/${{ github.repository }}/releases/tag/$tag" >> "$GITHUB_STEP_SUMMARY"
       - name: Remember which notices are done
         run: |
