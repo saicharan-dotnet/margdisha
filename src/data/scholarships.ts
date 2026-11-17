@@ -312,7 +312,7 @@ export const SCHOLARSHIPS: ScholarshipGuide[] = [
       'Join a PhD at a recognised university or institute.',
       'Submit the award letter and joining report through your institute.',
     ],
-    links: [{ label: 'ICMR', url: 'https://www.icmr.gov.in' }, { label: 'DBT', url: 'https://dbtindia.gov.in' }, { label: 'ICSSR', url: 'https://icssr.org' }], note: CHECK,
+    links: [{ label: 'ICMR', url: 'https://www.icmr.gov.in' }, { label: 'DBT', url: 'https://www.dbtindia.gov.in' }, { label: 'ICSSR', url: 'https://icssr.org' }], note: CHECK,
   },
   {
     id: 'postdoc-india', title: 'Post-doc fellowships in India (ANRF N-PDF, CSIR Research Associate)', scope: 'Central',
