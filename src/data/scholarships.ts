@@ -3,9 +3,9 @@
 // how to apply, with official links. Amounts and rules change, so every card asks people to check the official page.
 
 export type SchScope = 'Central' | 'Telangana' | 'Andhra Pradesh' | 'Private' | 'Study abroad';
-export type SchLevel = 'School' | 'Inter' | 'Diploma' | 'Degree' | 'Engineering' | 'PG';
+export type SchLevel = 'School' | 'Inter' | 'Diploma' | 'Degree' | 'Engineering' | 'Masters' | 'PhD' | 'Post-doc';
 export const SCH_SCOPES: SchScope[] = ['Central', 'Telangana', 'Andhra Pradesh', 'Private', 'Study abroad'];
-export const SCH_LEVELS: SchLevel[] = ['School', 'Inter', 'Diploma', 'Degree', 'Engineering', 'PG'];
+export const SCH_LEVELS: SchLevel[] = ['School', 'Inter', 'Diploma', 'Degree', 'Engineering', 'Masters', 'PhD', 'Post-doc'];
 
 export interface ScholarshipGuide {
   id: string;
@@ -31,7 +31,7 @@ export const SCHOLARSHIPS: ScholarshipGuide[] = [
   // ---- Central government (National Scholarship Portal) ----
   {
     id: 'nsp-post-matric', title: 'Post-matric scholarships for SC, ST, OBC and minority students', scope: 'Central',
-    levels: ['Inter', 'Diploma', 'Degree', 'Engineering', 'PG'],
+    levels: ['Inter', 'Diploma', 'Degree', 'Engineering', 'Masters', 'PhD'],
     gives: 'Course fees (fully or partly) and a monthly maintenance allowance while you study after Class 10',
     who: 'SC, ST, OBC and minority students studying Intermediate, diploma, degree, engineering or PG, with family income under the limit for their category (for example ₹2.5 lakh a year for SC students)',
     when: 'Usually July to November',
@@ -72,7 +72,7 @@ export const SCHOLARSHIPS: ScholarshipGuide[] = [
   },
   {
     id: 'cs-college', title: 'Central Sector Scholarship for college and university students', scope: 'Central',
-    levels: ['Degree', 'Engineering', 'PG'],
+    levels: ['Degree', 'Engineering', 'Masters'],
     gives: '₹12,000 a year for the first three years of a degree and ₹20,000 a year after that (including PG)',
     who: 'Students in the top 20 percent of their Class 12 board results, studying a regular degree course, with family income up to ₹4.5 lakh a year',
     when: 'Usually July to October',
@@ -98,7 +98,7 @@ export const SCHOLARSHIPS: ScholarshipGuide[] = [
   },
   {
     id: 'inspire-she', title: 'INSPIRE-SHE scholarship for science students', scope: 'Central',
-    levels: ['Degree', 'PG'],
+    levels: ['Degree', 'Masters'],
     gives: '₹80,000 a year (₹60,000 scholarship plus ₹20,000 for a summer research project) for up to five years',
     who: 'Students in the top 1 percent of their Class 12 board (or with a top JEE or NEET rank) who study B.Sc, BS or integrated M.Sc in natural or basic sciences',
     when: 'Usually after college admissions, around September to December',
@@ -111,7 +111,7 @@ export const SCHOLARSHIPS: ScholarshipGuide[] = [
   },
   {
     id: 'pmss-ksb', title: 'PM Scholarship for children of ex-servicemen', scope: 'Central',
-    levels: ['Engineering', 'Degree', 'PG'],
+    levels: ['Engineering', 'Degree', 'Masters'],
     gives: '₹2,500 a month for boys and ₹3,000 a month for girls, during professional courses',
     who: 'Children and widows of ex-servicemen and Coast Guard personnel, in the first year of professional courses such as B.Tech, MBBS, BBA, BCA or B.Pharm, with 60 percent or more in Class 12',
     when: 'Usually August to November',
@@ -126,7 +126,7 @@ export const SCHOLARSHIPS: ScholarshipGuide[] = [
   // ---- Telangana ----
   {
     id: 'ts-epass', title: 'Telangana ePASS: post-matric scholarship and fee reimbursement', scope: 'Telangana',
-    levels: ['Inter', 'Diploma', 'Degree', 'Engineering', 'PG'],
+    levels: ['Inter', 'Diploma', 'Degree', 'Engineering', 'Masters'],
     gives: 'College fees paid by the government (fully or partly) plus a scholarship for food and hostel costs',
     who: 'SC, ST, BC, EBC, minority and disabled students of Telangana studying Intermediate or higher, with family income under the state limit (about ₹2 lakh a year in cities and ₹1.5 lakh in villages)',
     when: 'Usually opens after admissions, around August to December; renew every year',
@@ -142,7 +142,7 @@ export const SCHOLARSHIPS: ScholarshipGuide[] = [
   // ---- Andhra Pradesh ----
   {
     id: 'ap-fee-reimbursement', title: 'Andhra Pradesh post-matric fee reimbursement and hostel support', scope: 'Andhra Pradesh',
-    levels: ['Diploma', 'Degree', 'Engineering', 'PG'],
+    levels: ['Diploma', 'Degree', 'Engineering', 'Masters'],
     gives: 'College fees paid by the state for eligible students, plus yearly support for food and hostel costs',
     who: 'SC, ST, BC, EBC, Kapu, minority and disabled students of Andhra Pradesh in ITI, polytechnic, degree, engineering, medical and PG courses, with family income under the state limit',
     when: 'Usually after admissions; your college registers you',
@@ -197,7 +197,7 @@ export const SCHOLARSHIPS: ScholarshipGuide[] = [
   },
   {
     id: 'sch-portals', title: 'Scholarship portals: find more company and trust scholarships', scope: 'Private',
-    levels: ['School', 'Inter', 'Diploma', 'Degree', 'Engineering', 'PG'],
+    levels: ['School', 'Inter', 'Diploma', 'Degree', 'Engineering', 'Masters'],
     gives: 'Lists of hundreds of company (CSR), trust and foundation scholarships in one place',
     who: 'Any student. Make a free profile once and you get alerts for the scholarships that match you.',
     when: 'All year; most open between July and December',
@@ -209,10 +209,168 @@ export const SCHOLARSHIPS: ScholarshipGuide[] = [
     links: [{ label: 'Buddy4Study', url: 'https://www.buddy4study.com' }, { label: 'Vidyasaarathi', url: 'https://www.vidyasaarathi.co.in' }],
     note: 'Applying for a scholarship is always free. Never pay anyone who promises a scholarship for a fee.',
   },
+  // ---- Master's, PhD and post-doc in India ----
+  {
+    id: 'gate-pg', title: 'GATE and GPAT scholarship for M.Tech, M.E. and M.Pharm (AICTE)', scope: 'Central',
+    levels: ['Engineering', 'Masters'],
+    gives: '₹12,400 a month for up to 24 months during your M.Tech, M.E., M.Arch or M.Pharm',
+    who: 'Students with a valid GATE or GPAT score admitted to a full-time master\'s course at an AICTE-approved college (including IITs, NITs and many private colleges)',
+    when: 'After admission; your college registers you, usually September to December',
+    steps: [
+      'Write GATE (engineering) or GPAT (pharmacy) in your final year and get a valid score.',
+      'Take admission through COAP, CCMT or your state counselling in a full-time AICTE-approved master\'s course.',
+      'Submit your GATE or GPAT scorecard to the college; the college applies on the AICTE scholarship portal for you.',
+    ],
+    links: [{ label: 'GATE', url: 'https://gate2026.iitg.ac.in' }, { label: 'AICTE', url: 'https://www.aicte.gov.in' }], note: CHECK,
+  },
+  {
+    id: 'ugc-pg', title: 'UGC postgraduate scholarships (single girl child, rank holders, SC/ST professional courses)', scope: 'Central',
+    levels: ['Masters'],
+    gives: 'A monthly scholarship during a two-year master\'s degree',
+    who: 'Single girl children in a regular PG course; first and second rank holders of a university UG exam; SC and ST students in professional PG courses (such as M.Tech, MBA, M.Pharm)',
+    when: 'Usually with the National Scholarship Portal cycle, July to November',
+    steps: [
+      'Join a regular, full-time master\'s degree at a recognised university or college.',
+      'Apply on the National Scholarship Portal under the UGC schemes with your marks, admission proof and (for single girl child) an affidavit.',
+      'Your institute verifies it; renew in the second year.',
+    ],
+    links: [NSP, { label: 'UGC', url: 'https://www.ugc.gov.in' }], note: CHECK,
+  },
+  {
+    id: 'net-jrf', title: 'UGC-NET and CSIR-NET Junior Research Fellowship (JRF)', scope: 'Central',
+    levels: ['Masters', 'PhD'],
+    gives: '₹37,000 a month for the first two years of a PhD (JRF), then ₹42,000 a month (SRF), plus house rent allowance and a yearly contingency grant',
+    who: 'Master\'s degree holders (or final-year students) with 55 percent or more (50 percent for SC, ST, OBC-NCL and PwD) who qualify for JRF in UGC-NET (humanities, social sciences, commerce) or CSIR-NET (sciences)',
+    when: 'NET is held twice a year, usually June and December; forms open about two months earlier',
+    steps: [
+      'Apply for UGC-NET or CSIR-NET on the NTA website and choose JRF.',
+      'Qualify for JRF in the exam (JRF is valid for three years).',
+      'Join a PhD at a university or research institute; it starts your fellowship.',
+    ],
+    links: [{ label: 'UGC-NET (NTA)', url: 'https://ugcnet.nta.ac.in' }, { label: 'CSIR HRDG', url: 'https://csirhrdg.res.in' }], note: CHECK,
+  },
+  {
+    id: 'inst-phd', title: 'Institute PhD fellowships at IITs, NITs, IISERs and IISc (GATE or NET)', scope: 'Central',
+    levels: ['Engineering', 'Masters', 'PhD'],
+    gives: 'Fellowship at JRF and SRF rates (₹37,000 then ₹42,000 a month) for the whole PhD, plus hostel and contingency grant',
+    who: 'Master\'s graduates, and outstanding B.Tech graduates with a valid GATE score or NET qualification, admitted to a full-time PhD',
+    when: 'Most institutes take PhD admissions twice a year, usually around March to May and October to November',
+    steps: [
+      'Get a valid GATE score or NET qualification.',
+      'Apply for the PhD admission round on each institute\'s website.',
+      'Clear the written test and interview; the fellowship starts when you join.',
+    ],
+    links: [{ label: 'GATE', url: 'https://gate2026.iitg.ac.in' }], note: CHECK,
+  },
+  {
+    id: 'pmrf', title: 'Prime Minister\'s Research Fellowship (PMRF)', scope: 'Central',
+    levels: ['Engineering', 'Masters', 'PhD'],
+    gives: '₹70,000 a month in the first two years, ₹75,000 in the third and ₹80,000 in the fourth and fifth, plus a ₹2 lakh yearly research grant',
+    who: 'Top students joining or doing a PhD at IITs, IISc, IISERs, NITs and other eligible institutes, usually with a high GATE score or CGPA',
+    when: 'Usually two rounds a year (May and December)',
+    steps: [
+      'Get PhD admission at a PMRF-granting institute (through GATE or the institute\'s own process).',
+      'Apply for PMRF through your institute; it forwards your application.',
+      'Present your research proposal to the PMRF selection committee.',
+    ],
+    links: [{ label: 'PMRF', url: 'https://www.pmrf.in' }], note: CHECK,
+  },
+  {
+    id: 'inspire-phd', title: 'DST INSPIRE Fellowship (PhD in science)', scope: 'Central',
+    levels: ['Masters', 'PhD'],
+    gives: 'PhD fellowship at JRF and SRF rates for up to five years, plus a yearly research grant',
+    who: 'First rank holders in a master\'s in basic or applied sciences at their university, or INSPIRE-SHE scholars with 70 percent or more in their master\'s, who join a full-time PhD',
+    when: 'Usually once a year; check the INSPIRE website',
+    steps: [
+      'Get a first rank in your M.Sc (or 70 percent or more as an INSPIRE scholar).',
+      'Get PhD admission at a university or institute in India.',
+      'Apply online on the INSPIRE website with your rank certificate and admission proof.',
+    ],
+    links: [{ label: 'INSPIRE (DST)', url: 'https://online-inspire.gov.in' }], note: CHECK,
+  },
+  {
+    id: 'nf-sc-obc-st', title: 'National Fellowships for SC, OBC, ST and PwD scholars (PhD)', scope: 'Central',
+    levels: ['Masters', 'PhD'],
+    gives: 'Fellowship at JRF and SRF rates for up to five years of M.Phil or PhD, plus contingency and house rent allowance',
+    who: 'SC (NFSC), OBC (NFOBC), ST (National Fellowship for ST) and disabled students (NFPwD) doing a full-time PhD; most are now selected through UGC-NET',
+    when: 'Selected after the UGC-NET results, usually twice a year',
+    steps: [
+      'Apply for UGC-NET and select the fellowship scheme for your category on the form.',
+      'Qualify in UGC-NET with a rank within the fellowship list.',
+      'Join a PhD and submit joining reports through your university to start the fellowship.',
+    ],
+    links: [{ label: 'UGC-NET (NTA)', url: 'https://ugcnet.nta.ac.in' }, { label: 'Ministry of Tribal Affairs (ST)', url: 'https://tribal.nic.in' }], note: CHECK,
+  },
+  {
+    id: 'icmr-dbt-icssr', title: 'ICMR, DBT and ICSSR research fellowships (medical, life sciences, social sciences)', scope: 'Central',
+    levels: ['Masters', 'PhD'],
+    gives: 'Fellowship at JRF and SRF rates for a PhD in medical and life sciences (ICMR, DBT) or social sciences (ICSSR doctoral fellowships)',
+    who: 'Master\'s graduates who clear the ICMR-JRF exam or the DBT-JRF (BET) exam, or PhD scholars registered in social sciences (ICSSR)',
+    when: 'ICMR-JRF and DBT-JRF exams usually once a year; ICSSR calls usually once a year',
+    steps: [
+      'Write the ICMR-JRF or DBT-JRF (BET) exam, or check the ICSSR doctoral fellowship call.',
+      'Join a PhD at a recognised university or institute.',
+      'Submit the award letter and joining report through your institute.',
+    ],
+    links: [{ label: 'ICMR', url: 'https://www.icmr.gov.in' }, { label: 'DBT', url: 'https://dbtindia.gov.in' }, { label: 'ICSSR', url: 'https://icssr.org' }], note: CHECK,
+  },
+  {
+    id: 'postdoc-india', title: 'Post-doc fellowships in India (ANRF N-PDF, CSIR Research Associate)', scope: 'Central',
+    levels: ['PhD', 'Post-doc'],
+    gives: 'A monthly post-doctoral fellowship for two to three years plus a yearly research grant; CSIR Research Associates get ₹58,000 to ₹67,000 a month',
+    who: 'PhD holders (or those who have submitted their thesis), usually under 35, with a host scientist at an Indian university or lab',
+    when: 'ANRF N-PDF has calls about twice a year; CSIR Research Associateship usually has rolling or yearly calls',
+    steps: [
+      'Find a host scientist (mentor) at an Indian institute and agree on a research plan.',
+      'Apply online on the ANRF portal (National Post-Doctoral Fellowship) or the CSIR HRDG website.',
+      'Shortlisted candidates may be interviewed; the fellowship is paid through the host institute.',
+    ],
+    links: [{ label: 'ANRF (formerly SERB)', url: 'https://anrfonline.in' }, { label: 'CSIR HRDG', url: 'https://csirhrdg.res.in' }], note: CHECK,
+  },
+  {
+    id: 'inspire-faculty', title: 'DST INSPIRE Faculty Fellowship', scope: 'Central',
+    levels: ['Post-doc'],
+    gives: '₹1.25 lakh a month and a research grant of ₹7 lakh a year for five years',
+    who: 'Young researchers aged 27 to 32 with a PhD in science, engineering, mathematics, medicine or agriculture, including Indians doing a post-doc abroad who want to return',
+    when: 'Usually once a year',
+    steps: [
+      'Get a strong publication record during your PhD or post-doc.',
+      'Apply on the INSPIRE website with your research proposal and a host institute in India.',
+      'Present to the selection committee if shortlisted.',
+    ],
+    links: [{ label: 'INSPIRE (DST)', url: 'https://online-inspire.gov.in' }], note: CHECK,
+  },
+  {
+    id: 'india-alliance', title: 'DBT/Wellcome Trust India Alliance fellowships', scope: 'Private',
+    levels: ['PhD', 'Post-doc'],
+    gives: 'Funding for salary and research for early-career, intermediate and senior researchers in biomedical, clinical and public health research',
+    who: 'Researchers with a PhD or medical degree who will work at an Indian institution',
+    when: 'Usually one or two calls a year',
+    steps: [
+      'Choose the fellowship level that fits your experience.',
+      'Find a host institution in India and prepare a research proposal.',
+      'Apply online; shortlisted applicants are interviewed.',
+    ],
+    links: [{ label: 'India Alliance', url: 'https://www.indiaalliance.org' }], note: CHECK,
+  },
+  {
+    id: 'industry-phd', title: 'Company PhD fellowships (Google PhD Fellowship, TCS Research Scholar Program)', scope: 'Private',
+    levels: ['PhD'],
+    gives: 'A stipend and research support for PhD students in computer science and related fields, often with a mentor from the company',
+    who: 'PhD students in computer science, electrical engineering and related areas at Indian institutes',
+    when: 'Usually once a year; your institute may need to nominate you',
+    steps: [
+      'Check each programme\'s call and whether your institute must nominate you.',
+      'Prepare a research statement, CV and recommendation letters.',
+      'Apply through the programme website or your institute before the deadline.',
+    ],
+    links: [{ label: 'Google PhD Fellowship', url: 'https://research.google/programs-and-events/phd-fellowship/' }, { label: 'TCS', url: 'https://www.tcs.com' }], note: CHECK,
+  },
+
   // ---- Study abroad (open to students from anywhere in India) ----
   {
     id: 'abroad-nos', title: 'National Overseas Scholarship (Government of India)', scope: 'Study abroad',
-    levels: ['Degree', 'Engineering', 'PG'],
+    levels: ['Degree', 'Engineering', 'Masters', 'PhD'],
     gives: 'Tuition fees, living allowance, air fare, visa fee and medical insurance for a master\'s or PhD abroad',
     who: 'SC, denotified, nomadic and semi-nomadic tribe, landless agricultural labourer and traditional artisan category students with 60 percent or more in the qualifying degree, under 35 years of age, family income up to ₹8 lakh a year, and admission to a top-ranked university abroad. A separate National Overseas Scholarship is run for ST students by the Ministry of Tribal Affairs.',
     when: 'Usually opens once a year; check the portal from February to May',
@@ -226,7 +384,7 @@ export const SCHOLARSHIPS: ScholarshipGuide[] = [
   },
   {
     id: 'abroad-ts-overseas', title: 'Telangana overseas scholarships (Ambedkar, Jyothiba Phule and CM Overseas Vidya Nidhi)', scope: 'Study abroad', state: 'Telangana',
-    levels: ['Degree', 'Engineering', 'PG'],
+    levels: ['Degree', 'Engineering', 'Masters', 'PhD'],
     gives: 'Up to ₹20 lakh for a master\'s or PhD abroad, plus air fare',
     who: 'Telangana SC and ST students (Ambedkar Overseas Vidya Nidhi), BC and EBC students (Mahatma Jyothiba Phule Overseas Vidya Nidhi) and minority students (Chief Minister\'s Overseas Scholarship), with 60 percent or more in the degree, a GRE or GMAT and an IELTS or TOEFL score, admission abroad and family income up to ₹5 lakh a year',
     when: 'Usually twice a year (spring and fall intakes)',
@@ -265,7 +423,7 @@ export const SCHOLARSHIPS: ScholarshipGuide[] = [
   },
   {
     id: 'abroad-commonwealth', title: 'Commonwealth Scholarships (UK)', scope: 'Study abroad',
-    levels: ['PG', 'Degree', 'Engineering'],
+    levels: ['Masters', 'Degree', 'Engineering', 'PhD'],
     gives: 'Full funding for a master\'s or PhD in the UK',
     who: 'Indian graduates with a first-class or high second-class degree; Indian candidates are nominated through the Ministry of Education',
     when: 'Usually August to October',
@@ -278,7 +436,7 @@ export const SCHOLARSHIPS: ScholarshipGuide[] = [
   },
   {
     id: 'abroad-daad', title: 'DAAD scholarships (Germany)', scope: 'Study abroad',
-    levels: ['Degree', 'Engineering', 'PG'],
+    levels: ['Degree', 'Engineering', 'Masters', 'PhD'],
     gives: 'A monthly stipend (about €934 for master\'s students and €1,300 for PhD students), travel allowance and health insurance; most public universities in Germany charge little or no tuition',
     who: 'Indian graduates for master\'s programmes (many development-related courses need two years of work experience) and postgraduates for PhD and research stays',
     when: 'Depends on the programme; many close between August and October',
@@ -304,7 +462,7 @@ export const SCHOLARSHIPS: ScholarshipGuide[] = [
   },
   {
     id: 'abroad-mext', title: 'MEXT Japanese Government Scholarship', scope: 'Study abroad',
-    levels: ['Inter', 'Degree', 'Engineering', 'PG'],
+    levels: ['Inter', 'Degree', 'Engineering', 'Masters', 'PhD'],
     gives: 'Full tuition, a monthly allowance and air fare to study in Japan (undergraduate, college of technology or research student)',
     who: 'Indian students who have finished Class 12 (for undergraduate study) or a degree (for research and master\'s study), within the age limits',
     when: 'Usually April to June, through the Embassy of Japan in India',
@@ -317,7 +475,7 @@ export const SCHOLARSHIPS: ScholarshipGuide[] = [
   },
   {
     id: 'abroad-hungaricum', title: 'Stipendium Hungaricum (Hungary)', scope: 'Study abroad',
-    levels: ['Inter', 'Degree', 'Engineering', 'PG'],
+    levels: ['Inter', 'Degree', 'Engineering', 'Masters', 'PhD'],
     gives: 'Free tuition, a monthly stipend, a hostel place or housing allowance and medical insurance for bachelor\'s, master\'s or PhD study in Hungary',
     who: 'Indian students after Class 12 (bachelor\'s) or after a degree (master\'s and PhD); India nominates candidates through the Ministry of Education',
     when: 'Usually November to January',
@@ -330,7 +488,7 @@ export const SCHOLARSHIPS: ScholarshipGuide[] = [
   },
   {
     id: 'abroad-inlaks', title: 'Inlaks Shivdasani scholarships', scope: 'Study abroad',
-    levels: ['Degree', 'Engineering', 'PG'],
+    levels: ['Degree', 'Engineering', 'Masters'],
     gives: 'Up to about US$100,000 for tuition, living costs and travel at top universities in the USA, UK and Europe',
     who: 'Indians under 30 with a good degree from an Indian university, living in India, who already hold or are applying for admission at a top foreign university',
     when: 'Usually January to March',
@@ -343,7 +501,7 @@ export const SCHOLARSHIPS: ScholarshipGuide[] = [
   },
   {
     id: 'abroad-loan-scholarships', title: 'J.N. Tata Endowment and K.C. Mahindra loan scholarships', scope: 'Study abroad',
-    levels: ['Degree', 'Engineering', 'PG'],
+    levels: ['Degree', 'Engineering', 'Masters', 'PhD'],
     gives: 'Interest-free or low-cost loan scholarships (often a few lakh rupees) toward postgraduate study abroad, plus travel grants',
     who: 'Indian graduates with good marks who have admission or are applying for a master\'s or PhD abroad',
     when: 'J.N. Tata usually January to March; K.C. Mahindra usually March to April',
@@ -354,5 +512,83 @@ export const SCHOLARSHIPS: ScholarshipGuide[] = [
     ],
     links: [{ label: 'J.N. Tata Endowment', url: 'https://www.jntataendowment.org' }, { label: 'K.C. Mahindra Education Trust', url: 'https://www.kcmet.org' }],
     note: CHECK,
+  },
+  {
+    id: 'abroad-fulbright-research', title: 'Fulbright-Nehru Doctoral and Postdoctoral Research Fellowships (USA)', scope: 'Study abroad',
+    levels: ['PhD', 'Post-doc'],
+    gives: 'Funding for a research stay at a US university: monthly stipend, air fare, health cover and allowances',
+    who: 'Doctoral: PhD students registered at an Indian institution. Postdoctoral: Indians who finished a PhD within the last four years.',
+    when: 'Usually opens around May; last date around July',
+    steps: [
+      'Find a host researcher at a US university and get a letter of invitation.',
+      'Apply on the USIEF website with your research proposal and references.',
+      'Shortlisted candidates are interviewed.',
+    ],
+    links: [{ label: 'USIEF (Fulbright in India)', url: 'https://www.usief.org.in' }], note: CHECK,
+  },
+  {
+    id: 'abroad-msca', title: 'Marie Skłodowska-Curie Actions (Europe): doctoral and post-doc', scope: 'Study abroad',
+    levels: ['Masters', 'PhD', 'Post-doc'],
+    gives: 'A full salary as a researcher in Europe, with social security and mobility allowances',
+    who: 'Doctoral networks: master\'s graduates of any nationality, applying to advertised PhD positions. Postdoctoral fellowships: PhD holders with up to eight years of experience after the PhD, with a European host.',
+    when: 'PhD positions are advertised all year; the post-doc call usually opens in spring and closes in September',
+    steps: [
+      'For a PhD, search the EURAXESS job portal for MSCA doctoral network positions and apply to each.',
+      'For a post-doc, find a host supervisor in Europe and write a joint proposal.',
+      'Submit through the EU Funding and Tenders portal before the deadline.',
+    ],
+    links: [{ label: 'MSCA (European Commission)', url: 'https://marie-sklodowska-curie-actions.ec.europa.eu' }, { label: 'EURAXESS jobs', url: 'https://euraxess.ec.europa.eu' }], note: CHECK,
+  },
+  {
+    id: 'abroad-humboldt', title: 'Humboldt Research Fellowship (Germany)', scope: 'Study abroad',
+    levels: ['Post-doc'],
+    gives: 'A monthly fellowship for 6 to 24 months of research in Germany, plus family and travel allowances',
+    who: 'Researchers from any country with a PhD completed within the last four years (post-doc) or up to twelve years (experienced researchers), with a host in Germany',
+    when: 'Applications accepted all year',
+    steps: [
+      'Agree a research plan with a host at a German university or institute.',
+      'Apply online with your proposal, publications and references.',
+      'Selection committees meet several times a year.',
+    ],
+    links: [{ label: 'Alexander von Humboldt Foundation', url: 'https://www.humboldt-foundation.de' }], note: CHECK,
+  },
+  {
+    id: 'abroad-jsps', title: 'JSPS Postdoctoral Fellowships (Japan)', scope: 'Study abroad',
+    levels: ['Post-doc'],
+    gives: 'A monthly stipend, air fare and research support for a post-doc in Japan',
+    who: 'Researchers from any country with a PhD from the last six years, with a host researcher in Japan',
+    when: 'Usually several rounds a year',
+    steps: [
+      'Find a host researcher in Japan; the host applies to JSPS on your behalf.',
+      'Prepare your research plan and documents with the host.',
+      'Wait for the JSPS selection result.',
+    ],
+    links: [{ label: 'JSPS', url: 'https://www.jsps.go.jp/english/' }], note: CHECK,
+  },
+  {
+    id: 'abroad-swiss', title: 'Swiss Government Excellence Scholarships', scope: 'Study abroad',
+    levels: ['Masters', 'PhD', 'Post-doc'],
+    gives: 'A monthly stipend, tuition fee waiver and health insurance for PhD or post-doc research in Switzerland',
+    who: 'Indian researchers with a master\'s degree (for PhD) or a PhD (for post-doc) and a host professor at a Swiss university',
+    when: 'Usually August to November, through the Embassy of Switzerland in India',
+    steps: [
+      'Get a host professor at a Swiss university to support your research plan.',
+      'Download the application for India from the Swiss government website.',
+      'Submit through the Embassy of Switzerland in India before the deadline.',
+    ],
+    links: [{ label: 'Swiss Government Excellence Scholarships', url: 'https://www.sbfi.admin.ch/sbfi/en/home/education/scholarships-and-grants/swiss-government-excellence-scholarships.html' }], note: CHECK,
+  },
+  {
+    id: 'abroad-gates-rhodes', title: 'Gates Cambridge and Rhodes Scholarships (UK)', scope: 'Study abroad',
+    levels: ['Degree', 'Engineering', 'Masters', 'PhD'],
+    gives: 'Full cost of a master\'s or PhD at the University of Cambridge (Gates) or the University of Oxford (Rhodes): fees, living costs and travel',
+    who: 'Outstanding Indian graduates; Rhodes India is for ages 19 to 25 (up to 27 for some), Gates Cambridge for anyone outside the UK applying to a full-time Cambridge course',
+    when: 'Rhodes India usually June to August; Gates Cambridge with the Cambridge course deadline, usually October to December',
+    steps: [
+      'Choose a full-time master\'s or PhD course at Cambridge or Oxford.',
+      'Apply to the course and the scholarship together (Gates) or on the Rhodes India portal.',
+      'Shortlisted candidates are interviewed.',
+    ],
+    links: [{ label: 'Gates Cambridge', url: 'https://www.gatescambridge.org' }, { label: 'Rhodes Trust', url: 'https://www.rhodeshouse.ox.ac.uk' }], note: CHECK,
   },
 ];
