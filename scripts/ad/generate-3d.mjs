@@ -74,8 +74,18 @@ const KEYS = [
   ['v-glow', 'k-desk-gold', `${KSTYLE} Vertical 9:16 portrait composition that fills the entire frame edge to edge, no borders. A soft, out-of-focus warm golden abstract background: blurred room with golden bokeh lights and floating light particles, brighter in the centre. No people, no objects in focus, no text.`, '9:16'],
   ['v-gates', 'k-path', `${KSTYLE} Vertical 9:16 portrait composition that fills the entire frame edge to edge, no borders. Wide tracking shot of the same smiling student (white shirt, navy blazer) walking confidently through grand sunlit university gates, his proud mother (saree) and father beside him, all three seen from the front and smiling, warm morning sun and gentle lens flare behind them, golden light. The upper quarter of the frame is open bright sky. No text.`, '9:16'],
 ];
+// Backgrounds for the daily notice Shorts, one per notice area. People stay in the lower half; the upper half is
+// soft open background where the notice card is drawn.
+const BSTYLE = 'Stylized 3D animated feature film style with vibrant Pixar-inspired lighting, warm hopeful mood, soft depth of field. Vertical 9:16 portrait composition that fills the ENTIRE frame edge to edge: no black bars, no borders. The characters are in the LOWER half of the frame; the UPPER half is soft, out-of-focus open background (sky or wall) with gentle golden light particles. No readable text, no logos.';
+const SBG = [
+  ['bg-school', null, `${BSTYLE} A proud Indian mother and her 10-year-old son in a neat school uniform with a backpack, standing hand in hand in front of the gates of a grand green residential school campus in warm morning sun, the boy looking up excitedly.`],
+  ['bg-job', null, `${BSTYLE} A confident young Indian graduate (about 23) in a formal shirt holding a document folder, standing in front of a large Indian government office building with steps and columns, warm morning light, determined smile.`],
+  ['bg-exam', null, `${BSTYLE} A focused Indian teenage student (about 17) at a study desk with neat stacks of books and a pencil, a window behind with soft dawn light, looking up with a hopeful, determined expression.`],
+  ['bg-scholarship', null, `${BSTYLE} A happy Indian college student (about 19) holding a graduation cap, with her proud father beside her, on a sunlit university lawn with a clock tower softly blurred far behind.`],
+];
 const ASPECT = SET.startsWith('promo') ? '16:9' : '9:16';
-if (SET === 'keys3d') SHOTS.splice(0, SHOTS.length, ...KEYS);
+if (SET === 'shortsbg') SHOTS.splice(0, SHOTS.length, ...SBG);
+else if (SET === 'keys3d') SHOTS.splice(0, SHOTS.length, ...KEYS);
 else if (SET === 'scholar') SHOTS.splice(0, SHOTS.length, ...SCHOLAR);
 else if (SET === 'promo') SHOTS.splice(0, SHOTS.length, ...PROMO);
 else if (SET === 'promoreal') SHOTS.splice(0, SHOTS.length, ...PROMOREAL);
