@@ -13,16 +13,10 @@ jobs:
         run: |
           set +e
           UA='Mozilla/5.0 (compatible; MargDishaNoticeBot/1.0; +https://margdisha.com)'
-          echo "##### SSC scripts"
           curl -sS -m 25 -A "$UA" https://ssc.gov.in/ -o ssc.html
-          for s in $(grep -oE 'src="[^"]+\.js"' ssc.html | cut -d'"' -f2); do
-            echo "--- $s"; curl -sS -m 25 -A "$UA" "https://ssc.gov.in/$s" -o s.js
-            grep -oE '.{0,80}(api/|apiUrl|baseUrl|BASE_URL|environment)[^;]{0,120}' s.js | head -25
-            grep -oE '"[^"]{0,60}(notice|whatsnew|latest|news|notification)[^"]{0,60}"' s.js | sort -u | head -40
-          done
-          for h in rrbsecunderabad.gov.in www.rrbcdg.gov.in upsc.gov.in exams.nta.nic.in psc.ap.gov.in; do
-            echo "================ $h"
-            timeout 20 openssl s_client -connect $h:443 -servername $h -showcerts </dev/null 2>&1 | grep -E "^ *[0-9] s:| i:|Verify return|Protocol|Cipher is|alert|errno" | head -12
-            curl -sS -m 25 -A "$UA" -o b -w "%{http_code} %{size_download}\n" https://$h/ 2>&1 | tail -1
+          m=$(grep -oE 'main\.[a-f0-9]+\.js' ssc.html | head -1); curl -sS -m 25 -A "$UA" "https://ssc.gov.in/$m" -o m.js
+          grep -oE '.{0,200}(getLastUpdates|apiPath\+|general-website/portal|noticeBoard|NoticeBoard|whatsNew|latestNews)[^;]{0,220}' m.js | head -40
+          for p in "general-website/portal/records?page=1&limit=10&contentType=notice-boards&key=createdAt&order=DESC&isAttachment=true" "general-website/portal/last-updates" "general-website/portal/lastUpdates" "general-website/portal/notice-boards" ; do
+            echo "--- $p"; curl -sS -m 25 -A "$UA" -H 'Accept: application/json' "https://ssc.gov.in/api/$p" | head -c 700; echo
           done
           exit 0
