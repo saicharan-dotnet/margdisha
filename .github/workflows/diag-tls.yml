@@ -15,8 +15,7 @@ jobs:
           UA='Mozilla/5.0 (compatible; MargDishaNoticeBot/1.0; +https://margdisha.com)'
           curl -sS -m 25 -A "$UA" https://ssc.gov.in/ -o ssc.html
           m=$(grep -oE 'main\.[a-f0-9]+\.js' ssc.html | head -1); curl -sS -m 25 -A "$UA" "https://ssc.gov.in/$m" -o m.js
-          grep -oE '.{0,200}(getLastUpdates|apiPath\+|general-website/portal|noticeBoard|NoticeBoard|whatsNew|latestNews)[^;]{0,220}' m.js | head -40
-          for p in "general-website/portal/records?page=1&limit=10&contentType=notice-boards&key=createdAt&order=DESC&isAttachment=true" "general-website/portal/last-updates" "general-website/portal/lastUpdates" "general-website/portal/notice-boards" ; do
-            echo "--- $p"; curl -sS -m 25 -A "$UA" -H 'Accept: application/json' "https://ssc.gov.in/api/$p" | head -c 700; echo
-          done
+          grep -oE 'getNoticeBoard\(K\)\{.{0,300}' m.js | head -3
+          grep -oE '.{0,300}(getNoticeBoard|getDataByType)\(\{.{0,300}' m.js | head -8
+          grep -oE '.{0,200}contentType.{0,200}' m.js | head -8
           exit 0
