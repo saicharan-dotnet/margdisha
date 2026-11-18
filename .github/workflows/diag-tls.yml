@@ -14,8 +14,8 @@ jobs:
           set +e
           UA='Mozilla/5.0 (compatible; MargDishaNoticeBot/1.0; +https://margdisha.com)'
           curl -sS -m 25 -A "$UA" https://ssc.gov.in/ -o ssc.html
-          m=$(grep -oE 'main\.[a-f0-9]+\.js' ssc.html | head -1); curl -sS -m 25 -A "$UA" "https://ssc.gov.in/$m" -o m.js
-          grep -oE 'getNoticeBoard\(K\)\{.{0,300}' m.js | head -3
-          grep -oE '.{0,300}(getNoticeBoard|getDataByType)\(\{.{0,300}' m.js | head -8
-          grep -oE '.{0,200}contentType.{0,200}' m.js | head -8
+          echo "--- notice-boards?page=1&limit=10&key=createdAt&order=DESC&isPaginationRequired=true&isAttachment=true&language=english"; curl -sS -m 25 -A "$UA" -H 'Accept: application/json' "https://ssc.gov.in/api/general-website/portal/notice-boards?page=1&limit=10&key=createdAt&order=DESC&isPaginationRequired=true&isAttachment=true&language=english" | head -c 1500; echo
+          echo "--- notice-boards?page=1&limit=10&contentType=notice-boards&key=createdAt&order=DESC&isPaginationRequired=true&language=english"; curl -sS -m 25 -A "$UA" -H 'Accept: application/json' "https://ssc.gov.in/api/general-website/portal/notice-boards?page=1&limit=10&contentType=notice-boards&key=createdAt&order=DESC&isPaginationRequired=true&language=english" | head -c 1500; echo
+          echo "--- records?page=1&limit=10&contentType=notice-boards&key=createdAt&order=DESC&isPaginationRequired=true&isAttachment=true&language=english&attributes=id,headline,contentType,language,createdAt"; curl -sS -m 25 -A "$UA" -H 'Accept: application/json' "https://ssc.gov.in/api/general-website/portal/records?page=1&limit=10&contentType=notice-boards&key=createdAt&order=DESC&isPaginationRequired=true&isAttachment=true&language=english&attributes=id,headline,contentType,language,createdAt" | head -c 1500; echo
+          echo "--- records?page=1&limit=10&contentType=browse-exam&key=createdAt&order=DESC&isPaginationRequired=false&isAttachment=true&language=english&attributes=id,headline,examId,contentType,startDate,endDate,language,createdAt"; curl -sS -m 25 -A "$UA" -H 'Accept: application/json' "https://ssc.gov.in/api/general-website/portal/records?page=1&limit=10&contentType=browse-exam&key=createdAt&order=DESC&isPaginationRequired=false&isAttachment=true&language=english&attributes=id,headline,examId,contentType,startDate,endDate,language,createdAt" | head -c 1500; echo
           exit 0
