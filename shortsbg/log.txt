@@ -2,21 +2,17 @@
 3d bg-job: already made
 3d bg-exam: already made
 3d bg-scholarship: already made
-3d bg-police: ok (gemini-2.5-flash-image)
-3d bg-defence: ok (gemini-2.5-flash-image)
-3d bg-railway: ok (gemini-2.5-flash-image)
-3d bg-bank: ok (gemini-2.5-flash-image)
-3d bg-teacher: ok (gemini-2.5-flash-image)
-3d bg-office: ok (gemini-2.5-flash-image)
-3d bg-engineer: ok (gemini-2.5-flash-image)
-3d bg-result: ok (gemini-2.5-flash-image)
-3d bg-admit: ok (gemini-2.5-flash-image)
-  busy (429), waiting 40s
-  busy (429), waiting 40s
-  busy (429), waiting 40s
-  busy (429), waiting 40s
-3d bg-answerkey: FAILED
-3d bg-examhall: ok (gemini-2.5-flash-image)
-3d bg-sainik: ok (gemini-2.5-flash-image)
-3d bg-school2: ok (gemini-2.5-flash-image)
-3d bg-scholar2: ok (gemini-2.5-flash-image)
+3d bg-police: already made
+3d bg-defence: already made
+3d bg-railway: already made
+3d bg-bank: already made
+3d bg-teacher: already made
+3d bg-office: already made
+3d bg-engineer: already made
+3d bg-result: already made
+3d bg-admit: already made
+3d bg-answerkey: ok (gemini-2.5-flash-image)
+3d bg-examhall: already made
+3d bg-sainik: already made
+3d bg-school2: already made
+3d bg-scholar2: already made
