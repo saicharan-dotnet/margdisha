@@ -17,6 +17,9 @@ on:
       voice:
         description: 'Google voice (en-IN-Chirp3-HD-Charon = male, en-IN-Chirp3-HD-Kore = female)'
         default: 'en-IN-Chirp3-HD-Kore'
+      redo:
+        description: 'Remake these notice ids even if already made (comma-separated, blank = normal run)'
+        required: false
 
 permissions:
   contents: write
@@ -46,6 +49,7 @@ jobs:
           COUNT: ${{ github.event.inputs.count || '3' }}
           DAYS: ${{ github.event.inputs.days || '3' }}
           VOICE: ${{ github.event.inputs.voice || 'en-IN-Chirp3-HD-Kore' }}
+          REDO: ${{ github.event.inputs.redo }}
       - name: Render the videos
         run: |
           if [ "$(cat shorts-out/made.json)" = "[]" ]; then echo "No new Shorts today."; exit 0; fi

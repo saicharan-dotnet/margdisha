@@ -26,6 +26,9 @@ const fresh = all.filter((n) => !done.has(n.id) && Date.parse(n.first_seen) >= s
 const byArea = {}; for (const n of fresh) (byArea[n.area] ??= []).push(n);
 const picks = []; const areas = Object.keys(byArea);
 while (picks.length < COUNT && areas.some((a) => byArea[a].length)) for (const a of areas) if (byArea[a].length && picks.length < COUNT) picks.push(byArea[a].shift());
+// REDO=id,id remakes those notices' Shorts (for example after a design change), even if already made.
+const REDO = (process.env.REDO || '').split(',').map((x) => x.trim()).filter(Boolean);
+if (REDO.length) picks.splice(0, picks.length, ...all.filter((n) => REDO.includes(String(n.id))));
 console.log(`${all.length} notices read, ${fresh.length} new and usable, making ${picks.length}.`);
 
 const RULES = `You write scripts for 15-second vertical YouTube Shorts for MargDisha.com, a free Indian website that helps students and parents find school admissions, entrance exams, scholarships and government and private jobs, and links to official notices.
