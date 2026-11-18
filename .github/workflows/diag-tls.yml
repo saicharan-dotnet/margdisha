@@ -9,14 +9,20 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - run: |
+      - shell: bash
+        run: |
+          set +e
           UA='Mozilla/5.0 (compatible; MargDishaNoticeBot/1.0; +https://margdisha.com)'
-          for h in portal-psc.ap.gov.in psc.ap.gov.in www.rrbcdg.gov.in rrbsecunderabad.gov.in upsc.gov.in exams.nta.nic.in; do
-            echo "================ $h"
-            timeout 20 openssl s_client -connect $h:443 -servername $h -showcerts </dev/null 2>&1 | grep -E "^ *[0-9] s:| i:|Verify return|Protocol|Cipher is|alert|errno" | head -20
-            echo "--- legacy ciphers"
-            timeout 20 openssl s_client -connect $h:443 -servername $h -cipher 'DEFAULT@SECLEVEL=0' -tls1_2 </dev/null 2>&1 | grep -E "Verify return|Protocol|Cipher is|alert" | head -5
-            echo "--- curl"
-            curl -sS -m 25 -A "$UA" -o /tmp/b -w "%{http_code} %{size_download}\n" https://$h/ 2>&1 | tail -1
-            head -c 400 /tmp/b 2>/dev/null; echo
+          echo "##### SSC scripts"
+          curl -sS -m 25 -A "$UA" https://ssc.gov.in/ -o ssc.html
+          for s in $(grep -oE 'src="[^"]+\.js"' ssc.html | cut -d'"' -f2); do
+            echo "--- $s"; curl -sS -m 25 -A "$UA" "https://ssc.gov.in/$s" -o s.js
+            grep -oE '.{0,80}(api/|apiUrl|baseUrl|BASE_URL|environment)[^;]{0,120}' s.js | head -25
+            grep -oE '"[^"]{0,60}(notice|whatsnew|latest|news|notification)[^"]{0,60}"' s.js | sort -u | head -40
           done
+          for h in rrbsecunderabad.gov.in www.rrbcdg.gov.in upsc.gov.in exams.nta.nic.in psc.ap.gov.in; do
+            echo "================ $h"
+            timeout 20 openssl s_client -connect $h:443 -servername $h -showcerts </dev/null 2>&1 | grep -E "^ *[0-9] s:| i:|Verify return|Protocol|Cipher is|alert|errno" | head -12
+            curl -sS -m 25 -A "$UA" -o b -w "%{http_code} %{size_download}\n" https://$h/ 2>&1 | tail -1
+          done
+          exit 0
