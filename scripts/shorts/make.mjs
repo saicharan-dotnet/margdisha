@@ -36,7 +36,7 @@ Return JSON with:
 - badge: what happened in at most 18 characters, chosen from words in the title (for example "Result Out", "Admit Card", "Apply Now", "Answer Key", "New Notice")
 - hook: a punchy hook of at most 34 characters
 - update: the key update in at most 70 characters, using only the title's facts
-- voiceover: at most 36 words; start with the hook, state the update, end exactly with "Check the official notice free on Marg Disha dot com."
+- voiceover: at most 38 words; start with the hook, state the update, end exactly with "Official link in the description. More free updates on Marg Disha dot com."
 - youtube_title: at most 62 characters, high click-through but truthful, ends with " #Shorts"
 - summary: two sentences summarising the notice for the video description, only from the title and source
 - tags: 6 to 10 short tags without # (include MargDisha and the exam or organisation name)`;
@@ -74,22 +74,21 @@ for (const n of picks) {
   if (!g) { console.log('  skipped (script failed, will retry next run)'); continue; }
   if (g.usable === false) { console.log('  skipped (not a useful notice)'); done.add(n.id); continue; }
   let vo = String(g.voiceover || '').trim();
-  if (!/Marg Disha dot com\.?$/i.test(vo)) vo = vo.replace(/[.!]?$/, '.') + ' Check the official notice free on Marg Disha dot com.';
-  if (vo.split(/\s+/).length > 44) { console.log('  skipped (voiceover too long)'); continue; }
+  const ENDING = 'Official link in the description. More free updates on Marg Disha dot com.';
+  if (!vo.endsWith(ENDING)) vo = vo.replace(/(?:[^.!?]*Marg Disha dot com[.!]?\s*)+$/i, '').trim().replace(/[.!]?$/, '.') + ' ' + ENDING;
+  if (vo.split(/\s+/).length > 48) { console.log('  skipped (voiceover too long)'); continue; }
   const audio = TTS ? await speak(vo) : null;
   if (!audio) { console.log('  skipped (no voice)'); continue; }
   const dir = `${OUT}/${n.id}`; mkdirSync(dir, { recursive: true });
   writeFileSync(`${dir}/voice.wav`, audio);
   let title = cut(g.youtube_title, 70); if (!/#Shorts$/.test(title)) title = cut(title.replace(/\s*#Shorts$/i, ''), 61) + ' #Shorts';
   const tags = [...new Set(['MargDisha', 'EducationUpdates', 'Shorts', ...(g.tags || []).map((t) => String(t).replace(/^#/, '').trim()).filter(Boolean)])].slice(0, 12);
-  // The description has no web links (YouTube blocks them on new channels, and Shorts links are not clickable).
-  // The links go in a separate comment for the uploader to post and pin.
-  const description = [cut(g.summary, 400), '', `Source: ${n.source_name}. Official link in the pinned comment.`, '',
+  // The official link and the website go in the description (the channel is verified, so links are allowed).
+  const description = [cut(g.summary, 400), '', `Official notice (${n.source_name}): ${n.url}`, 'More free updates: https://margdisha.com', '',
     'MargDisha collects official notices and links you to the official website for free. Always read the full official notification before applying. We do not guarantee selection or admission.', '',
     'Exams, jobs, school admissions and scholarships, free on MargDisha.', '', tags.map((t) => '#' + t.replace(/\s+/g, '')).join(' ')].join('\n');
-  const comment = [`Official notice: ${n.url}`, 'More free updates: https://margdisha.com'].join('\n');
   const job = { id: n.id, area: n.area, areaLabel: AREA[n.area] || 'Updates', source: n.source_name, noticeTitle: n.title, url: n.url,
-    name: cut(g.name, 24), badge: cut(g.badge, 20), hook: cut(g.hook, 40), update: cut(g.update, 90), voiceover: vo, title, description, comment, tags };
+    name: cut(g.name, 24), badge: cut(g.badge, 20), hook: cut(g.hook, 40), update: cut(g.update, 90), voiceover: vo, title, description, tags };
   writeFileSync(`${dir}/job.json`, JSON.stringify(job, null, 2));
   console.log(`  ok: ${title}`); made.push(n.id); done.add(n.id);
 }

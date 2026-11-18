@@ -56,6 +56,8 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:#061614;font-fam
 .e-free{font:700 38px 'Inter','NTel','NDev';color:#e8f5f2}
 .e-sub{display:inline-flex;align-items:center;gap:16px;font:800 40px 'Inter';background:#e62117;padding:14px 36px;border-radius:999px;box-shadow:0 10px 40px rgba(230,33,23,.45)}
 .e-sub small{font:700 30px 'Inter';opacity:.9}
+.e-desc{display:inline-block;font:800 40px 'Inter','NTel','NDev';color:#fff;padding:12px 34px;border-radius:999px;background:rgba(0,0,0,.35);border:3px solid #ffd567}
+.Lte .e-desc{font-family:'NTel','Inter'!important}.Lhi .e-desc{font-family:'NDev','Inter'!important}
 .Lte *{font-family:'NTel','NDev','Inter Display','Inter',sans-serif !important}.Lhi *{font-family:'NDev','NTel','Inter Display','Inter',sans-serif !important}
 .L .t-h{font-size:92px;line-height:1.15;letter-spacing:-1px}.L .p-h{font-size:66px;line-height:1.2;letter-spacing:-1px;top:150px}.L .p-bar{top:262px}.L .card{font-size:34px;line-height:1.35;min-height:100px}.L .w-left .p-h{font-size:62px}.L .chip{font-size:30px}.L .subt{font-size:36px;line-height:1.4;top:960px}
 .subt{position:absolute;left:120px;right:120px;top:968px;text-align:center;font:700 40px/1.25 'Inter Display';text-shadow:0 2px 14px rgba(0,0,0,.95),0 0 3px #000;opacity:0}
@@ -96,7 +98,8 @@ $('scenes').innerHTML=SC.map((s,i)=>{
   return `<div class="scene" id="sc${i}"><div class="e-row"><img src="logo.png"><div>MargDisha</div></div>
     <div class="e-c" style="top:450px"><span class="e-url">margdisha.com</span></div>
     <div class="e-c e-free" style="top:600px">${G.lang==='te'?'100% ఉచితం · అధికారిక లింకులు · తెలుగు · English · हिन्दी':G.lang==='hi'?'100% मुफ़्त · आधिकारिक लिंक · हिन्दी · English · తెలుగు':'100% free · Official links · English · తెలుగు · हिन्दी'}</div>
-    <div class="e-c" style="top:700px"><span class="e-sub">▶ ${G.lang==='te'?'సబ్‌స్క్రైబ్':G.lang==='hi'?'सब्सक्राइब':'Subscribe'} <small>@margdishaindia</small></span></div></div>`;
+    <div class="e-c" style="top:700px"><span class="e-sub">▶ ${G.lang==='te'?'సబ్‌స్క్రైబ్':G.lang==='hi'?'सब्सक्राइब':'Subscribe'} <small>@margdishaindia</small></span></div>
+    <div class="e-c" style="top:830px"><span class="e-desc">⬇ ${G.lang==='te'?'అన్ని లింకులు కింద డిస్క్రిప్షన్‌లో':G.lang==='hi'?'सभी लिंक नीचे डिस्क्रिप्शन में':'All links in the description below'} ⬇</span></div></div>`;
 }).join('');
 // subtitles: about 8 words per chunk, timed by word share
 const SUBS=[];
