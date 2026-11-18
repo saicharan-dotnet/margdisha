@@ -107,7 +107,16 @@ export function noticesFromJson(body: unknown, feed: JsonFeed, max = 30): FoundN
     if (!title) continue;
     const prefix = feed.prefix ? str(at(item, feed.prefix)) : '';
     let link = (feed.link ?? []).map((f) => str(at(item, f))).find(Boolean) ?? '';
-    if (!link && feed.linkTemplate) link = feed.linkTemplate.replace(/\{(\w+)\}/g, (_, f: string) => encodeURIComponent(str(at(item, f))));
+    if (!link && feed.linkTemplate) {
+      // {field} or {a.0.b}; a value that is a file path ("uploads\\x\\y.pdf") keeps its folders.
+      let missing = false;
+      link = feed.linkTemplate.replace(/\{([\w.]+)\}/g, (_, f: string) => {
+        const v = str(at(item, f)).replace(/\\/g, '/');
+        if (!v) missing = true;
+        return v.split('/').map(encodeURIComponent).join('/');
+      });
+      if (missing) link = '';
+    }
     const url = link ? (() => { try { const u = new URL(link, feed.url); return /^https?:$/.test(u.protocol) ? u.toString() : null; } catch { return null; } })() : null;
     if (!url) continue;
     out.push({ title: (prefix && !title.toLowerCase().startsWith(prefix.toLowerCase()) ? `${prefix}: ${title}` : title).slice(0, 300), url });

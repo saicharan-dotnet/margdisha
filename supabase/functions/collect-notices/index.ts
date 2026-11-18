@@ -3,7 +3,8 @@
 // src/notices/sources.ts
 var NOTICE_SOURCES = [
   // Government jobs
-  { id: "ssc", name: "Staff Selection Commission", url: "https://ssc.gov.in/", area: "job", sector: "SSC" },
+  // ssc.gov.in builds its page with scripts; this is the feed behind its Notice Board.
+  { id: "ssc", json: { url: "https://ssc.gov.in/api/general-website/portal/records?page=1&limit=25&contentType=notice-boards&key=createdAt&order=DESC&isPaginationRequired=true&isAttachment=true&language=english&attributes=id,headline,examId,contentType,redirectUrl,language,createdAt", items: "data", title: "headline", link: ["redirectUrl"], linkTemplate: "https://ssc.gov.in/api/attachment/{attachments.0.path}" }, name: "Staff Selection Commission", url: "https://ssc.gov.in/", area: "job", sector: "SSC" },
   { id: "upsc", india: true, name: "UPSC", url: "https://upsc.gov.in/whats-new", area: "job", sector: "UPSC" },
   { id: "upsc-exams", india: true, name: "UPSC", url: "https://upsc.gov.in/examinations/active-exams", area: "job", sector: "UPSC", keywords: ["examination"] },
   { id: "rrb-secunderabad", india: true, name: "RRB Secunderabad", url: "https://rrbsecunderabad.gov.in/", area: "job", sector: "Railways", keywords: ["cen"] },
@@ -20,7 +21,8 @@ var NOTICE_SOURCES = [
   // School admissions
   { id: "navodaya", india: true, json: { url: "https://navodaya.gov.in/api/public/media?page=1&limit=30", items: "data.items", title: "title_english", link: ["external_url", "download_url"], prefix: "media_type_name" }, name: "Navodaya Vidyalaya Samiti", url: "https://navodaya.gov.in/", area: "school", sector: "Navodaya", keywords: ["jnvst", "lateral"] },
   { id: "aissee", india: true, name: "AISSEE (Sainik Schools)", url: "https://exams.nta.nic.in/sainik-school-society/", area: "school", sector: "Sainik", keywords: ["aissee", "sainik"] },
-  { id: "kvs", name: "Kendriya Vidyalaya Sangathan", url: "https://kvsangathan.nic.in/", area: "school", sector: "Kendriya Vidyalaya", keywords: ["balvatika", "class i"] },
+  // The KVS site moved from kvsangathan.nic.in to kvs.gov.in in 2026.
+  { id: "kvs", name: "Kendriya Vidyalaya Sangathan", url: "https://kvs.gov.in/en/", area: "school", sector: "Kendriya Vidyalaya", keywords: ["balvatika", "class i"] },
   { id: "rms", name: "Rashtriya Military Schools", url: "https://www.rashtriyamilitaryschools.edu.in/", area: "school", sector: "Military School", keywords: ["cet"] },
   { id: "nests", name: "NESTS (Eklavya schools)", url: "https://nests.tribal.gov.in/", area: "school", sector: "EMRS", keywords: ["emrs", "eklavya"] },
   { id: "tgcet", india: true, json: { url: "https://tgcet.cgg.gov.in/TGCETWEB/getNotifications", items: "data", title: "DESCRIPTION", prefix: "DEPT_SHORT_NAME", linkTemplate: "https://tgcet.cgg.gov.in/TGCETWEB/?notification={NOTIFICATION_ID}" }, name: "Telangana Gurukul (TGCET)", url: "https://tgcet.cgg.gov.in/", area: "school", sector: "State residential", keywords: ["tgcet", "gurukul"] },
@@ -186,7 +188,15 @@ function noticesFromJson(body, feed, max = 30) {
     if (!title) continue;
     const prefix = feed.prefix ? str(at(item, feed.prefix)) : "";
     let link = (feed.link ?? []).map((f) => str(at(item, f))).find(Boolean) ?? "";
-    if (!link && feed.linkTemplate) link = feed.linkTemplate.replace(/\{(\w+)\}/g, (_, f) => encodeURIComponent(str(at(item, f))));
+    if (!link && feed.linkTemplate) {
+      let missing = false;
+      link = feed.linkTemplate.replace(/\{([\w.]+)\}/g, (_, f) => {
+        const v = str(at(item, f)).replace(/\\/g, "/");
+        if (!v) missing = true;
+        return v.split("/").map(encodeURIComponent).join("/");
+      });
+      if (missing) link = "";
+    }
     const url = link ? (() => {
       try {
         const u = new URL(link, feed.url);

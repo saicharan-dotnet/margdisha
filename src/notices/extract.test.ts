@@ -50,6 +50,11 @@ describe('notice extraction', () => {
     expect(noticesFromJson({ data: [{ DESCRIPTION: 'CET2026', NOTIFICATION_ID: 13190, DEPT_SHORT_NAME: 'TGCET' }] },
       { url: 'https://tgcet.cgg.gov.in/TGCETWEB/getNotifications', items: 'data', title: 'DESCRIPTION', prefix: 'DEPT_SHORT_NAME', linkTemplate: 'https://tgcet.cgg.gov.in/TGCETWEB/?notification={NOTIFICATION_ID}' }))
       .toEqual([{ title: 'TGCET: CET2026', url: 'https://tgcet.cgg.gov.in/TGCETWEB/?notification=13190' }]);
+    const ssc = { url: 'https://ssc.gov.in/api/general-website/portal/records?page=1', items: 'data', title: 'headline', link: ['redirectUrl'], linkTemplate: 'https://ssc.gov.in/api/attachment/{attachments.0.path}' };
+    expect(noticesFromJson({ data: [
+      { headline: 'Notice of CGL 2026', redirectUrl: '', attachments: [{ path: 'uploads\\masterData\\NoticeBoards\\cgl notice.pdf' }] },
+      { headline: 'No file yet', redirectUrl: '', attachments: [] },
+    ] }, ssc)).toEqual([{ title: 'Notice of CGL 2026', url: 'https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/cgl%20notice.pdf' }]);
   });
 
   it('files staff recruitment from school sites under jobs', () => {
