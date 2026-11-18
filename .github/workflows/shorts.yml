@@ -5,7 +5,7 @@ name: Notice Shorts
 # for a person to check and upload. Nothing is posted to YouTube automatically.
 on:
   schedule:
-    - cron: '30 1 * * *'   # 07:00 IST
+    - cron: '41 0 * * *'   # 06:11 IST; an odd minute, because GitHub often drops busy on-the-hour and half-hour schedules
   workflow_dispatch:
     inputs:
       count:
