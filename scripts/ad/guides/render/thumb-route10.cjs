@@ -3,7 +3,7 @@ const K=[['MPC','Engineer · NDA'],['BiPC','Doctor · Pharma'],['Commerce','CA �
 const top=372,h=44,g=9,rootY=top+(6*h+5*g)/2;
 const paths=K.map((_,j)=>{const y=top+j*(h+g)+h/2;return `<path d="M222 ${rootY} C250 ${rootY},250 ${y},278 ${y}"/>`}).join('');
 const rows=K.map(([a,b],j)=>`<div class="kid" style="top:${top+j*(h+g)}px"><span class="p ${j%2?'o':'b'}">${a}</span><span class="ar">→</span><span class="d">${b}</span></div>`).join('');
-const DK=process.env.THEME==='dark';
+const DK=process.env.THEME==='dark',BL=process.env.THEME==='blue';
 const html=`<html><head><style>${DK?'':''}
 *{margin:0;padding:0;box-sizing:border-box}body{width:1280px;height:720px;overflow:hidden;font-family:'Inter Display','Inter',sans-serif;color:#10284a;
 background:radial-gradient(700px 500px at 100% 0%,#ffe2c4 0%,rgba(255,226,196,0) 70%),radial-gradient(700px 600px at 0% 100%,#d6e6ff 0%,rgba(214,230,255,0) 70%),linear-gradient(150deg,#fbfdff,#eef4ff)}
@@ -27,10 +27,15 @@ ${DK?`body{color:#fff;background:radial-gradient(800px 600px at 100% 0%,#16463f 
 .ul{background:linear-gradient(90deg,#f0a830,#ffd567)}svg path{stroke:#ffd567}.root{background:linear-gradient(160deg,#fff1b8,#ffd567 40%,#f0a830);color:#3a2300;box-shadow:0 0 40px rgba(255,190,60,.5)}
 .p.b{background:#1e9e8a}.p.o{background:#f0a830;color:#3a2300}.ar{color:#ffd567}.d{color:#fff;background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3)}
 .badge{background:linear-gradient(160deg,#fff1b8,#ffd567 40%,#f0a830);color:#3a2300;border-color:#071a18;box-shadow:0 0 40px rgba(255,190,60,.6)}.badge b{color:#b8430c}
+.free{background:#e62117;border-color:#fff}`:''}${BL?`body{color:#fff;background:radial-gradient(800px 600px at 100% 0%,#1d3d86 0%,rgba(29,61,134,0) 70%),linear-gradient(150deg,#0b1a3d,#050b1c)}
+#img{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 35%)}h1 .a{color:#fff}h1 .b{color:#6fb1ff;text-shadow:0 6px 30px rgba(79,142,247,.45)}
+.ul{background:linear-gradient(90deg,#2563eb,#60a5fa)}svg path{stroke:#6fb1ff}.root{background:linear-gradient(160deg,#9cc8ff,#4f8ef7 45%,#1e5bd8);color:#fff;box-shadow:0 0 40px rgba(79,142,247,.55)}
+.p.b{background:#2563eb}.p.o{background:#e8f1ff;color:#0b1a3d}.ar{color:#6fb1ff}.d{color:#fff;background:rgba(255,255,255,.1);border-color:rgba(111,177,255,.5)}
+.badge{background:linear-gradient(160deg,#9cc8ff,#4f8ef7 45%,#1e5bd8);color:#fff;border-color:#fff;box-shadow:0 0 40px rgba(79,142,247,.6)}.badge b{color:#dbeaff}
 .free{background:#e62117;border-color:#fff}`:''}</style></head><body><div id="img"></div>
 <div class="brand"><img src="file://${__dirname}/logo.png">MargDisha</div>
 <h1><span class="a">After 10th</span><span class="b">ROUTE MAP</span></h1><div class="ul"></div>
 <svg>${paths}</svg><div class="root">Class 10</div>${rows}
 <div class="free">FREE</div><div class="badge">Exams <b>+</b> Jobs</div></body></html>`;
 fs.writeFileSync(__dirname+'/_tl.html',html);
-(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1280,height:720}});await p.goto('file://'+__dirname+'/_tl.html');await p.waitForTimeout(500);await p.screenshot({path:DK?'thumb-route10-dark.jpg':'thumb-route10-light.jpg',type:'jpeg',quality:92});await b.close();})();
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1280,height:720}});await p.goto('file://'+__dirname+'/_tl.html');await p.waitForTimeout(500);await p.screenshot({path:BL?'thumb-route10-blue.jpg':DK?'thumb-route10-dark.jpg':'thumb-route10-light.jpg',type:'jpeg',quality:92});await b.close();})();
