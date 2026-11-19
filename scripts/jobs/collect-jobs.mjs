@@ -13,7 +13,10 @@ const today = new Date().toISOString().slice(0, 10);
 
 const INDIA = /\b(india|bengaluru|bangalore|hyderabad|chennai|mumbai|pune|gurugram|gurgaon|noida|delhi|new delhi|kolkata|ahmedabad|jaipur|kochi|coimbatore|visakhapatnam|vizag|vijayawada|indore|chandigarh|mysuru|mysore|trivandrum|thiruvananthapuram|bhubaneswar|lucknow|nagpur)\b/i;
 const SENIOR = /\b(senior|sr\.?|lead|principal|staff|manager|director|head|architect|vp|vice president|chief|expert|specialist ii|ii|iii|iv|sde[- ]?(2|3)|l[4-9])\b/i;
-const ENTRY = /\b(intern(ship)?|trainee|fresher|graduate|new grad|entry[- ]level|junior|jr\.?|associate|apprentice|campus|analyst|executive|sde[- ]?1|engineer i|level 1|l1)\b/i;
+// Titles that are entry-level on their own. Others (associate, analyst, executive ...) only count when
+// the description asks for 0 or 1 years of experience.
+const ENTRY = /\b(intern(ship)?|trainee|fresher|graduate|new grad|entry[- ]level|junior|jr\.?|apprentice(ship)?|campus|sde[- ]?1|engineer i|level 1|l1)\b/i;
+const NOT_ENTRY = /\b(enterprise|majors?|strategic|mid[- ]market|commercial|account executive)\b/i;
 const strip = (h = '') => h.replace(/<[^>]+>/g, ' ').replace(/&[a-z#0-9]+;/gi, ' ').replace(/\s+/g, ' ');
 /** Smallest "N years" or "N-M years" of experience mentioned in the description, if any. */
 function minYears(text) {
@@ -25,7 +28,7 @@ function minYears(text) {
   return min;
 }
 function entryLevel(title, text) {
-  if (SENIOR.test(title)) return false;
+  if (SENIOR.test(title) || NOT_ENTRY.test(title)) return false;
   const y = minYears(text);
   if (y !== null) return y <= 1;
   return ENTRY.test(title);
