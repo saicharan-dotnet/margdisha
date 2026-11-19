@@ -17,10 +17,11 @@ var NOTICE_SOURCES = [
   { id: "army", india: true, name: "Indian Army", url: "https://joinindianarmy.nic.in/", area: "job", sector: "Defence", keywords: ["agniveer", "entry"] },
   // Public sector companies (PSUs): recruitment and apprentice notices
   { id: "ongc", india: true, name: "ONGC", url: "https://ongcindia.com/web/eng/career/recruitment-notice", area: "job", sector: "PSU", keywords: ["apprentice", "advertisement", "engagement"], linkMust: ["/documents/"] },
-  { id: "ntpc", india: true, name: "NTPC", url: "https://careers.ntpc.co.in/recruitment/", area: "job", sector: "PSU", keywords: ["advertisement", "engagement"], debugAround: "Posting date" },
+  { id: "ntpc", india: true, name: "NTPC", url: "https://careers.ntpc.co.in/recruitment/", area: "job", sector: "PSU", keywords: ["advertisement", "engagement", "advt", "trainee", "interview", "test"], headingItems: "h5" },
   { id: "hal", india: true, name: "HAL", url: "https://hal-india.co.in/career", area: "job", sector: "PSU", keywords: ["advertisement", "apprentice"] },
-  { id: "gail", india: true, name: "GAIL", url: "https://gailonline.com/", area: "job", sector: "PSU", keywords: ["advertisement", "apprentice"], debugAround: "areer" },
+  { id: "gail", india: true, name: "GAIL", url: "https://gailonline.com/", area: "job", sector: "PSU", keywords: ["advertisement", "apprentice"], probe: ["https://gailonline.com/CRCurrentOpenings.html", "https://gailonline.com/careers.html", "https://gailonline.com/career.html", "https://gailonline.com/CRCareers.html"] },
   { id: "iocl", india: true, name: "Indian Oil (IOCL)", url: "https://iocl.com/", area: "job", sector: "PSU", keywords: ["apprentice", "advertisement"] },
+  { id: "empnews", india: true, name: "Employment News", url: "https://www.employmentnews.gov.in/NewEmp/Home.aspx", area: "job", sector: "Departments", debugAround: "Job" },
   { id: "ongc-apprentice", india: true, name: "ONGC apprentices", url: "https://ongcindia.com/web/eng/career/apprenticeship-opportunities", area: "job", sector: "Apprenticeship", keywords: ["apprentice", "engagement", "advertisement"], linkMust: ["/documents/"] },
   { id: "bhel", india: true, name: "BHEL", url: "https://careers.bhel.in/index.jsp", area: "job", sector: "PSU", keywords: ["advertisement", "apprentice"], linkMust: ["careers", "bhel.com/"] },
   { id: "powergrid", india: true, name: "POWERGRID", url: "https://www.powergrid.in/en/job-opportunities", area: "job", sector: "PSU", keywords: ["advertisement", "apprentice"], linkMust: ["job", "career", "recruit", "apprentic", ".pdf"] },
@@ -226,6 +227,17 @@ function noticesFromJson(body, feed, max = 30) {
   }
   return out;
 }
+function headingNotices(html, pageUrl, tag) {
+  const out = [];
+  for (const m of html.matchAll(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`, "gi"))) {
+    const title = decode(m[1].replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
+    if (!title) continue;
+    let h = 5381;
+    for (const c of title.toLowerCase()) h = (h * 33 ^ c.charCodeAt(0)) >>> 0;
+    out.push({ title, url: `${pageUrl.split("#")[0]}#n${h.toString(36)}` });
+  }
+  return out;
+}
 
 // src/notices/collect.ts
 async function fetchPage(url, timeoutMs = 25e3, depth = 0, accept = "text/html,application/xhtml+xml") {
@@ -281,6 +293,7 @@ async function collectSource(src, supabaseUrl, key, debug = false) {
       html = await fetchPage(src.url);
       all = extractLinks(html, src.url);
       found = pickNotices(all.filter((l) => isOfficialLink(l.url, src.url)), src);
+      if (src.headingItems) found = pickNotices(headingNotices(html, src.url, src.headingItems), src);
     }
     if (debug && src.probe) {
       const probes = [];

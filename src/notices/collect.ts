@@ -1,6 +1,6 @@
 // Shared by the GitHub Actions script (Node) and the Supabase Edge Function (Deno).
 import type { NoticeSource } from './sources';
-import { extractLinks, isOfficialLink, noticesFromJson, pickNotices, type FoundNotice } from './extract';
+import { extractLinks, headingNotices, isOfficialLink, noticesFromJson, pickNotices, type FoundNotice } from './extract';
 
 export async function fetchPage(url: string, timeoutMs = 25_000, depth = 0, accept = 'text/html,application/xhtml+xml'): Promise<string> {
   const ctrl = new AbortController();
@@ -68,6 +68,8 @@ export async function collectSource(src: NoticeSource, supabaseUrl: string, key:
       html = await fetchPage(src.url);
       all = extractLinks(html, src.url);
       found = pickNotices(all.filter((l) => isOfficialLink(l.url, src.url)), src);
+      // Sites whose links change on every visit: each notice heading becomes a stable link to the page.
+      if (src.headingItems) found = pickNotices(headingNotices(html, src.url, src.headingItems), src);
     }
     if (debug && src.probe) {
       const probes: string[] = [];

@@ -125,3 +125,16 @@ export function noticesFromJson(body: unknown, feed: JsonFeed, max = 30): FoundN
   }
   return out;
 }
+
+/** Each <tag>…</tag> heading on the page as a notice, linked to the page with a fragment made from its text,
+ *  so the same notice keeps the same address on every visit (for sites whose own links change each time). */
+export function headingNotices(html: string, pageUrl: string, tag: string): FoundNotice[] {
+  const out: FoundNotice[] = [];
+  for (const m of html.matchAll(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`, 'gi'))) {
+    const title = decode(m[1].replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
+    if (!title) continue;
+    let h = 5381; for (const c of title.toLowerCase()) h = ((h * 33) ^ c.charCodeAt(0)) >>> 0;
+    out.push({ title, url: `${pageUrl.split('#')[0]}#n${h.toString(36)}` });
+  }
+  return out;
+}

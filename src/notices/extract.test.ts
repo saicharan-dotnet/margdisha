@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { areaFor } from './collect';
-import { extractLinks, isOfficialLink, noticesFromJson, pickNotices, resolve } from './extract';
+import { extractLinks, headingNotices, isOfficialLink, noticesFromJson, pickNotices, resolve } from './extract';
 
 const PAGE = `
 <html><head><script>var a = '<a href="/x">recruitment exam fake</a>';</script></head><body>
@@ -73,3 +73,15 @@ describe('linkMust', () => {
   });
 });
 
+
+describe('headingNotices', () => {
+  it('gives each heading the same address on every visit', () => {
+    const page = '<li><h5>Recruitment of Engineers, Advt.18/26 &amp; more</h5><a href="x.php?token=abc">Adv</a></li><li><h5>Interview schedule for Advt.13/26</h5></li>';
+    const a = headingNotices(page, 'https://careers.example.in/recruitment/', 'h5');
+    const b = headingNotices(page.replace('abc', 'xyz'), 'https://careers.example.in/recruitment/', 'h5');
+    expect(a).toEqual(b);
+    expect(a[0].title).toBe('Recruitment of Engineers, Advt.18/26 & more');
+    expect(a[0].url).toMatch(/^https:\/\/careers\.example\.in\/recruitment\/#n[0-9a-z]+$/);
+    expect(a[1].url).not.toBe(a[0].url);
+  });
+});
