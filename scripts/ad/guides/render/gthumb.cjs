@@ -2,12 +2,13 @@ const {chromium}=require('playwright');
 const T=[['sainik','g-sainik','Sainik School<br><em>admission</em>',['Class 6','Class 9','AISSEE'],'STEP BY STEP'],
  ['kv','g-kv','Kendriya Vidyalaya<br><em>admission</em>',['Class 1','Class 2 to 11','Priority'],'FULL GUIDE'],
  ['scholarships','g-scholar','Scholarships<br><em>school to PhD</em>',['Central','TS · AP','Private','Abroad'],'100% FREE'],
- ['career10','g-career','After 10th<br><em>what next?</em>',['MPC','BiPC','Commerce','Polytechnic','ITI'],'ALL OPTIONS']];
+ ['career10','g-career','After 10th<br><em>what next?</em>',['MPC','BiPC','Commerce','Polytechnic','ITI'],'ALL OPTIONS'],
+ ['route10','g-career','After 10th<br><em>route map</em>',['MPC','BiPC','IIIT','Polytechnic','ITI','Exams','Jobs'],'FULL MAP']].filter(t=>!process.env.ONLY||process.env.ONLY.split(',').includes(t[0]));
 (async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1280,height:720}});
 for(const [n,img,h,chips,badge] of T){
 require('fs').writeFileSync(__dirname+'/_t.html',`<html><head><style>
 *{margin:0;padding:0;box-sizing:border-box}body{width:1280px;height:720px;overflow:hidden;background:#071a18;font-family:'Inter Display','Inter',sans-serif;color:#fff}
-#bg{position:absolute;left:${{sainik:90,kv:0,scholarships:220,career10:0}[n]}px;top:0;width:1280px;height:720px;background:url(file://${__dirname}/${img}.png) 50% 40%/cover}
+#bg{position:absolute;left:${{sainik:90,kv:0,scholarships:220,career10:0,route10:0}[n]}px;top:0;width:1280px;height:720px;background:url(file://${__dirname}/${img}.png) 50% 40%/cover}
 #sh{position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,20,18,1) 0%,rgba(5,20,18,.92) 40%,rgba(5,20,18,.2) 62%,rgba(5,20,18,0) 75%)}
 .t{position:absolute;left:56px;top:60px;width:760px}.k{display:flex;align-items:center;gap:16px;font-weight:900;font-size:44px}.k img{width:68px;height:68px;border-radius:17px}
 h1{margin-top:26px;font-weight:900;font-size:${n==='kv'?86:100}px;line-height:1;letter-spacing:-3px;text-shadow:0 4px 20px rgba(0,0,0,.6)}h1 em{font-style:normal;color:#ffd567}
