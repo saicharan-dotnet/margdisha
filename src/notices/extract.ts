@@ -65,7 +65,7 @@ export function extractLinks(html: string, base: string): FoundNotice[] {
 }
 
 /** Keep links that look like recruitment or admission notices, newest-first as the page lists them. */
-export function pickNotices(links: FoundNotice[], source: Pick<NoticeSource, 'keywords'>, max = 25): FoundNotice[] {
+export function pickNotices(links: FoundNotice[], source: Pick<NoticeSource, 'keywords' | 'linkMust'>, max = 25): FoundNotice[] {
   const kws = [...KEYWORDS, ...(source.keywords ?? [])].map((k) => k.toLowerCase());
   const seen = new Set<string>();
   const out: FoundNotice[] = [];
@@ -73,6 +73,7 @@ export function pickNotices(links: FoundNotice[], source: Pick<NoticeSource, 'ke
     const t = l.title.toLowerCase();
     if (l.title.length < 12 || l.title.length > 400 || l.title.split(' ').length < 3) continue;
     if (EXCLUDE.some((x) => t.includes(x))) continue;
+    if (source.linkMust && !source.linkMust.some((m) => l.url.toLowerCase().includes(m.toLowerCase()))) continue;
     if (!kws.some((k) => t.includes(k) || l.url.toLowerCase().includes(k.replace(/\s+/g, '')))) continue;
     if (seen.has(l.url)) continue;
     seen.add(l.url);

@@ -62,3 +62,14 @@ describe('notice extraction', () => {
     expect(areaFor({ area: 'school' }, 'JNVST 2027 admission for Class VI')).toBe('school');
   });
 });
+
+describe('linkMust', () => {
+  it('keeps only links whose address has one of the given parts', () => {
+    const links = [
+      { title: 'Recruitment of Graduate Trainees 2026', url: 'https://x.in/documents/77/advt.pdf' },
+      { title: 'CSR Application Process for NGOs', url: 'https://x.in/web/csr/apply' },
+    ];
+    expect(pickNotices(links, { linkMust: ['/documents/'] }).map((l) => l.url)).toEqual(['https://x.in/documents/77/advt.pdf']);
+  });
+});
+

@@ -13,6 +13,8 @@ export interface NoticeSource {
   sector?: string;
   /** Extra words that mark a link as a notice on this site (added to the defaults). */
   keywords?: string[];
+  /** Only links whose address contains one of these (for sites whose menus are full of other links). */
+  linkMust?: string[];
   /** The site blocks servers outside India: read it through the Supabase function in Mumbai. */
   india?: boolean;
   /** Diagnostics only: extra addresses on the same site to fetch and print in a debug run. */
@@ -49,15 +51,15 @@ export const NOTICE_SOURCES: NoticeSource[] = [
   { id: 'appsc', india: true, name: 'Andhra Pradesh PSC', url: 'https://portal-psc.ap.gov.in/Default.aspx', area: 'job', sector: 'State PSC', keywords: ['group'] },
   { id: 'army', india: true, name: 'Indian Army', url: 'https://joinindianarmy.nic.in/', area: 'job', sector: 'Defence', keywords: ['agniveer', 'entry'] },
   // Public sector companies (PSUs): recruitment and apprentice notices
-  { id: 'ongc', india: true, name: 'ONGC', url: 'https://ongcindia.com/web/eng/career/recruitment-notice', area: 'job', sector: 'PSU', keywords: ['apprentice', 'advertisement', 'engagement'] },
-  { id: 'ongc-apprentice', india: true, name: 'ONGC apprentices', url: 'https://ongcindia.com/web/eng/career/apprenticeship-opportunities', area: 'job', sector: 'Apprenticeship', keywords: ['apprentice', 'engagement', 'advertisement'] },
-  { id: 'bhel', india: true, name: 'BHEL', url: 'https://careers.bhel.in/index.jsp', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'] },
-  { id: 'powergrid', india: true, name: 'POWERGRID', url: 'https://www.powergrid.in/en/job-opportunities', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'] },
-  { id: 'coalindia', india: true, name: 'Coal India', url: 'https://www.coalindia.in/career-cil/jobs-coal-india/', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'] },
-  { id: 'bpcl', india: true, name: 'BPCL', url: 'https://www.bharatpetroleum.in/careers/current-openings.aspx', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'] },
-  { id: 'hpcl', india: true, name: 'HPCL', url: 'https://www.hindustanpetroleum.com/job-openings', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'] },
-  { id: 'sail', india: true, name: 'SAIL', url: 'https://sailcareers.com/', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'] },
-  { id: 'nhpc', india: true, name: 'NHPC', url: 'https://www.nhpcindia.com/welcome/job', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'] },
+  { id: 'ongc', india: true, name: 'ONGC', url: 'https://ongcindia.com/web/eng/career/recruitment-notice', area: 'job', sector: 'PSU', keywords: ['apprentice', 'advertisement', 'engagement'], linkMust: ['/documents/'] },
+  { id: 'ongc-apprentice', india: true, name: 'ONGC apprentices', url: 'https://ongcindia.com/web/eng/career/apprenticeship-opportunities', area: 'job', sector: 'Apprenticeship', keywords: ['apprentice', 'engagement', 'advertisement'], linkMust: ['/documents/'] },
+  { id: 'bhel', india: true, name: 'BHEL', url: 'https://careers.bhel.in/index.jsp', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['careers', 'bhel.com/'] },
+  { id: 'powergrid', india: true, name: 'POWERGRID', url: 'https://www.powergrid.in/en/job-opportunities', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['job', 'career', 'recruit', 'apprentic', '.pdf'] },
+  { id: 'coalindia', india: true, name: 'Coal India', url: 'https://www.coalindia.in/career-cil/jobs-coal-india/', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['/career-cil/'] },
+  { id: 'bpcl', india: true, name: 'BPCL', url: 'https://www.bharatpetroleum.in/careers/current-openings.aspx', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['/images/files/', 'career'] },
+  { id: 'hpcl', india: true, name: 'HPCL', url: 'https://www.hindustanpetroleum.com/job-openings', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['/documents/pdf/'] },
+  { id: 'sail', india: true, name: 'SAIL', url: 'https://sailcareers.com/', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['sailcareers.com'] },
+  { id: 'nhpc', india: true, name: 'NHPC', url: 'https://www.nhpcindia.com/welcome/job', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['.pdf'] },
   { id: 'indiapost', name: 'India Post GDS', url: 'https://indiapostgdsonline.gov.in/', area: 'job', sector: 'Departments', keywords: ['gds', 'schedule'] },
   // Entrance exams
   { id: 'nta', name: 'National Testing Agency', url: 'https://nta.ac.in/', area: 'exam' },

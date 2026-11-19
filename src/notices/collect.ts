@@ -30,6 +30,14 @@ export async function saveNotices(supabaseUrl: string, key: string, rows: object
   return ((await res.json()) as unknown[]).length;
 }
 
+/** Hide notices saved earlier from a source that now only accepts some link addresses (linkMust). */
+export async function hideOffTopic(supabaseUrl: string, key: string, src: Pick<NoticeSource, 'id' | 'linkMust'>): Promise<void> {
+  if (!key || !src.linkMust?.length) return;
+  const not = src.linkMust.map((m) => `url.not.ilike.*${encodeURIComponent(m)}*`).join(',');
+  await fetch(`${supabaseUrl}/rest/v1/official_notices?source_id=eq.${encodeURIComponent(src.id)}&status=eq.new&and=(${not})`, {
+    method: 'PATCH', body: JSON.stringify({ status: 'ignored' }), headers: { ...keyHeaders(key), 'Content-Type': 'application/json' } });
+}
+
 /** True only for a key that may write notices (the secret key). The anon/publishable key is refused by the database. */
 export async function canWrite(supabaseUrl: string, key: string): Promise<boolean> {
   if (!key) return false;
