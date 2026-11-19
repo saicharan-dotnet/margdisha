@@ -31,10 +31,10 @@ export function CalendarCard({ e, latest, whoLabel }: { e: CalendarEntry; latest
 }
 
 /** Latest collected notice for a calendar entry: same sector, and the entry's words in the title when it has them. */
-export function latestNoticeFor<N extends { title: string; url: string; sector?: string | null; status?: string; area?: string }>(
+export function latestNoticeFor<N extends { title: string; url: string; sector?: string | null; status?: string; area?: string; source_name?: string | null }>(
   notices: N[], e: CalendarEntry, area?: (a?: string) => boolean, anySector = false,
 ): N | undefined {
   const re = e.match ? new RegExp(`\\b(${e.match})\\b`, 'i') : null;
   if (anySector && !re) return undefined;
-  return notices.find((n) => n.status !== 'ignored' && (anySector || n.sector === e.sector) && (!area || area(n.area)) && (!re || re.test(n.title)));
+  return notices.find((n) => n.status !== 'ignored' && (anySector || n.sector === e.sector) && (!area || area(n.area)) && (!re || re.test(n.title) || re.test(n.source_name ?? '')));
 }
