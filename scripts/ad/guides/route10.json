@@ -1,0 +1,376 @@
+{
+ "title": "After 10th: route map",
+ "sub": "Every stream, its entrance exams and the jobs at the end",
+ "cover": "g-career",
+ "web": [
+  "explore.png",
+  "/explore"
+ ],
+ "scenes": [
+  {
+   "type": "title",
+   "say": "Finished Class 10? Here is your complete route map. We will follow every path, one by one: what you study, which entrance exam you write, and the jobs at the end."
+  },
+  {
+   "type": "map",
+   "h": "Six roads after Class 10",
+   "root": "Class 10",
+   "kids": [
+    [
+     "MPC",
+     "2 years"
+    ],
+    [
+     "BiPC",
+     "2 years"
+    ],
+    [
+     "MEC / CEC",
+     "2 years"
+    ],
+    [
+     "HEC",
+     "2 years"
+    ],
+    [
+     "Polytechnic",
+     "3 years"
+    ],
+    [
+     "ITI",
+     "1 to 2 years"
+    ]
+   ],
+   "say": "After Class 10, there are six main roads. Four are Intermediate groups: M P C, Bi P C, the commerce groups M E C and C E C, and H E C. Each takes two years. The other two are a three year polytechnic diploma, and an I T I trade course of one or two years.",
+   "sub": "After Class 10, there are six main roads. Four are Intermediate groups: MPC, BiPC, the commerce groups MEC and CEC, and HEC. Each takes 2 years. The other two are a 3-year polytechnic diploma, and an ITI trade course of 1 or 2 years."
+  },
+  {
+   "type": "tree",
+   "h": "Intermediate MPC",
+   "root": [
+    "MPC",
+    "Maths, Physics, Chemistry"
+   ],
+   "cols": [
+    "Course",
+    "Entrance exam",
+    "Jobs"
+   ],
+   "rows": [
+    [
+     "B.Tech / B.E.",
+     "JEE Main · JEE Advanced · EAPCET",
+     "Software, civil, mechanical engineer"
+    ],
+    [
+     "B.Arch",
+     "NATA · JEE Main Paper 2",
+     "Architect"
+    ],
+    [
+     "B.Sc",
+     "CUET UG · state counselling",
+     "Teacher, analyst, scientist"
+    ],
+    [
+     "NDA",
+     "UPSC NDA exam",
+     "Army, Navy, Air Force officer"
+    ]
+   ],
+   "say": "Let's start with M P C: maths, physics and chemistry. The biggest road is B Tech. You write JEE Main, JEE Advanced for the I I Ts, or EAPCET for state colleges, and become an engineer. B Arch, through NATA or JEE Main paper two, makes you an architect. A B Sc leads to teaching, analysis and science. And the N D A exam by U P S C trains you as an officer in the Army, Navy or Air Force.",
+   "sub": "Let's start with MPC: maths, physics and chemistry. The biggest road is B.Tech. You write JEE Main, JEE Advanced for the IITs, or EAPCET for state colleges, and become an engineer. B.Arch, through NATA or JEE Main paper 2, makes you an architect. A B.Sc leads to teaching, analysis and science. And the NDA exam by UPSC trains you as an officer in the Army, Navy or Air Force."
+  },
+  {
+   "type": "points",
+   "h": "Shortcut: IIIT right after 10th",
+   "items": [
+    "RGUKT IIITs in Andhra Pradesh and Basar, Telangana",
+    "6 years: 2 years PUC + 4 years B.Tech",
+    "No entrance exam: merit on Class 10 marks",
+    "Low fees, with hostel"
+   ],
+   "say": "There is also a shortcut. The R G U K T triple I Ts in Andhra Pradesh, and Basar in Telangana, take students straight after Class 10. It is a six year course: two years like Intermediate, then four years of B Tech. There is no entrance exam. Seats go on Class 10 marks, with low fees and a hostel.",
+   "sub": "There is also a shortcut. The RGUKT IIITs in Andhra Pradesh, and Basar in Telangana, take students straight after Class 10. It is a 6-year course: 2 years like Intermediate, then 4 years of B.Tech. There is no entrance exam. Seats go on Class 10 marks, with low fees and a hostel."
+  },
+  {
+   "type": "tree",
+   "h": "Intermediate BiPC",
+   "root": [
+    "BiPC",
+    "Biology, Physics, Chemistry"
+   ],
+   "cols": [
+    "Course",
+    "Entrance exam",
+    "Jobs"
+   ],
+   "rows": [
+    [
+     "MBBS / BDS / AYUSH",
+     "NEET UG",
+     "Doctor, dentist"
+    ],
+    [
+     "B.Pharm / Pharm.D",
+     "EAPCET",
+     "Pharmacist, drug inspector"
+    ],
+    [
+     "B.Sc Nursing",
+     "NEET UG · state entrance",
+     "Staff nurse"
+    ],
+    [
+     "B.Sc Agriculture",
+     "EAPCET",
+     "Agricultural officer"
+    ]
+   ],
+   "say": "Next, Bi P C: biology, physics and chemistry. For M B B S, dental and AYUSH courses, the one exam is NEET U G, and it leads to doctor and dentist jobs. Pharmacy goes through EAPCET, and leads to pharmacist and drug inspector jobs. Nursing seats come through NEET or a state entrance. And agriculture, through EAPCET, can lead to an agricultural officer job."
+  },
+  {
+   "type": "tree",
+   "h": "Commerce: MEC and CEC",
+   "root": [
+    "MEC / CEC",
+    "Maths or Civics, Economics, Commerce"
+   ],
+   "cols": [
+    "Course",
+    "Entrance exam",
+    "Jobs"
+   ],
+   "rows": [
+    [
+     "B.Com / BBA",
+     "CUET UG · DOST · OAMDC",
+     "Accountant, banker"
+    ],
+    [
+     "CA",
+     "CA Foundation (ICAI)",
+     "Chartered accountant"
+    ],
+    [
+     "CMA / CS",
+     "CMA Foundation · CSEET",
+     "Cost accountant, company secretary"
+    ],
+    [
+     "MBA (after degree)",
+     "CAT · ICET",
+     "Manager"
+    ]
+   ],
+   "say": "The commerce groups, M E C and C E C, lead to B Com and B B A. You join through CUET, or on Inter marks through DOST in Telangana and O A M D C in Andhra Pradesh. For chartered accountancy, you write the C A Foundation. C M A and company secretary have their own entry exams. And after your degree, CAT or I CET takes you to an M B A, and a manager's job.",
+   "sub": "The commerce groups, MEC and CEC, lead to B.Com and BBA. You join through CUET, or on Inter marks through DOST in Telangana and OAMDC in Andhra Pradesh. For chartered accountancy, you write the CA Foundation. CMA and company secretary have their own entry exams. And after your degree, CAT or ICET takes you to an MBA, and a manager's job."
+  },
+  {
+   "type": "tree",
+   "h": "Intermediate HEC",
+   "root": [
+    "HEC",
+    "History, Economics, Civics"
+   ],
+   "cols": [
+    "Course",
+    "Entrance exam",
+    "Jobs"
+   ],
+   "rows": [
+    [
+     "B.A.",
+     "CUET UG · DOST · OAMDC",
+     "Journalist, writer, social worker"
+    ],
+    [
+     "5-year law (LLB)",
+     "CLAT · LAWCET",
+     "Lawyer, judge"
+    ],
+    [
+     "B.Ed (after degree)",
+     "EdCET · TET",
+     "School teacher"
+    ],
+    [
+     "Civil services (after degree)",
+     "UPSC · State PSC",
+     "IAS, IPS, Group 1 officer"
+    ]
+   ],
+   "say": "H E C, with history, economics and civics, leads to a B A degree. For five year law, you write CLAT for the national law universities, or LAWCET for state colleges. After a degree, a B Ed through EdCET, and the teacher eligibility test, makes you a school teacher. And with any degree, you can write U P S C or state P S C exams for officer jobs.",
+   "sub": "HEC, with history, economics and civics, leads to a B.A. degree. For 5-year law, you write CLAT for the national law universities, or LAWCET for state colleges. After a degree, a B.Ed through EdCET, and the teacher eligibility test, makes you a school teacher. And with any degree, you can write UPSC or state PSC exams for officer jobs."
+  },
+  {
+   "type": "tree",
+   "h": "Polytechnic diploma",
+   "root": [
+    "Diploma",
+    "3 years · entrance: POLYCET"
+   ],
+   "cols": [
+    "Next step",
+    "Exam",
+    "Jobs"
+   ],
+   "rows": [
+    [
+     "B.Tech from 2nd year",
+     "ECET",
+     "Engineer"
+    ],
+    [
+     "Junior engineer jobs",
+     "SSC JE · RRB JE",
+     "Junior engineer in railways and departments"
+    ],
+    [
+     "Company and PSU jobs",
+     "Trainee recruitment",
+     "Technician, supervisor"
+    ],
+    [
+     "Apprenticeship",
+     "Apply on NATS portal",
+     "Paid training in industry"
+    ]
+   ],
+   "say": "Now the polytechnic diploma. You join after Class 10 through POLYCET, and study for three years. After the diploma, E CET takes you straight into the second year of B Tech. Or you can work: S S C J E and railway J E exams hire junior engineers, companies and P S Us hire diploma trainees, and apprenticeships give you paid training.",
+   "sub": "Now the polytechnic diploma. You join after Class 10 through POLYCET, and study for 3 years. After the diploma, ECET takes you straight into the second year of B.Tech. Or you can work: SSC JE and railway JE exams hire junior engineers, companies and PSUs hire diploma trainees, and apprenticeships give you paid training."
+  },
+  {
+   "type": "tree",
+   "h": "ITI trade course",
+   "root": [
+    "ITI",
+    "1 to 2 years · on 10th marks"
+   ],
+   "cols": [
+    "Trade",
+    "Job exam",
+    "Jobs"
+   ],
+   "rows": [
+    [
+     "Electrician, Fitter",
+     "RRB ALP · RRB Technician",
+     "Loco pilot, railway technician"
+    ],
+    [
+     "Electrical trades",
+     "Power company JLM",
+     "Junior lineman"
+    ],
+    [
+     "Any trade",
+     "PSU, ISRO, DRDO technician",
+     "Technician"
+    ],
+    [
+     "Any trade",
+     "Apply on NAPS portal",
+     "Paid training, then jobs"
+    ]
+   ],
+   "say": "I T I seats are given on Class 10 marks, with no entrance exam. The course takes one or two years, in trades like electrician, fitter, welder and C O P A. With an I T I, you can write the railway assistant loco pilot and technician exams, power company lineman posts, and technician posts at P S Us, ISRO and D R D O. Apprenticeships are open too.",
+   "sub": "ITI seats are given on Class 10 marks, with no entrance exam. The course takes 1 or 2 years, in trades like electrician, fitter, welder and COPA. With an ITI, you can write the railway assistant loco pilot and technician exams, power company lineman posts, and technician posts at PSUs, ISRO and DRDO. Apprenticeships are open too."
+  },
+  {
+   "type": "tree",
+   "h": "Government jobs on the way",
+   "root": [
+    "Govt jobs",
+    "by qualification"
+   ],
+   "cols": [
+    "After",
+    "Jobs you can apply for",
+    ""
+   ],
+   "wide": 1,
+   "rows": [
+    [
+     "10th",
+     "SSC GD · SSC MTS · Railway Group D · Post Office GDS · Army Agniveer"
+    ],
+    [
+     "12th",
+     "SSC CHSL · NDA · Railway NTPC · Agniveervayu · Police constable"
+    ],
+    [
+     "ITI",
+     "RRB ALP · RRB Technician · Power company JLM"
+    ],
+    [
+     "Diploma",
+     "RRB JE · SSC JE · PSU diploma trainee"
+    ],
+    [
+     "Degree",
+     "UPSC · State PSC · SSC CGL · Bank PO"
+    ]
+   ],
+   "say": "Government jobs open at every step. With Class 10, you can apply for S S C G D, S S C M T S, railway group D, post office G D S, and Army Agniveer. After 12th, S S C C H S L, the N D A, railway N T P C, Agniveervayu and police constable. I T I and diploma open the technical posts. And a degree opens U P S C, state P S C, S S C C G L and bank P O exams.",
+   "sub": "Government jobs open at every step. With Class 10, you can apply for SSC GD, SSC MTS, railway Group D, post office GDS, and Army Agniveer. After 12th, SSC CHSL, the NDA, railway NTPC, Agniveervayu and police constable. ITI and diploma open the technical posts. And a degree opens UPSC, state PSC, SSC CGL and bank PO exams."
+  },
+  {
+   "type": "map",
+   "h": "Your full route map",
+   "root": "Class 10",
+   "kids": [
+    [
+     "MPC",
+     "B.Tech · B.Arch · B.Sc · NDA"
+    ],
+    [
+     "BiPC",
+     "MBBS · Pharmacy · Nursing · Agri"
+    ],
+    [
+     "MEC / CEC",
+     "B.Com · CA · CMA · CS"
+    ],
+    [
+     "HEC",
+     "B.A. · Law · B.Ed · Civil services"
+    ],
+    [
+     "Polytechnic",
+     "B.Tech (ECET) · JE jobs"
+    ],
+    [
+     "ITI",
+     "Railways · Power · PSU"
+    ]
+   ],
+   "say": "Here is the full map again. Every road leads somewhere good. There is no wrong choice, only the one that fits you."
+  },
+  {
+   "type": "steps",
+   "h": "How to pick your road",
+   "items": [
+    "Which subjects do you enjoy?",
+    "Which job do you want at the end?",
+    "Note its entrance exam and dates",
+    "Talk to parents and teachers"
+   ],
+   "say": "To pick your road, start from the end. Which subjects do you enjoy, and which job do you want? Then follow the map back, note the entrance exam and its dates, and talk it over with your parents and teachers."
+  },
+  {
+   "type": "web",
+   "h": "Every path on MargDisha",
+   "items": [
+    "What next? → Class 10",
+    "Courses, exams and jobs",
+    "English · తెలుగు · हिन्दी"
+   ],
+   "say": "On Marg Disha dot com, open What next, and pick Class 10, to see every path with its entrance exams, dates and official links."
+  },
+  {
+   "type": "end",
+   "say": "Everything is free on Marg Disha dot com, in English, Telugu and Hindi. Subscribe for more guides like this."
+  }
+ ]
+}
