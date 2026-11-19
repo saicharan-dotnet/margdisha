@@ -39,6 +39,14 @@ export function Matches({ initialKind = 'all' }: { initialKind?: OpportunityKind
           <div className="chips">
             {(['all', ...SCH_LEVELS] as const).map((k) => <button key={k} className={'chip ' + (k === lvl ? 'on' : '')} onClick={() => setLvl(k)}>{k === 'all' ? t('all') : k}</button>)}
           </div>
+          {abroad && (
+            <article className="card abroad-docs">
+              <h3 className="h-sm">{t('abroadDocsTitle')}</h3>
+              <p className="small muted">{t('abroadDocsIntro')}</p>
+              <ul className="small">{t('abroadDocs').split('|').map((d) => <li key={d}>✓ {d}</li>)}</ul>
+              <p className="small"><b>{t('abroadDocsSteps')}</b></p>
+            </article>
+          )}
           <div className="cal-grid">{sch.map((s) => <ScholarshipCard key={s.id} s={s} />)}</div>
         </div>
       )}
