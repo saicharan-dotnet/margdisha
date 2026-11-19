@@ -2,6 +2,7 @@
  "title": "After 10th: route map",
  "sub": "Every stream, its entrance exams and the jobs at the end",
  "cover": "g-career",
+ "theme": "light",
  "web": [
   "explore.png",
   "/explore"
@@ -9,6 +10,7 @@
  "scenes": [
   {
    "type": "title",
+   "lines": ["After 10th", "Route map"],
    "say": "Finished Class 10? Here is your complete route map. We will follow every path, one by one: what you study, which entrance exam you write, and the jobs at the end."
   },
   {
