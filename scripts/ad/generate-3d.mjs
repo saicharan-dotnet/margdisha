@@ -119,10 +119,18 @@ const ABROAD = [
   ['ab-interview', null, `${ASTYLE} A confident Indian student (about 24) in a formal shirt smiling during a video interview on a laptop, a neat room with a plant and soft daylight.`],
   ['ab-visa', null, `${ASTYLE} A thrilled Indian student (about 23) holding up a passport at an airport gate with family waving goodbye in the background, golden hour light.`],
 ];
+// Private job alert Shorts (9:16), reusable for any fresher job. Same style as the study-abroad set.
+const JOBS = [
+  ['job-hook', null, `${ASTYLE} An excited young Indian man (about 22) in a neat shirt holding a phone showing a job alert notification, standing on a busy modern Bengaluru street with glass office towers and a metro line, bright morning light.`],
+  ['job-role', null, `${ASTYLE} A focused young Indian man (about 23) with a headset working at a modern operations desk with two monitors showing simple charts and spreadsheets, a bright open-plan office with plants and a city view.`],
+  ['job-who', null, `${ASTYLE} A confident young Indian graduate (about 22) in a formal shirt holding his degree certificate in a folder, smiling in front of a modern office building entrance, soft golden light.`],
+  ['job-apply', null, `${ASTYLE} A hopeful young Indian man (about 22) at a simple home desk sending his resume by email on a laptop, a printed CV beside him, warm lamp light with an evening window behind.`],
+];
 const ASPECT = SET.startsWith('promo') ? '16:9' : '9:16';
 if (SET === 'shortsbg') SHOTS.splice(0, SHOTS.length, ...SBG);
 else if (SET === 'guides') SHOTS.splice(0, SHOTS.length, ...GUIDES);
 else if (SET === 'abroad') SHOTS.splice(0, SHOTS.length, ...ABROAD);
+else if (SET === 'jobs') SHOTS.splice(0, SHOTS.length, ...JOBS);
 else if (SET === 'keys3d') SHOTS.splice(0, SHOTS.length, ...KEYS);
 else if (SET === 'scholar') SHOTS.splice(0, SHOTS.length, ...SCHOLAR);
 else if (SET === 'promo') SHOTS.splice(0, SHOTS.length, ...PROMO);

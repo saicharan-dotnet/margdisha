@@ -1,0 +1,14 @@
+{
+  "title": "CodeGama Operations Executive job for freshers",
+  "short": true,
+  "chip": "💼 Job alert",
+  "hl": "Bengaluru",
+  "icon": "💼",
+  "scenes": [
+    {"type": "hook", "bg": "job-hook", "h": "Freshers job in Bengaluru", "items": ["CodeGama is hiring Operations Executives"], "say": "Freshers, job alert! CodeGama in Bengaluru is hiring Operations Executives in bulk."},
+    {"type": "card", "bg": "job-role", "flag": "💼", "num": 1, "h": "Operations Executive", "items": ["Company: CodeGama Pvt Ltd", "Work in Bengaluru (relocation needed)", "Salary: up to ₹2 LPA, based on skills", "Rotational shifts"], "say": "The role is Operations Executive at CodeGama Private Limited. You must relocate to Bengaluru and work rotational shifts. Salary is up to two lakh rupees a year, based on your skills."},
+    {"type": "list", "bg": "job-who", "num": 2, "h": "Who can apply", "items": ["Freshers only", "Degree completed in any stream", "Good communication skills", "Basic MS Excel", "Male candidates only"], "say": "Who can apply? Freshers who have completed a degree in any stream, with good communication skills and basic M S Excel. This opening is for male candidates only."},
+    {"type": "card", "bg": "job-apply", "flag": "📩", "num": 3, "h": "How to apply", "items": ["Email your resume to marketing@codegama.com", "Mention referral ID: CODEGAMA-OPS26", "Never pay money to anyone for a job"], "say": "To apply, email your resume to marketing at codegama dot com, and mention the referral I D, CODEGAMA O P S 26. Never pay money to anyone for a job."},
+    {"type": "end", "bg": "job-hook", "h": "Full details in the description", "items": ["More free updates on MargDisha.com"], "say": "Full details are in the description. More free job updates on Marg Disha dot com."}
+  ]
+}
