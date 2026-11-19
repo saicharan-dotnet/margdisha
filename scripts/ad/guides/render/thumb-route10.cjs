@@ -3,7 +3,8 @@ const K=[['MPC','Engineer · NDA'],['BiPC','Doctor · Pharma'],['Commerce','CA �
 const top=372,h=44,g=9,rootY=top+(6*h+5*g)/2;
 const paths=K.map((_,j)=>{const y=top+j*(h+g)+h/2;return `<path d="M222 ${rootY} C250 ${rootY},250 ${y},278 ${y}"/>`}).join('');
 const rows=K.map(([a,b],j)=>`<div class="kid" style="top:${top+j*(h+g)}px"><span class="p ${j%2?'o':'b'}">${a}</span><span class="ar">→</span><span class="d">${b}</span></div>`).join('');
-const html=`<html><head><style>
+const DK=process.env.THEME==='dark';
+const html=`<html><head><style>${DK?'':''}
 *{margin:0;padding:0;box-sizing:border-box}body{width:1280px;height:720px;overflow:hidden;font-family:'Inter Display','Inter',sans-serif;color:#10284a;
 background:radial-gradient(700px 500px at 100% 0%,#ffe2c4 0%,rgba(255,226,196,0) 70%),radial-gradient(700px 600px at 0% 100%,#d6e6ff 0%,rgba(214,230,255,0) 70%),linear-gradient(150deg,#fbfdff,#eef4ff)}
 #img{position:absolute;right:0;top:0;width:640px;height:720px;background:url(file://${__dirname}/g-career.png) 85% 40%/auto 104%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 35%);border-radius:0}
@@ -21,10 +22,15 @@ svg{position:absolute;left:0;top:0;width:1280px;height:720px}svg path{fill:none;
 .badge{position:absolute;right:34px;bottom:34px;font-weight:900;font-size:40px;color:#fff;background:linear-gradient(160deg,#4f8ef7,#1e5bd8);padding:12px 30px;border-radius:999px;box-shadow:0 10px 30px rgba(30,91,216,.45);transform:rotate(-4deg);border:4px solid #fff}
 .badge b{color:#ffd08a}
 .free{position:absolute;right:40px;top:36px;font-weight:900;font-size:30px;color:#fff;background:#f27a1a;padding:8px 22px;border-radius:999px;border:3px solid #fff;box-shadow:0 8px 24px rgba(242,122,26,.4)}
-</style></head><body><div id="img"></div>
+${DK?`body{color:#fff;background:radial-gradient(800px 600px at 100% 0%,#16463f 0%,rgba(22,70,63,0) 70%),linear-gradient(150deg,#0b2522,#051311)}
+#img{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 35%)}h1 .a{color:#fff}h1 .b{color:#ffd567;text-shadow:0 6px 30px rgba(255,190,60,.35)}
+.ul{background:linear-gradient(90deg,#f0a830,#ffd567)}svg path{stroke:#ffd567}.root{background:linear-gradient(160deg,#fff1b8,#ffd567 40%,#f0a830);color:#3a2300;box-shadow:0 0 40px rgba(255,190,60,.5)}
+.p.b{background:#1e9e8a}.p.o{background:#f0a830;color:#3a2300}.ar{color:#ffd567}.d{color:#fff;background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3)}
+.badge{background:linear-gradient(160deg,#fff1b8,#ffd567 40%,#f0a830);color:#3a2300;border-color:#071a18;box-shadow:0 0 40px rgba(255,190,60,.6)}.badge b{color:#b8430c}
+.free{background:#e62117;border-color:#fff}`:''}</style></head><body><div id="img"></div>
 <div class="brand"><img src="file://${__dirname}/logo.png">MargDisha</div>
 <h1><span class="a">After 10th</span><span class="b">ROUTE MAP</span></h1><div class="ul"></div>
 <svg>${paths}</svg><div class="root">Class 10</div>${rows}
 <div class="free">FREE</div><div class="badge">Exams <b>+</b> Jobs</div></body></html>`;
 fs.writeFileSync(__dirname+'/_tl.html',html);
-(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1280,height:720}});await p.goto('file://'+__dirname+'/_tl.html');await p.waitForTimeout(500);await p.screenshot({path:'thumb-route10-light.jpg',type:'jpeg',quality:92});await b.close();})();
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1280,height:720}});await p.goto('file://'+__dirname+'/_tl.html');await p.waitForTimeout(500);await p.screenshot({path:DK?'thumb-route10-dark.jpg':'thumb-route10-light.jpg',type:'jpeg',quality:92});await b.close();})();
