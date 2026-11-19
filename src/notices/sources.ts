@@ -17,6 +17,8 @@ export interface NoticeSource {
   linkMust?: string[];
   /** The site blocks servers outside India: read it through the Supabase function in Mumbai. */
   india?: boolean;
+  /** Diagnostics only: in a debug run, print the page around the first place this text appears. */
+  debugAround?: string;
   /** Diagnostics only: extra addresses on the same site to fetch and print in a debug run. */
   probe?: string[];
   /** The site builds its page with scripts from a JSON feed: read the feed instead of the page. */
@@ -52,9 +54,9 @@ export const NOTICE_SOURCES: NoticeSource[] = [
   { id: 'army', india: true, name: 'Indian Army', url: 'https://joinindianarmy.nic.in/', area: 'job', sector: 'Defence', keywords: ['agniveer', 'entry'] },
   // Public sector companies (PSUs): recruitment and apprentice notices
   { id: 'ongc', india: true, name: 'ONGC', url: 'https://ongcindia.com/web/eng/career/recruitment-notice', area: 'job', sector: 'PSU', keywords: ['apprentice', 'advertisement', 'engagement'], linkMust: ['/documents/'] },
-  { id: 'ntpc', india: true, name: 'NTPC', url: 'https://careers.ntpc.co.in/recruitment/', area: 'job', sector: 'PSU', keywords: ['advertisement', 'engagement'] },
+  { id: 'ntpc', india: true, name: 'NTPC', url: 'https://careers.ntpc.co.in/recruitment/', area: 'job', sector: 'PSU', keywords: ['advertisement', 'engagement'], debugAround: 'Posting date' },
   { id: 'hal', india: true, name: 'HAL', url: 'https://hal-india.co.in/career', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'] },
-  { id: 'gail', india: true, name: 'GAIL', url: 'https://gailonline.com/', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'] },
+  { id: 'gail', india: true, name: 'GAIL', url: 'https://gailonline.com/', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], debugAround: 'areer' },
   { id: 'iocl', india: true, name: 'Indian Oil (IOCL)', url: 'https://iocl.com/', area: 'job', sector: 'PSU', keywords: ['apprentice', 'advertisement'] },
   { id: 'ongc-apprentice', india: true, name: 'ONGC apprentices', url: 'https://ongcindia.com/web/eng/career/apprenticeship-opportunities', area: 'job', sector: 'Apprenticeship', keywords: ['apprentice', 'engagement', 'advertisement'], linkMust: ['/documents/'] },
   { id: 'bhel', india: true, name: 'BHEL', url: 'https://careers.bhel.in/index.jsp', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['careers', 'bhel.com/'] },

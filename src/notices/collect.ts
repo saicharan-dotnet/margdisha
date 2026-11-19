@@ -77,7 +77,7 @@ export async function collectSource(src: NoticeSource, supabaseUrl: string, key:
       return { id: src.id, ok: true, found: found.length, fresh: 0, sample: found, debug: { bytes: html.length, head: '', links: [], apis: [...probes, ...(await findApis(html, src.url))] } };
     }
     if (debug) return { id: src.id, ok: true, found: found.length, fresh: 0, sample: found,
-      debug: { bytes: html.length, head: html.replace(/\s+/g, ' ').slice(0, html.length < 10_000 ? 6000 : 600), links: all.slice(0, 150),
+      debug: { bytes: html.length, head: src.debugAround ? html.replace(/\s+/g, ' ').slice(Math.max(0, html.replace(/\s+/g, ' ').indexOf(src.debugAround) - 3000), html.replace(/\s+/g, ' ').indexOf(src.debugAround) + 3000) : html.replace(/\s+/g, ' ').slice(0, html.length < 10_000 ? 6000 : 600), links: all.slice(0, 150),
         apis: await findApis(html, src.url) } };
     const fresh = key && found.length
       ? await saveNotices(supabaseUrl, key, found.map((f) => ({ url: f.url, title: f.title, source_id: src.id, source_name: src.name, sector: src.sector ?? null, area: areaFor(src, f.title) })))

@@ -17,9 +17,9 @@ var NOTICE_SOURCES = [
   { id: "army", india: true, name: "Indian Army", url: "https://joinindianarmy.nic.in/", area: "job", sector: "Defence", keywords: ["agniveer", "entry"] },
   // Public sector companies (PSUs): recruitment and apprentice notices
   { id: "ongc", india: true, name: "ONGC", url: "https://ongcindia.com/web/eng/career/recruitment-notice", area: "job", sector: "PSU", keywords: ["apprentice", "advertisement", "engagement"], linkMust: ["/documents/"] },
-  { id: "ntpc", india: true, name: "NTPC", url: "https://careers.ntpc.co.in/recruitment/", area: "job", sector: "PSU", keywords: ["advertisement", "engagement"] },
+  { id: "ntpc", india: true, name: "NTPC", url: "https://careers.ntpc.co.in/recruitment/", area: "job", sector: "PSU", keywords: ["advertisement", "engagement"], debugAround: "Posting date" },
   { id: "hal", india: true, name: "HAL", url: "https://hal-india.co.in/career", area: "job", sector: "PSU", keywords: ["advertisement", "apprentice"] },
-  { id: "gail", india: true, name: "GAIL", url: "https://gailonline.com/", area: "job", sector: "PSU", keywords: ["advertisement", "apprentice"] },
+  { id: "gail", india: true, name: "GAIL", url: "https://gailonline.com/", area: "job", sector: "PSU", keywords: ["advertisement", "apprentice"], debugAround: "areer" },
   { id: "iocl", india: true, name: "Indian Oil (IOCL)", url: "https://iocl.com/", area: "job", sector: "PSU", keywords: ["apprentice", "advertisement"] },
   { id: "ongc-apprentice", india: true, name: "ONGC apprentices", url: "https://ongcindia.com/web/eng/career/apprenticeship-opportunities", area: "job", sector: "Apprenticeship", keywords: ["apprentice", "engagement", "advertisement"], linkMust: ["/documents/"] },
   { id: "bhel", india: true, name: "BHEL", url: "https://careers.bhel.in/index.jsp", area: "job", sector: "PSU", keywords: ["advertisement", "apprentice"], linkMust: ["careers", "bhel.com/"] },
@@ -301,7 +301,7 @@ async function collectSource(src, supabaseUrl, key, debug = false) {
       sample: found,
       debug: {
         bytes: html.length,
-        head: html.replace(/\s+/g, " ").slice(0, html.length < 1e4 ? 6e3 : 600),
+        head: src.debugAround ? html.replace(/\s+/g, " ").slice(Math.max(0, html.replace(/\s+/g, " ").indexOf(src.debugAround) - 3e3), html.replace(/\s+/g, " ").indexOf(src.debugAround) + 3e3) : html.replace(/\s+/g, " ").slice(0, html.length < 1e4 ? 6e3 : 600),
         links: all.slice(0, 150),
         apis: await findApis(html, src.url)
       }
