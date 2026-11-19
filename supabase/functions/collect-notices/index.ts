@@ -18,12 +18,9 @@ var NOTICE_SOURCES = [
   // Public sector companies (PSUs): recruitment and apprentice notices
   { id: "ongc", india: true, name: "ONGC", url: "https://ongcindia.com/web/eng/career/recruitment-notice", area: "job", sector: "PSU", keywords: ["apprentice", "advertisement", "engagement"] },
   { id: "ongc-apprentice", india: true, name: "ONGC apprentices", url: "https://ongcindia.com/web/eng/career/apprenticeship-opportunities", area: "job", sector: "Apprenticeship", keywords: ["apprentice", "engagement", "advertisement"] },
-  { id: "iocl", india: true, name: "Indian Oil (IOCL)", url: "https://www.iocl.com/latest-job-opening", area: "job", sector: "PSU", keywords: ["apprentice", "advertisement"] },
   { id: "bhel", india: true, name: "BHEL", url: "https://careers.bhel.in/index.jsp", area: "job", sector: "PSU", keywords: ["advertisement", "apprentice"] },
   { id: "powergrid", india: true, name: "POWERGRID", url: "https://www.powergrid.in/en/job-opportunities", area: "job", sector: "PSU", keywords: ["advertisement", "apprentice"] },
   { id: "coalindia", india: true, name: "Coal India", url: "https://www.coalindia.in/career-cil/jobs-coal-india/", area: "job", sector: "PSU", keywords: ["advertisement", "apprentice"] },
-  { id: "bel", india: true, name: "Bharat Electronics (BEL)", url: "https://bel-india.in/job-notifications/", area: "job", sector: "PSU", keywords: ["advertisement", "apprentice", "engineer"] },
-  { id: "hal", india: true, name: "HAL", url: "https://hal-india.co.in/career", area: "job", sector: "PSU", keywords: ["advertisement", "apprentice"] },
   { id: "bpcl", india: true, name: "BPCL", url: "https://www.bharatpetroleum.in/careers/current-openings.aspx", area: "job", sector: "PSU", keywords: ["advertisement", "apprentice"] },
   { id: "hpcl", india: true, name: "HPCL", url: "https://www.hindustanpetroleum.com/job-openings", area: "job", sector: "PSU", keywords: ["advertisement", "apprentice"] },
   { id: "sail", india: true, name: "SAIL", url: "https://sailcareers.com/", area: "job", sector: "PSU", keywords: ["advertisement", "apprentice"] },
