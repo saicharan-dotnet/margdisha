@@ -76,6 +76,7 @@ for (const n of picks) {
   const g = await gemini(n);
   if (!g) { console.log('  skipped (script failed, will retry next run)'); continue; }
   if (g.usable === false) { console.log('  skipped (not a useful notice)'); done.add(n.id); continue; }
+  if (!String(g.youtube_title || '').trim() || !String(g.voiceover || '').trim() || !String(g.name || '').trim() || !String(g.summary || '').trim()) { console.log('  skipped (script came back incomplete, will retry next run)'); continue; }
   let vo = String(g.voiceover || '').trim();
   const ENDING = 'Official link in the description. More free updates on Marg Disha dot com.';
   if (!vo.endsWith(ENDING)) vo = vo.replace(/(?:[^.!?]*Marg Disha dot com[.!]?\s*)+$/i, '').trim().replace(/[.!]?$/, '.') + ' ' + ENDING;
