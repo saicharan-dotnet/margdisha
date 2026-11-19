@@ -31,6 +31,7 @@ export function HotAlerts() {
               <b>{t('applyByEmail')}:</b> <a href={`mailto:${a.email}?subject=${encodeURIComponent('Application' + (a.referral ? ' – Referral ID ' + a.referral : ''))}`}>{a.email}</a>
               {a.referral && <><br /><b>{t('referralId')}:</b> <code>{a.referral}</code> <span className="muted">({t('mentionRole')})</span></>}
             </p>
+            {a.source && <p className="small"><b>{t('sourceLbl')}:</b> <a href={a.source.url} target="_blank" rel="noreferrer nofollow">{a.source.label} ↗</a></p>}
             <p className="small muted">{t('notRecruiter')}</p>
           </article>
         );

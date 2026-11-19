@@ -12,6 +12,8 @@ export interface HotAlert {
   /** Apply by email: the address and the referral ID to mention. */
   email: string;
   referral?: string;
+  /** Where the alert was found, such as the LinkedIn post or the company's careers page. */
+  source?: { label: string; url: string };
   /** ISO dates. */
   posted: string;
   expires: string;

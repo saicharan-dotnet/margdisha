@@ -417,3 +417,11 @@ body {
 .hot-apply code { font-weight: 700; }
 @keyframes hotpulse { 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--bad) 25%, transparent); } }
 @media (prefers-reduced-motion: reduce) { .hot-badge { animation: none; } }
+.live-jobs { margin: 8px 0 24px; }
+.live-list { display: grid; gap: 8px; margin: 10px 0; }
+.live-job { display: flex; gap: 12px; align-items: center; justify-content: space-between; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px; min-width: 0; }
+.live-main { min-width: 0; }
+.live-job h3 { margin: 0 0 4px; font-size: 1rem; }
+.live-job p { margin: 2px 0; overflow-wrap: anywhere; }
+.live-job .btn { flex: none; }
+@media (max-width: 560px) { .live-job { flex-direction: column; align-items: stretch; } }
