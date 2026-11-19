@@ -1,0 +1,18 @@
+{
+  "title": "How to apply for a study abroad scholarship",
+  "short": true,
+  "scenes": [
+    { "type": "hook", "bg": "ab-docs", "tag": "Study abroad", "h": "Scholarship abroad?", "items": ["Keep these documents ready"],
+      "say": "Planning to apply for a study abroad scholarship? Keep these documents ready." },
+    { "type": "card", "bg": "ab-plan", "num": 1, "h": "Start early", "items": ["Pick the scholarship and course", "Check eligibility on the official website", "Many close almost a year before the course starts"],
+      "say": "Step one. Start early. Pick your scholarship and course, and check eligibility on the official website. Many applications close almost a year before the course starts." },
+    { "type": "list", "bg": "ab-docs", "num": 2, "h": "Documents checklist", "items": ["Passport", "Degree certificate + marksheets", "IELTS or TOEFL score (if asked)", "Statement of purpose / essays", "2–3 recommendation letters", "CV + work experience letters"],
+      "say": "Step two. Your documents. Passport, degree certificate and marksheets, an IELTS or TOEFL score if asked, your statement of purpose or essays, two or three recommendation letters, and your C V with work experience letters." },
+    { "type": "card", "bg": "ab-india", "num": 3, "h": "For government schemes", "items": ["Income certificate", "Caste certificate (if applicable)", "Admission letter from the university abroad"],
+      "say": "For government schemes like the National Overseas Scholarship, also keep your income certificate, caste certificate if applicable, and the admission letter from the university abroad." },
+    { "type": "card", "bg": "ab-interview", "num": 4, "h": "Apply and get ready", "items": ["Apply only on the official website", "Prepare for the interview", "Then the university offer and visa"],
+      "say": "Step four. Apply only on the official website, and get ready for the interview. After selection comes the university offer and the visa." },
+    { "type": "end", "bg": "ab-visa", "h": "Official links in the description", "items": ["Full guide free on MargDisha.com"],
+      "say": "Official links are in the description. Find the full guide free on Marg Disha dot com." }
+  ]
+}

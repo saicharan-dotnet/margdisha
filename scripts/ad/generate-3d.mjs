@@ -105,9 +105,24 @@ const GUIDES = [
   ['g-scholar', null, `${GSTYLE} A joyful Indian college student (about 19) holding a glowing golden scroll tied with a ribbon, with a softly glowing globe, books and a graduation cap floating gently around her, warm golden light.`, '16:9'],
   ['g-career', null, `${GSTYLE} A thoughtful Indian teenager (about 15) with a school bag looking up at softly glowing floating holographic icons of a stethoscope, a gear, a laptop, a balance scale, a graduation cap and books, each on its own glowing path, warm sunrise light.`, '16:9'],
 ];
+// Study-abroad scholarship Shorts (9:16). People in the LOWER half; the upper half stays soft for text.
+const ASTYLE = 'Stylized 3D animated feature film style with vibrant Pixar-inspired cinematic lighting, aspirational hopeful mood, rich colours, soft depth of field. Vertical 9:16 portrait composition that fills the ENTIRE frame edge to edge: no black bars, no borders. The characters are in the LOWER half of the frame; the UPPER half is soft, out-of-focus open background with gentle light. No readable text, no logos.';
+const ABROAD = [
+  ['ab-hook', null, `${ASTYLE} An excited Indian student (about 22) with a backpack, a passport and a boarding pass, at a big modern airport window with a plane taking off into a glowing pink and orange sunset sky.`],
+  ['ab-uk', null, `${ASTYLE} A smiling Indian woman (about 25) in a smart coat with a scarf walking past an old stone British university building with gothic windows, a red double-decker bus softly blurred behind, misty golden morning.`],
+  ['ab-usa', null, `${ASTYLE} A confident Indian man (about 26) with books on a beautiful American college campus lawn with red-brick buildings and bright orange autumn trees, clear blue sky.`],
+  ['ab-india', null, `${ASTYLE} A joyful Indian student (about 23) hugging proud parents in a simple Indian home, holding an envelope with a university acceptance letter, warm evening light through the window.`],
+  ['ab-europe', null, `${ASTYLE} A happy Indian student (about 23) with a backpack on a scenic European train platform, a sleek train and snowy Alps mountains behind, crisp blue morning light.`],
+  ['ab-germany', null, `${ASTYLE} A cheerful Indian student (about 24) with a bicycle on a colourful old-town street of a German university city with timber-framed houses, spring blossoms, soft sunlight.`],
+  ['ab-docs', null, `${ASTYLE} An organised Indian student (about 22) at a tidy desk with a passport, certificates in a clear folder, a laptop and a cup of tea, looking satisfied, warm lamp light with a night window behind.`],
+  ['ab-plan', null, `${ASTYLE} A thoughtful Indian student (about 21) looking at a large glowing world map on a wall with pins and a calendar, planning, cool blue and warm gold light.`],
+  ['ab-interview', null, `${ASTYLE} A confident Indian student (about 24) in a formal shirt smiling during a video interview on a laptop, a neat room with a plant and soft daylight.`],
+  ['ab-visa', null, `${ASTYLE} A thrilled Indian student (about 23) holding up a passport at an airport gate with family waving goodbye in the background, golden hour light.`],
+];
 const ASPECT = SET.startsWith('promo') ? '16:9' : '9:16';
 if (SET === 'shortsbg') SHOTS.splice(0, SHOTS.length, ...SBG);
 else if (SET === 'guides') SHOTS.splice(0, SHOTS.length, ...GUIDES);
+else if (SET === 'abroad') SHOTS.splice(0, SHOTS.length, ...ABROAD);
 else if (SET === 'keys3d') SHOTS.splice(0, SHOTS.length, ...KEYS);
 else if (SET === 'scholar') SHOTS.splice(0, SHOTS.length, ...SCHOLAR);
 else if (SET === 'promo') SHOTS.splice(0, SHOTS.length, ...PROMO);
