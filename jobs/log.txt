@@ -1,0 +1,4 @@
+3d job-hook: ok (gemini-2.5-flash-image)
+3d job-role: ok (gemini-2.5-flash-image)
+3d job-who: ok (gemini-2.5-flash-image)
+3d job-apply: ok (gemini-2.5-flash-image)
