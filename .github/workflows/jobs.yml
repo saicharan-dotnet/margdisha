@@ -1,0 +1,43 @@
+name: Collect private jobs
+
+# Every day at 7:30 AM IST, read companies' official job boards (Greenhouse, Lever, Ashby),
+# keep fresher and entry-level jobs in India, and save them to src/data/live-jobs.json.
+# A change is committed to main, which rebuilds margdisha.com. Each job shows for 14 days at most.
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      discover:
+        description: 'Only print what each board has, change nothing'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: jobs
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - run: node scripts/jobs/collect-jobs.mjs
+        env:
+          DISCOVER: ${{ github.event.inputs.discover == 'true' && '1' || '0' }}
+      - name: Save changes
+        if: github.event.inputs.discover != 'true'
+        run: |
+          if git diff --quiet -- src/data/live-jobs.json && git ls-files --error-unmatch src/data/live-jobs.json >/dev/null 2>&1; then echo "No change."; exit 0; fi
+          git config user.name saicharan-dotnet
+          git config user.email 253261557+saicharan-dotnet@users.noreply.github.com
+          git add src/data/live-jobs.json
+          git commit -m "Private jobs: daily update from company job boards"
+          git pull --rebase -q origin main && git push origin HEAD:main
