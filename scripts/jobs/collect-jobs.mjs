@@ -73,7 +73,7 @@ await Promise.all(Array.from({ length: 6 }, async () => {
         const expires = new Date(new Date(seen + 'T00:00:00Z').getTime() + KEEP_DAYS * 864e5).toISOString().slice(0, 10);
         if (expires < today) continue;
         const intern = /\bintern(ship)?\b/i.test(j.title) || /intern/i.test(j.commitment ?? '');
-        jobs.push({ id: j.id, title: j.title.trim(), company: b.name, location: j.location.replace(/\s+/g, ' ').trim().slice(0, 120), url: j.url, intern, firstSeen: seen, expires, source: `${b.name} careers` });
+        jobs.push({ id: j.id, title: j.title.trim(), company: b.name, location: [...new Set(j.location.split(',').map((s) => s.replace(/\s+/g, ' ').trim()).filter(Boolean))].join(', ').slice(0, 120), url: j.url, intern, firstSeen: seen, expires, source: `${b.name} careers` });
       }
     } catch (e) {
       report.push(`${b.ats}/${b.slug}: FAILED ${e.message}`);
