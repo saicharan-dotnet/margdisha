@@ -404,3 +404,16 @@ body {
 .priv-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
 .abroad-docs { margin: 12px 0 16px; }
 .abroad-docs ul { list-style: none; padding: 0; margin: 8px 0; display: grid; gap: 4px; }
+.hot-alerts { display: grid; gap: 12px; margin: 18px 0; }
+.hot-alert { border: 2px solid var(--marigold); background: var(--marigold-soft); border-radius: var(--r); padding: 16px; min-width: 0; }
+.hot-alert h3 { margin: 8px 0 10px; }
+.hot-top { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+.hot-badge { background: #c0392b; color: #fff; font-weight: 700; font-size: .8rem; letter-spacing: .03em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; animation: hotpulse 1.6s ease-in-out infinite; }
+.hot-days { font-size: .85rem; font-weight: 600; color: var(--marigold-ink); }
+.hot-roles { display: grid; gap: 8px; }
+.hot-role { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+.hot-role ul { margin: 6px 0 0; padding-left: 18px; font-size: .9rem; }
+.hot-apply { margin: 12px 0 6px; overflow-wrap: anywhere; }
+.hot-apply code { font-weight: 700; }
+@keyframes hotpulse { 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--bad) 25%, transparent); } }
+@media (prefers-reduced-motion: reduce) { .hot-badge { animation: none; } }

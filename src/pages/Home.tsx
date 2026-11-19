@@ -6,6 +6,7 @@ import { daysLeft, LEVEL_LABEL } from '../engine/match';
 import { Icon, type IconName } from '../components/Icon';
 import { NoticeFeed } from '../components/NoticeFeed';
 import { DeadlineTag } from '../components/OppCard';
+import { HotAlerts } from '../components/HotAlerts';
 import type { Level } from '../data/types';
 import hero from '../assets/hero.jpg';
 import heroSmall from '../assets/hero-800.jpg';
@@ -50,6 +51,8 @@ export function Home() {
             <button className="btn">{t('searchBtn')}</button>
           </form>
         </div>
+
+        <HotAlerts />
 
         <h2 className="pick-h">{t('pickLevel')}</h2>
         <div className="level-grid">

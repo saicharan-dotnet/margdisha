@@ -11,6 +11,7 @@ import { calendarOrder } from '../data/school-calendar';
 import type { Level } from '../data/types';
 import { PRIVATE_JOBS, PRIV_SECTORS, type PrivQual } from '../data/private-jobs';
 import { PrivateCard } from '../components/PrivateCard';
+import { HotAlerts } from '../components/HotAlerts';
 
 /** Minimum qualification of a calendar entry, and what a profile level counts as. */
 const QUAL_RANK: Record<string, number> = { '10th pass': 1, '12th pass': 2, Graduate: 3 };
@@ -62,6 +63,7 @@ export function Jobs({ tab }: { tab: 'govt' | 'private' }) {
         <button role="tab" aria-selected={tab === 'govt'} className={tab === 'govt' ? 'on' : ''} onClick={() => { setSector('all'); go('jobs-govt'); }}>{t('govtTab')}</button>
         <button role="tab" aria-selected={tab === 'private'} className={tab === 'private' ? 'on' : ''} onClick={() => { setSector('all'); go('jobs-private'); }}>{t('privateTab')}</button>
       </div>
+      {tab === 'private' && <HotAlerts />}
       {tab === 'govt' && <>
         <h2 className="section-h"><Icon name="clock" size={20} /> {t('jobCalTitle')}</h2>
         <p className="small muted">{t('jobCalNote')}</p>
