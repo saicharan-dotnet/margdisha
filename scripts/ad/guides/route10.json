@@ -278,6 +278,125 @@
    "sub": "ITI seats are given on Class 10 marks, with no entrance exam. The course takes 1 or 2 years, in trades like electrician, fitter, welder and COPA. With an ITI, you can write the railway assistant loco pilot and technician exams, power company lineman posts, and technician posts at PSUs, ISRO and DRDO. Apprenticeships are open too."
   },
   {
+   "type": "journey",
+   "h": "Example: Ravi wants to be an engineer",
+   "rows": [
+    {
+     "tag": "Inter MPC",
+     "steps": [
+      [
+       "Inter MPC",
+       "2 years"
+      ],
+      [
+       "JEE / EAPCET",
+       "entrance"
+      ],
+      [
+       "B.Tech",
+       "4 years"
+      ]
+     ],
+     "end": "Engineer",
+     "total": "6 years"
+    },
+    {
+     "tag": "Polytechnic",
+     "steps": [
+      [
+       "POLYCET",
+       "entrance"
+      ],
+      [
+       "Diploma",
+       "3 years"
+      ],
+      {
+       "fork": [
+        [
+         "Job",
+         "start working"
+        ],
+        [
+         "ECET → B.Tech",
+         "joins 2nd year · 3 years"
+        ]
+       ]
+      }
+     ],
+     "end": "Engineer",
+     "total": "6 years"
+    },
+    {
+     "tag": "IIIT",
+     "steps": [
+      [
+       "Class 10 marks",
+       "no exam"
+      ],
+      [
+       "RGUKT PUC",
+       "2 years"
+      ],
+      [
+       "B.Tech",
+       "4 years"
+      ]
+     ],
+     "end": "Engineer",
+     "total": "6 years"
+    }
+   ],
+   "say": "Let's take an example. Ravi wants to be an engineer. He has three roads. Road one: Inter M P C for two years, then JEE or EAPCET, then four years of B Tech. Road two: polytechnic. He writes POLYCET and studies a three year diploma. After that he can start working right away, or write E CET and join B Tech directly in the second year, finishing the same degree in three more years. Road three: a triple I T, where he gets in on Class 10 marks and studies six years. All three roads take about six years, and end in the same B Tech degree.",
+   "sub": "Let's take an example. Ravi wants to be an engineer. He has three roads. Road one: Inter MPC for 2 years, then JEE or EAPCET, then 4 years of B.Tech. Road two: polytechnic. He writes POLYCET and studies a 3-year diploma. After that he can start working right away, or write ECET and join B.Tech directly in the second year, finishing the same degree in 3 more years. Road three: an IIIT, where he gets in on Class 10 marks and studies 6 years. All three roads take about 6 years, and end in the same B.Tech degree."
+  },
+  {
+   "type": "journey",
+   "h": "Example: Priya's two friends",
+   "rows": [
+    {
+     "tag": "Inter BiPC",
+     "steps": [
+      [
+       "Inter BiPC",
+       "2 years"
+      ],
+      [
+       "NEET UG",
+       "entrance"
+      ],
+      [
+       "MBBS",
+       "5½ years with internship"
+      ]
+     ],
+     "end": "Doctor",
+     "total": "7½ years"
+    },
+    {
+     "tag": "ITI",
+     "steps": [
+      [
+       "ITI seat",
+       "on 10th marks"
+      ],
+      [
+       "ITI trade",
+       "1 to 2 years"
+      ],
+      [
+       "Apprenticeship · RRB ALP",
+       "job exams"
+      ]
+     ],
+     "end": "Technician",
+     "total": "2 to 3 years"
+    }
+   ],
+   "say": "Now two more examples. Priya wants to be a doctor. She takes Inter Bi P C for two years, writes NEET U G, and studies M B B S for five and a half years, including the internship. Her friend wants to earn quickly. He joins an I T I on his Class 10 marks, finishes a trade in one or two years, then does an apprenticeship or writes the railway loco pilot exam. He can be working as a technician in two to three years.",
+   "sub": "Now two more examples. Priya wants to be a doctor. She takes Inter BiPC for 2 years, writes NEET UG, and studies MBBS for 5½ years, including the internship. Her friend wants to earn quickly. He joins an ITI on his Class 10 marks, finishes a trade in 1 or 2 years, then does an apprenticeship or writes the railway loco pilot exam. He can be working as a technician in 2 to 3 years."
+  },
+  {
    "type": "tree",
    "h": "Government jobs on the way",
    "root": [
