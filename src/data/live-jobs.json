@@ -1,1 +1,335 @@
-{"updated": "", "jobs": []}
+{
+ "updated": "2026-11-19",
+ "jobs": [
+  {
+   "id": "gh-agoda-8357817",
+   "title": "Associate Talent Sourcer (Pune Based) - 12 months Contract",
+   "company": "Agoda",
+   "location": "Pune, India",
+   "url": "https://job-boards.greenhouse.io/agoda/jobs/8357817",
+   "intern": false,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Agoda careers"
+  },
+  {
+   "id": "gh-chargepoint-8829772002",
+   "title": "Deployment Engineer",
+   "company": "ChargePoint",
+   "location": "IN-Karnataka-Bangalore",
+   "url": "https://www.chargepoint.com/about/opportunities/job/?gh_jid=8829772002",
+   "intern": false,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "ChargePoint careers"
+  },
+  {
+   "id": "gh-chargepoint-8932406002",
+   "title": "PLM Analyst",
+   "company": "ChargePoint",
+   "location": "India - Remote",
+   "url": "https://www.chargepoint.com/about/opportunities/job/?gh_jid=8932406002",
+   "intern": false,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "ChargePoint careers"
+  },
+  {
+   "id": "lv-cred-913a6616-78c9-4ca3-8c92-67ddea8a80df",
+   "title": "fraud analyst",
+   "company": "CRED",
+   "location": "bengaluru, bengaluru",
+   "url": "https://jobs.lever.co/cred/913a6616-78c9-4ca3-8c92-67ddea8a80df",
+   "intern": false,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "CRED careers"
+  },
+  {
+   "id": "gh-hackerrank-8127535",
+   "title": "Customer Experience Engineer, L1",
+   "company": "HackerRank",
+   "location": "Hybrid in Bangalore, India",
+   "url": "https://job-boards.greenhouse.io/hackerrank/jobs/8127535",
+   "intern": false,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "HackerRank careers"
+  },
+  {
+   "id": "gh-hackerrank-8229735",
+   "title": "Software Development Engineer Intern",
+   "company": "HackerRank",
+   "location": "Onsite in Bangalore",
+   "url": "https://job-boards.greenhouse.io/hackerrank/jobs/8229735",
+   "intern": true,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "HackerRank careers"
+  },
+  {
+   "id": "gh-inmobi-8096039",
+   "title": "Analyst",
+   "company": "InMobi",
+   "location": "Lucknow",
+   "url": "https://job-boards.greenhouse.io/inmobi/jobs/8096039",
+   "intern": false,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "InMobi careers"
+  },
+  {
+   "id": "lv-mindtickle-6c638c17-cd92-490a-9e0a-00a2492332fc",
+   "title": "Associate Client Partner",
+   "company": "Mindtickle",
+   "location": "Bengaluru, Karnataka, Bengaluru, Karnataka, Pune, Maharashtra",
+   "url": "https://jobs.lever.co/mindtickle/6c638c17-cd92-490a-9e0a-00a2492332fc",
+   "intern": false,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Mindtickle careers"
+  },
+  {
+   "id": "lv-mindtickle-d62b36db-b088-48c7-a606-4ed458e30208",
+   "title": "Security and Automation Engineer",
+   "company": "Mindtickle",
+   "location": "Pune, Maharashtra, Pune, Maharashtra",
+   "url": "https://jobs.lever.co/mindtickle/d62b36db-b088-48c7-a606-4ed458e30208",
+   "intern": false,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Mindtickle careers"
+  },
+  {
+   "id": "lv-paytm-20d54134-b6e5-4816-8da9-42e3a3ed8f57",
+   "title": "Associate - Motor Insurance",
+   "company": "Paytm",
+   "location": "Noida, Uttar Pradesh, Noida, Uttar Pradesh",
+   "url": "https://jobs.lever.co/paytm/20d54134-b6e5-4816-8da9-42e3a3ed8f57",
+   "intern": false,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Paytm careers"
+  },
+  {
+   "id": "lv-paytm-7097240e-c9be-430b-816e-259e96fee507",
+   "title": "Client Onboarding - Paytm Pi Agent (SMB)",
+   "company": "Paytm",
+   "location": "Noida, Uttar Pradesh, Noida, Uttar Pradesh, Gurugram, Haryana",
+   "url": "https://jobs.lever.co/paytm/7097240e-c9be-430b-816e-259e96fee507",
+   "intern": false,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Paytm careers"
+  },
+  {
+   "id": "lv-paytm-271d28ce-e61c-4216-b7d4-adddd79eefa6",
+   "title": "CST - Associate - Bill Payments CST",
+   "company": "Paytm",
+   "location": "Noida, Uttar Pradesh, Noida, Uttar Pradesh",
+   "url": "https://jobs.lever.co/paytm/271d28ce-e61c-4216-b7d4-adddd79eefa6",
+   "intern": false,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Paytm careers"
+  },
+  {
+   "id": "lv-paytm-715e52dd-0a51-4ff7-be68-855112e56b99",
+   "title": "CST - Associate - Email CST",
+   "company": "Paytm",
+   "location": "Noida, Uttar Pradesh, Noida, Uttar Pradesh",
+   "url": "https://jobs.lever.co/paytm/715e52dd-0a51-4ff7-be68-855112e56b99",
+   "intern": false,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Paytm careers"
+  },
+  {
+   "id": "lv-paytm-84ffd393-c82b-484c-9a88-9f9ddef1b720",
+   "title": "CST - Associate - Social CST",
+   "company": "Paytm",
+   "location": "Noida, Uttar Pradesh, Noida, Uttar Pradesh",
+   "url": "https://jobs.lever.co/paytm/84ffd393-c82b-484c-9a88-9f9ddef1b720",
+   "intern": false,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Paytm careers"
+  },
+  {
+   "id": "lv-paytm-426a6834-1397-4e65-94af-69874c790805",
+   "title": "Intern - Talent Acquisition",
+   "company": "Paytm",
+   "location": "Gurugram, Haryana, Gurugram, Haryana, Noida, Uttar Pradesh",
+   "url": "https://jobs.lever.co/paytm/426a6834-1397-4e65-94af-69874c790805",
+   "intern": true,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Paytm careers"
+  },
+  {
+   "id": "lv-paytm-0ecd9d93-e4f3-4dd0-a22e-852fec9b6e02",
+   "title": "Intern- HR Onboarding",
+   "company": "Paytm",
+   "location": "Noida, Uttar Pradesh, Noida, Uttar Pradesh",
+   "url": "https://jobs.lever.co/paytm/0ecd9d93-e4f3-4dd0-a22e-852fec9b6e02",
+   "intern": true,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Paytm careers"
+  },
+  {
+   "id": "lv-paytm-9d497980-2032-440c-8bac-63fb53938acc",
+   "title": "Intern-Talent Acquisition",
+   "company": "Paytm",
+   "location": "Bangalore, Karnataka, Bangalore, Karnataka",
+   "url": "https://jobs.lever.co/paytm/9d497980-2032-440c-8bac-63fb53938acc",
+   "intern": true,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Paytm careers"
+  },
+  {
+   "id": "lv-paytm-7261405f-4ba8-48b9-9e9d-6dc4e4c1d3be",
+   "title": "SG Grade- HR Onboarding",
+   "company": "Paytm",
+   "location": "Noida, Uttar Pradesh, Noida, Uttar Pradesh",
+   "url": "https://jobs.lever.co/paytm/7261405f-4ba8-48b9-9e9d-6dc4e4c1d3be",
+   "intern": false,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Paytm careers"
+  },
+  {
+   "id": "lv-paytm-6d7551f7-34c3-46a2-a4e4-18b29f15338c",
+   "title": "Talent Acquisition Intern",
+   "company": "Paytm",
+   "location": "Noida, Uttar Pradesh, Noida, Uttar Pradesh",
+   "url": "https://jobs.lever.co/paytm/6d7551f7-34c3-46a2-a4e4-18b29f15338c",
+   "intern": true,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Paytm careers"
+  },
+  {
+   "id": "lv-paytm-88e8b698-8f03-4e09-9581-168f831fb3af",
+   "title": "Talent Acquisition Intern - Bangalore",
+   "company": "Paytm",
+   "location": "Bangalore, Karnataka, Bangalore, Karnataka",
+   "url": "https://jobs.lever.co/paytm/88e8b698-8f03-4e09-9581-168f831fb3af",
+   "intern": true,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Paytm careers"
+  },
+  {
+   "id": "lv-paytm-95eadc2b-27bf-40fe-b6e6-93aaeadd08f7",
+   "title": "Talent Acquisition Intern - IT Recruitment",
+   "company": "Paytm",
+   "location": "Noida, Uttar Pradesh, Noida, Uttar Pradesh",
+   "url": "https://jobs.lever.co/paytm/95eadc2b-27bf-40fe-b6e6-93aaeadd08f7",
+   "intern": true,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Paytm careers"
+  },
+  {
+   "id": "gh-razorpaysoftwareprivatelimited-4731054005",
+   "title": "Frontend Engineer",
+   "company": "Razorpay",
+   "location": "Bengaluru",
+   "url": "https://job-boards.greenhouse.io/razorpaysoftwareprivatelimited/jobs/4731054005",
+   "intern": false,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Razorpay careers"
+  },
+  {
+   "id": "gh-rubrik-8166514",
+   "title": "ENG Project/ Program - Intern",
+   "company": "Rubrik",
+   "location": "Bangalore",
+   "url": "https://www.rubrik.com/company/careers/departments/job.8166514?gh_jid=8166514",
+   "intern": true,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Rubrik careers"
+  },
+  {
+   "id": "gh-rubrik-8305308",
+   "title": "Payroll Industrial Trainee",
+   "company": "Rubrik",
+   "location": "Bangalore",
+   "url": "https://www.rubrik.com/company/careers/departments/job.8305308?gh_jid=8305308",
+   "intern": false,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Rubrik careers"
+  },
+  {
+   "id": "gh-rubrik-8345283",
+   "title": "Product Management Intern",
+   "company": "Rubrik",
+   "location": "Bangalore",
+   "url": "https://www.rubrik.com/company/careers/departments/job.8345283?gh_jid=8345283",
+   "intern": true,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Rubrik careers"
+  },
+  {
+   "id": "gh-rubrik-8166537",
+   "title": "Software Engineer (CPD) - Winter Intern",
+   "company": "Rubrik",
+   "location": "Bangalore",
+   "url": "https://www.rubrik.com/company/careers/departments/job.8166537?gh_jid=8166537",
+   "intern": true,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Rubrik careers"
+  },
+  {
+   "id": "ab-sarvam-bba82f34-1544-421e-a393-3edd8a5f4cb2",
+   "title": "Marketing internship (brand & communication)",
+   "company": "Sarvam AI",
+   "location": "Bengaluru",
+   "url": "https://jobs.ashbyhq.com/sarvam/bba82f34-1544-421e-a393-3edd8a5f4cb2",
+   "intern": true,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Sarvam AI careers"
+  },
+  {
+   "id": "gh-stripe-8131339",
+   "title": "Operations Associate, Apprenticeship",
+   "company": "Stripe",
+   "location": "Bengaluru",
+   "url": "https://stripe.com/jobs/search?gh_jid=8131339",
+   "intern": false,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Stripe careers"
+  },
+  {
+   "id": "gh-stripe-8031833",
+   "title": "Software Engineer, Intern",
+   "company": "Stripe",
+   "location": "Bengaluru",
+   "url": "https://stripe.com/jobs/search?gh_jid=8031833",
+   "intern": true,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Stripe careers"
+  },
+  {
+   "id": "gh-stripe-8130876",
+   "title": "Software Engineer, New Grad",
+   "company": "Stripe",
+   "location": "Bangalore",
+   "url": "https://stripe.com/jobs/search?gh_jid=8130876",
+   "intern": false,
+   "firstSeen": "2026-11-19",
+   "expires": "2026-12-03",
+   "source": "Stripe careers"
+  }
+ ]
+}
