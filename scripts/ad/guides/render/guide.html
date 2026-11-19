@@ -151,6 +151,11 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:#061614;font-fam
 .Tb .j-tot{background:#e6f0ff;color:#0b1a3d}.Tb .j-tot small{color:#2563eb}
 .Tb .j-row.on .j-tag{box-shadow:0 0 36px rgba(111,177,255,.8)}
 .Tb #flash{background:radial-gradient(circle at 50% 45%,rgba(220,235,255,1),rgba(111,177,255,.45) 40%,transparent 75%)}
+/* black theme (G.theme==='black'): builds on the blue theme, plain black with bright blue */
+.Tk #bgbase{background:radial-gradient(1200px 800px at 75% 30%,#0d1b33 0%,#05070d 60%,#000 100%)}.Tk #bgimg{display:none}
+.Tk .x-c,.Tk .j-st,.Tk .m-kid,.Tk .card{background:#0b1220;border-color:#24324d}.Tk .x-e{background:#0a2140;border-color:#2f8cff;color:#cfe6ff}.Tk .x-j{background:#0b1220;border-color:#3a4a66}
+.Tk .x-root,.Tk .j-tag,.Tk .t-k,.Tk .card .ic,.Tk .chip.g,.Tk .e-url{background:linear-gradient(160deg,#7cc4ff,#2f8cff 45%,#1460e0)}.Tk .x-svg path{stroke:#2f8cff}.Tk .x-col{color:#5fb0ff}
+.Tk .t-sh{background:linear-gradient(90deg,rgba(0,0,0,.97) 0%,rgba(0,0,0,.9) 34%,rgba(0,0,0,.35) 56%,rgba(0,0,0,0) 72%)}
 #flash{position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(255,245,215,1),rgba(255,205,110,.5) 40%,transparent 75%);opacity:0;mix-blend-mode:screen}
 #black{position:absolute;inset:0;background:#000;opacity:1}
 </style></head><body>
@@ -172,7 +177,7 @@ const ramp=(t,a,b)=>cl((t-a)/(b-a));
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const G=window.G, TL=window.TL; const END=TL.end; const SC=G.scenes;
 const COVER=`url(${G.cover}.png)`;
-if(G.theme==='light')document.body.classList.add('Tl');if(G.theme==='blue')document.body.classList.add('Tb');
+if(G.theme==='light')document.body.classList.add('Tl');if(G.theme==='blue'||G.theme==='black')document.body.classList.add('Tb');if(G.theme==='black')document.body.classList.add('Tk');
 if(G.lang&&G.lang!=='en')document.body.classList.add('L','L'+G.lang);
 $('bgimg').style.backgroundImage=`url(${G.cover}-blur.jpg)`; $('gt').textContent=G.title;
 const ICE='<svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg>';const ICJ='<svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5h6v2M3 12h18"/></svg>';
@@ -275,7 +280,7 @@ window.setT=function(t){
   const le=W[SC.length-1][0];$('flash').style.opacity=Math.exp(-Math.pow((t-(le+.3))/.22,2))*.5;
   SUBS.forEach((s,i)=>{$('sb'+i).style.opacity=Math.min(ramp(t,s[0],s[0]+.1),1-ramp(t,s[1]-.1,s[1]))});
   cx.clearRect(0,0,1920,1080);
-  for(const p of P){const x=((p.x+p.vx*t)%1920+1920)%1920,y=((p.y-p.vy*t)%1080+1080)%1080;cx.globalAlpha=.4*(.35+.65*Math.abs(Math.sin(p.ph+t*p.sp)));if(G.theme==='light'){const o=P.indexOf(p)%2;cx.fillStyle=o?'#ff9f43':'#4f8ef7';cx.shadowColor=cx.fillStyle;}else if(G.theme==='blue'){cx.fillStyle='#bcd9ff';cx.shadowColor='#6fb1ff';}else{cx.fillStyle='#ffe2a8';cx.shadowColor='#ffd27a';}cx.shadowBlur=8;cx.beginPath();cx.arc(x,y,p.r,0,6.283);cx.fill();}
+  for(const p of P){const x=((p.x+p.vx*t)%1920+1920)%1920,y=((p.y-p.vy*t)%1080+1080)%1080;cx.globalAlpha=.4*(.35+.65*Math.abs(Math.sin(p.ph+t*p.sp)));if(G.theme==='light'){const o=P.indexOf(p)%2;cx.fillStyle=o?'#ff9f43':'#4f8ef7';cx.shadowColor=cx.fillStyle;}else if(G.theme==='blue'||G.theme==='black'){cx.fillStyle='#bcd9ff';cx.shadowColor='#6fb1ff';}else{cx.fillStyle='#ffe2a8';cx.shadowColor='#ffd27a';}cx.shadowBlur=8;cx.beginPath();cx.arc(x,y,p.r,0,6.283);cx.fill();}
 };
 setT(0);
 </script></body></html>
