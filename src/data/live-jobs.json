@@ -1,16 +1,49 @@
 {
- "updated": "2026-11-19",
+ "updated": "2026-11-20",
  "jobs": [
   {
-   "id": "gh-agoda-8357817",
-   "title": "Associate Talent Sourcer (Pune Based) - 12 months Contract",
+   "id": "gh-agoda-6323041",
+   "title": "Software Engineer Internship 2027 (6 months) - India-based, Gurgaon office",
    "company": "Agoda",
-   "location": "Pune, India",
-   "url": "https://job-boards.greenhouse.io/agoda/jobs/8357817",
-   "intern": false,
-   "firstSeen": "2026-11-19",
-   "expires": "2026-12-03",
+   "location": "Gurgaon",
+   "url": "https://job-boards.greenhouse.io/agoda/jobs/6323041",
+   "intern": true,
+   "firstSeen": "2026-11-20",
+   "expires": "2026-12-04",
    "source": "Agoda careers"
+  },
+  {
+   "id": "gh-rubrik-8166523",
+   "title": "Software Engineer - Winter Intern",
+   "company": "Rubrik",
+   "location": "Bangalore",
+   "url": "https://www.rubrik.com/company/careers/departments/job.8166523?gh_jid=8166523",
+   "intern": true,
+   "firstSeen": "2026-11-20",
+   "expires": "2026-12-04",
+   "source": "Rubrik careers"
+  },
+  {
+   "id": "ab-sarvam-0a5bf81d-3370-47e6-88f4-14aa5102ba72",
+   "title": "Product User Research, Intern",
+   "company": "Sarvam AI",
+   "location": "Bengaluru",
+   "url": "https://jobs.ashbyhq.com/sarvam/0a5bf81d-3370-47e6-88f4-14aa5102ba72",
+   "intern": true,
+   "firstSeen": "2026-11-20",
+   "expires": "2026-12-04",
+   "source": "Sarvam AI careers"
+  },
+  {
+   "id": "gh-toast-8348999",
+   "title": "Tax Operations Specialist I",
+   "company": "Toast",
+   "location": "Chennai",
+   "url": "https://careers.toasttab.com/jobs?gh_jid=8348999",
+   "intern": false,
+   "firstSeen": "2026-11-20",
+   "expires": "2026-12-04",
+   "source": "Toast careers"
   },
   {
    "id": "gh-chargepoint-8829772002",
@@ -46,17 +79,6 @@
    "source": "CRED careers"
   },
   {
-   "id": "gh-hackerrank-8127535",
-   "title": "Customer Experience Engineer, L1",
-   "company": "HackerRank",
-   "location": "Hybrid in Bangalore, India",
-   "url": "https://job-boards.greenhouse.io/hackerrank/jobs/8127535",
-   "intern": false,
-   "firstSeen": "2026-11-19",
-   "expires": "2026-12-03",
-   "source": "HackerRank careers"
-  },
-  {
    "id": "gh-hackerrank-8229735",
    "title": "Software Development Engineer Intern",
    "company": "HackerRank",
@@ -66,17 +88,6 @@
    "firstSeen": "2026-11-19",
    "expires": "2026-12-03",
    "source": "HackerRank careers"
-  },
-  {
-   "id": "gh-inmobi-8096039",
-   "title": "Analyst",
-   "company": "InMobi",
-   "location": "Lucknow",
-   "url": "https://job-boards.greenhouse.io/inmobi/jobs/8096039",
-   "intern": false,
-   "firstSeen": "2026-11-19",
-   "expires": "2026-12-03",
-   "source": "InMobi careers"
   },
   {
    "id": "lv-mindtickle-6c638c17-cd92-490a-9e0a-00a2492332fc",
