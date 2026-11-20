@@ -120,6 +120,7 @@ const ABROAD = [
   ['ab-visa', null, `${ASTYLE} A thrilled Indian student (about 23) holding up a passport at an airport gate with family waving goodbye in the background, golden hour light.`],
   ['ab-zurich', null, `${ASTYLE} A happy Indian college student (about 21) with a laptop backpack standing on a stone bridge over a clear blue river in a beautiful Swiss old town with church spires and a lakeside promenade, bright summer morning light.`],
   ['ab-lab', null, `${ASTYLE} Two focused Indian college students (a young man and a young woman, about 21) doing computer science research in a modern university lab with a small robot arm, large monitors showing abstract colourful graphs and code-like shapes (not readable), glass walls, soft blue and warm light.`],
+  ['ab-lab2', null, `${ASTYLE} One single continuous scene, NOT a photo inside a frame, no blurred bands at the top or bottom. Two focused Indian college students (a young man in a hoodie and a young woman with a braid, about 21) sit close to the camera at a desk in the bottom part of the frame, working with a small robot arm and a laptop in a modern university computer science lab; behind them tall glass windows, big screens with colourful abstract graphs, and soft blue and warm evening light filling the upper part.`],
 ];
 // Private job alert Shorts (9:16), reusable for any fresher job. Same style as the study-abroad set.
 const JOBS = [
