@@ -26,7 +26,7 @@ fs.writeFileSync(path.join(W, 'tl.json'), JSON.stringify(TL));
   await pg.evaluate(() => document.fonts.ready); await pg.waitForTimeout(800);
   if (process.env.TEST) { for (const t of process.env.TEST.split(',').map(Number)) { await pg.evaluate((t) => window.setT(t), t); await pg.screenshot({ path: path.join(W, `t-${t}.jpg`), type: 'jpeg', quality: 85 }); } await b.close(); return; }
   // thumbnail: the hook once the title is in
-  await pg.evaluate((t) => window.setT(t), TL.v[0][0] + 1.6); await pg.screenshot({ path: path.join(W, `${name}-thumb.jpg`), type: 'jpeg', quality: 92 });
+  await pg.evaluate((t) => window.setT(t), 2.7); await pg.screenshot({ path: path.join(W, `${name}-thumb.jpg`), type: 'jpeg', quality: 92 });
   const fr = path.join(W, 'fr'); fs.rmSync(fr, { recursive: true, force: true }); fs.mkdirSync(fr);
   const N = Math.round(TL.end * 30);
   for (let i = 0; i < N; i++) { await pg.evaluate((t) => window.setT(t), i / 30); await pg.screenshot({ path: path.join(fr, String(i).padStart(4, '0') + '.jpg'), type: 'jpeg', quality: 90 }); }
