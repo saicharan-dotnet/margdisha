@@ -54,8 +54,8 @@ const ramp=(t,a,b)=>cl((t-a)/(b-a));
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const CHECK='<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
 const S=window.S,TL=window.TL,SC=S.scenes,NSTEP=SC.filter(s=>s.num).length;
-const tidy=s=>s.replace(/Marg Disha dot com/g,'MargDisha.com').replace(/\bE T H\b/g,'ETH').replace(/\bP D F\b/g,'PDF').replace(/\bC V\b/g,'CV').replace(/\bG P A\b/g,'GPA').replace(/\bP M\b/g,'PM');
-$('tag').textContent='✈ '+(SC[0].tag||'Study abroad');
+const tidy=s=>s.replace(/Marg Disha dot com/g,'MargDisha.com').replace(/\bE T H\b/g,'ETH').replace(/\bP D F\b/g,'PDF').replace(/\bC V\b/g,'CV').replace(/\bG P A\b/g,'GPA').replace(/\bP M\b/g,'PM').replace(/\bS I\b/g,'SI').replace(/\bT G P R B\b/g,'TGPRB');
+$('tag').textContent=(S.icon||'✈')+' '+(SC[0].tag||'Study abroad');
 $('dots').innerHTML=Array.from({length:NSTEP},()=>'<i></i>').join('');
 const bgs=[...new Set(SC.map(s=>s.bg))];
 $('bgs').innerHTML=bgs.map(b=>`<div class="bg" data-b="${b}"><img src="bg/${b}.png"></div>`).join('');
@@ -84,7 +84,7 @@ window.setT=function(t){
   // backgrounds: the current scene's picture, crossfading, slow zoom
   document.querySelectorAll('.bg').forEach(d=>{let o=0;SC.forEach((s,i)=>{if(s.bg!==d.dataset.b)return;const a=st[i],b=i+1<SC.length?st[i+1]:END+1;o=Math.max(o,Math.min(ramp(t,a-.4,a+.2),1-ramp(t,b-.4,b+.2)));});
     d.style.opacity=o;d.style.transform=`scale(${1.06+.08*ease(ramp(t,0,END))})`;});
-  const pl=$('plane'),pq=ramp(t,.2,2.6);pl.style.opacity=Math.min(ramp(t,.2,.5),1-ramp(t,2.2,2.6));pl.style.left=(-60+pq*620)+'px';pl.style.top=(330-pq*230)+'px';
+  const pl=$('plane'),pq=ramp(t,.2,2.6);pl.style.opacity=S.icon?0:Math.min(ramp(t,.2,.5),1-ramp(t,2.2,2.6));pl.style.left=(-60+pq*620)+'px';pl.style.top=(330-pq*230)+'px';
   const dots=$('dots').children;const num=SC[cur].num||0;[...dots].forEach((d,k)=>d.classList.toggle('on',k<num));$('dots').style.opacity=SC[cur].num?1:0;
   $('prog').style.width=(540*cl(t/END))+'px';
   const sb=SUBS.find(x=>t>=x[0]-.05&&t<x[1]+.1);$('sub').textContent=sb?sb[2]:'';
