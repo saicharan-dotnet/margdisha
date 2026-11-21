@@ -17,6 +17,7 @@ on:
 
 permissions:
   contents: read
+  actions: write   # to start the Shorts job when a big exam body posts something new
 
 concurrency:
   group: notices
@@ -38,3 +39,18 @@ jobs:
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
           ONLY: ${{ github.event.inputs.only }}
           DEBUG: ${{ github.event.inputs.debug }}
+      # A new notice from a big exam body (SSC, UPSC, RRB, IBPS, NTA ...): make its Short and thumbnail now
+      # instead of waiting for the morning run. The Short is published as a release; nothing goes to YouTube.
+      - name: Start a Short for new main exam notices
+        if: always() && github.event.inputs.debug != 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p state
+          if git fetch -q origin shorts-state 2>/dev/null; then git show FETCH_HEAD:processed.json > state/processed.json || true; fi
+          MAIN=1 CHECK=/tmp/n node scripts/shorts/make.mjs
+          if [ "$(cat /tmp/n)" -gt 0 ]; then
+            gh api -X POST "repos/${{ github.repository }}/actions/workflows/shorts.yml/dispatches" -f ref=main -f "inputs[main]=true" -f "inputs[count]=3"
+            echo "Started the Shorts job for $(cat /tmp/n) new main exam notice(s)." >> "$GITHUB_STEP_SUMMARY"
+          fi

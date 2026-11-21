@@ -48,6 +48,9 @@ const sh = (cmd, args) => execFileSync(cmd, args, { stdio: ['ignore', 'pipe', 'i
     const fr = path.join(dir, 'fr'); fs.mkdirSync(fr, { recursive: true });
     const N = Math.round(END * 30);
     for (let i = 0; i < N; i++) { await pg.evaluate((t) => window.setT(t), i / 30); await pg.screenshot({ path: path.join(fr, String(i).padStart(4, '0') + '.jpg'), type: 'jpeg', quality: 90 }); }
+    // A matching thumbnail (1080x1920 JPEG) to set as the Short's cover when uploading.
+    await pg.evaluate(() => window.thumb()); await pg.waitForTimeout(200);
+    await pg.screenshot({ path: path.join(OUT, `short-${id}-thumb.jpg`), type: 'jpeg', quality: 90 });
     await pg.close();
     sh('python3', [path.join(HERE, 'score.py'), '1.0', String(END - 3.2), String(END), path.join(dir, 'music.wav')]);
     const mp4 = path.join(OUT, `short-${id}.mp4`);

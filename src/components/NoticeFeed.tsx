@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useApp } from '../app-context';
 import type { Notice } from '../data/remote';
 import { Icon } from './Icon';
+import mainSources from '../notices/main-sources.json';
 
 export function ago(iso: string, t: ReturnType<typeof useApp>['t'], now = Date.now()) {
   const h = Math.floor((now - new Date(iso).getTime()) / 3_600_000);
@@ -10,9 +11,9 @@ export function ago(iso: string, t: ReturnType<typeof useApp>['t'], now = Date.n
   return `${Math.floor(h / 24)} ${t('daysAgo')}`;
 }
 
-/** The big recruiters and exam bodies: their new notices are pinned to the top where `pinMain` is set. */
-export const MAIN_SOURCES = new Set(['ssc', 'upsc', 'upsc-exams', 'rrb-secunderabad', 'rrb-chandigarh', 'ibps', 'sbi', 'rbi', 'tgpsc', 'appsc',
-  'nta', 'navodaya', 'aissee', 'army', 'indiapost', 'ntpc', 'ongc', 'coalindia', 'nsp']);
+/** The big recruiters and exam bodies: their new notices are pinned to the top where `pinMain` is set,
+ *  and the Shorts job makes a Short for them as soon as they appear (list in src/notices/main-sources.json). */
+export const MAIN_SOURCES = new Set<string>(mainSources);
 const PIN_HOURS = 72;
 const isMain = (x: Notice) => MAIN_SOURCES.has(x.source_id) && Date.now() - new Date(x.first_seen).getTime() < PIN_HOURS * 3_600_000;
 

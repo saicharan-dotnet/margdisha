@@ -14,13 +14,17 @@ const OUT = 'shorts-out'; mkdirSync(OUT, { recursive: true });
 const done = new Set(existsSync(STATE) ? JSON.parse(readFileSync(STATE, 'utf8')) : []);
 const AREA = { job: 'Government jobs', school: 'School admissions', exam: 'Entrance exams', scholarship: 'Scholarships' };
 
-const r = await fetch(`${SB}/rest/v1/official_notices?select=id,url,title,source_name,sector,area,first_seen,status&status=neq.ignored&order=first_seen.desc&limit=80`,
+const r = await fetch(`${SB}/rest/v1/official_notices?select=id,url,title,source_id,source_name,sector,area,first_seen,status&status=neq.ignored&order=first_seen.desc&limit=80`,
   { headers: { apikey: PUB, Authorization: `Bearer ${PUB}` } });
 const all = r.ok ? await r.json() : [];
 if (!r.ok) console.log('Could not read notices:', r.status, await r.text());
 const since = Date.now() - DAYS * 864e5;
 const JUNK = /^(click here|notice|notices|read more|more|download|view|new|details|apply online|login|home)\b.{0,12}$/i;
-const fresh = all.filter((n) => !done.has(n.id) && Date.parse(n.first_seen) >= since && /^https?:\/\//.test(n.url)
+// MAIN=1: only new notices from the big exam bodies, made as soon as they appear (the notices job starts this).
+const MAIN = process.env.MAIN === '1' || process.env.MAIN === 'true';
+const MAIN_IDS = new Set(JSON.parse(readFileSync(new URL('../../src/notices/main-sources.json', import.meta.url), 'utf8')));
+const MAIN_SINCE = Date.now() - Number(process.env.MAIN_HOURS || 12) * 36e5;
+const fresh = all.filter((n) => (!MAIN || (MAIN_IDS.has(n.source_id) && Date.parse(n.first_seen) >= MAIN_SINCE)) && !done.has(n.id) && Date.parse(n.first_seen) >= since && /^https?:\/\//.test(n.url)
   && n.title && n.title.length >= 20 && n.title.length <= 260 && !JUNK.test(n.title.trim()));
 // One per area in turn, so a day's Shorts are not all from the same site.
 const byArea = {}; for (const n of fresh) (byArea[n.area] ??= []).push(n);
@@ -29,6 +33,8 @@ while (picks.length < COUNT && areas.some((a) => byArea[a].length)) for (const a
 // REDO=id,id remakes those notices' Shorts (for example after a design change), even if already made.
 const REDO = (process.env.REDO || '').split(',').map((x) => x.trim()).filter(Boolean);
 if (REDO.length) picks.splice(0, picks.length, ...all.filter((n) => REDO.includes(String(n.id))));
+// CHECK=<file>: only write how many Shorts would be made, and stop (no Gemini or voice calls).
+if (process.env.CHECK) { writeFileSync(process.env.CHECK, String(picks.length)); console.log(`${picks.length} to make.`); process.exit(0); }
 console.log(`${all.length} notices read, ${fresh.length} new and usable, making ${picks.length}.`);
 
 const RULES = `You write scripts for 15-second vertical YouTube Shorts for MargDisha.com, a free Indian website that helps students and parents find school admissions, entrance exams, scholarships and government and private jobs, and links to official notices.

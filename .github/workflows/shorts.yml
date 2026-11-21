@@ -20,6 +20,10 @@ on:
       redo:
         description: 'Remake these notice ids even if already made (comma-separated, blank = normal run)'
         required: false
+      main:
+        description: 'Only new notices from the big exam bodies (the notices job starts this as soon as one appears)'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -50,6 +54,7 @@ jobs:
           DAYS: ${{ github.event.inputs.days || '3' }}
           VOICE: ${{ github.event.inputs.voice || 'en-IN-Chirp3-HD-Kore' }}
           REDO: ${{ github.event.inputs.redo }}
+          MAIN: ${{ github.event.inputs.main }}
       - name: Render the videos
         run: |
           if [ "$(cat shorts-out/made.json)" = "[]" ]; then echo "No new Shorts today."; exit 0; fi
@@ -59,15 +64,20 @@ jobs:
       - name: Publish as a release for review
         env:
           GH_TOKEN: ${{ github.token }}
+          MAIN: ${{ github.event.inputs.main }}
         run: |
           ls shorts-out/short-*.mp4 >/dev/null 2>&1 || { echo "Nothing to publish."; exit 0; }
           tag="shorts-$(date -u +%Y%m%d-%H%M)"
+          title="Notice Shorts $(TZ=Asia/Kolkata date '+%d %b %Y')"
+          if [ "$MAIN" = "true" ]; then title="★ Important exam Short $(TZ=Asia/Kolkata date '+%d %b %Y, %-I:%M %p')"; fi
           {
             echo "Draft YouTube Shorts made from new official notices. **Check each one against the official link before uploading.**"
             echo
+            echo "Each Short has a matching thumbnail (short-<id>-thumb.jpg) to set as its cover when you upload."
+            echo
             for f in shorts-out/short-*.txt; do echo "---"; echo '```'; cat "$f"; echo '```'; done
           } > notes.md
-          gh release create "$tag" shorts-out/short-*.mp4 shorts-out/short-*.txt --title "Notice Shorts $(TZ=Asia/Kolkata date '+%d %b %Y')" --notes-file notes.md
+          gh release create "$tag" shorts-out/short-*.mp4 shorts-out/short-*.jpg shorts-out/short-*.txt --title "$title" --notes-file notes.md
           echo "Release: https://github.com/${{ github.repository }}/releases/tag/$tag" >> "$GITHUB_STEP_SUMMARY"
       - name: Remember which notices are done
         run: |
