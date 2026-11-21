@@ -13,6 +13,8 @@ export interface NoticeSource {
   sector?: string;
   /** Extra words that mark a link as a notice on this site (added to the defaults). */
   keywords?: string[];
+  /** Read this site only every N hours on the 30-minute schedule (company career pages change slowly). */
+  everyHours?: number;
   /** Only links whose address contains one of these (for sites whose menus are full of other links). */
   linkMust?: string[];
   /** The site blocks servers outside India: read it through the Supabase function in Mumbai. */
@@ -55,16 +57,16 @@ export const NOTICE_SOURCES: NoticeSource[] = [
   { id: 'appsc', india: true, name: 'Andhra Pradesh PSC', url: 'https://portal-psc.ap.gov.in/Default.aspx', area: 'job', sector: 'State PSC', keywords: ['group'] },
   { id: 'army', india: true, name: 'Indian Army', url: 'https://joinindianarmy.nic.in/', area: 'job', sector: 'Defence', keywords: ['agniveer', 'entry'] },
   // Public sector companies (PSUs): recruitment and apprentice notices
-  { id: 'ongc', india: true, name: 'ONGC', url: 'https://ongcindia.com/web/eng/career/recruitment-notice', area: 'job', sector: 'PSU', keywords: ['apprentice', 'advertisement', 'engagement'], linkMust: ['/documents/'] },
-  { id: 'ntpc', india: true, name: 'NTPC', url: 'https://careers.ntpc.co.in/recruitment/', area: 'job', sector: 'PSU', keywords: ['advertisement', 'engagement', 'advt', 'trainee', 'interview', 'test'], headingItems: 'h5' },
-  { id: 'ongc-apprentice', india: true, name: 'ONGC apprentices', url: 'https://ongcindia.com/web/eng/career/apprenticeship-opportunities', area: 'job', sector: 'Apprenticeship', keywords: ['apprentice', 'engagement', 'advertisement'], linkMust: ['/documents/'] },
-  { id: 'bhel', india: true, name: 'BHEL', url: 'https://careers.bhel.in/index.jsp', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['careers', 'bhel.com/'] },
-  { id: 'powergrid', india: true, name: 'POWERGRID', url: 'https://www.powergrid.in/en/job-opportunities', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['job', 'career', 'recruit', 'apprentic', '.pdf'] },
-  { id: 'coalindia', india: true, name: 'Coal India', url: 'https://www.coalindia.in/career-cil/jobs-coal-india/', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['/career-cil/'] },
-  { id: 'bpcl', india: true, name: 'BPCL', url: 'https://www.bharatpetroleum.in/careers/current-openings.aspx', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['/images/files/', 'career'] },
-  { id: 'hpcl', india: true, name: 'HPCL', url: 'https://www.hindustanpetroleum.com/job-openings', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['/documents/pdf/'] },
-  { id: 'sail', india: true, name: 'SAIL', url: 'https://sailcareers.com/', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['sailcareers.com'] },
-  { id: 'nhpc', india: true, name: 'NHPC', url: 'https://www.nhpcindia.com/welcome/job', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['.pdf'] },
+  { id: 'ongc', india: true, name: 'ONGC', url: 'https://ongcindia.com/web/eng/career/recruitment-notice', area: 'job', sector: 'PSU', keywords: ['apprentice', 'advertisement', 'engagement'], linkMust: ['/documents/'], everyHours: 3 },
+  { id: 'ntpc', india: true, name: 'NTPC', url: 'https://careers.ntpc.co.in/recruitment/', area: 'job', sector: 'PSU', keywords: ['advertisement', 'engagement', 'advt', 'trainee', 'interview', 'test'], headingItems: 'h5', everyHours: 3 },
+  { id: 'ongc-apprentice', india: true, name: 'ONGC apprentices', url: 'https://ongcindia.com/web/eng/career/apprenticeship-opportunities', area: 'job', sector: 'Apprenticeship', keywords: ['apprentice', 'engagement', 'advertisement'], linkMust: ['/documents/'], everyHours: 3 },
+  { id: 'bhel', india: true, name: 'BHEL', url: 'https://careers.bhel.in/index.jsp', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['careers', 'bhel.com/'], everyHours: 3 },
+  { id: 'powergrid', india: true, name: 'POWERGRID', url: 'https://www.powergrid.in/en/job-opportunities', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['job', 'career', 'recruit', 'apprentic', '.pdf'], everyHours: 3 },
+  { id: 'coalindia', india: true, name: 'Coal India', url: 'https://www.coalindia.in/career-cil/jobs-coal-india/', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['/career-cil/'], everyHours: 3 },
+  { id: 'bpcl', india: true, name: 'BPCL', url: 'https://www.bharatpetroleum.in/careers/current-openings.aspx', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['/images/files/', 'career'], everyHours: 3 },
+  { id: 'hpcl', india: true, name: 'HPCL', url: 'https://www.hindustanpetroleum.com/job-openings', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['/documents/pdf/'], everyHours: 3 },
+  { id: 'sail', india: true, name: 'SAIL', url: 'https://sailcareers.com/', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['sailcareers.com'], everyHours: 3 },
+  { id: 'nhpc', india: true, name: 'NHPC', url: 'https://www.nhpcindia.com/welcome/job', area: 'job', sector: 'PSU', keywords: ['advertisement', 'apprentice'], linkMust: ['.pdf'], everyHours: 3 },
   { id: 'indiapost', name: 'India Post GDS', url: 'https://indiapostgdsonline.gov.in/', area: 'job', sector: 'Departments', keywords: ['gds', 'schedule'] },
   // Entrance exams
   { id: 'nta', name: 'National Testing Agency', url: 'https://nta.ac.in/', area: 'exam' },
@@ -72,9 +74,9 @@ export const NOTICE_SOURCES: NoticeSource[] = [
   { id: 'navodaya', india: true, json: { url: 'https://navodaya.gov.in/api/public/media?page=1&limit=30', items: 'data.items', title: 'title_english', link: ['external_url', 'download_url'], prefix: 'media_type_name' }, name: 'Navodaya Vidyalaya Samiti', url: 'https://navodaya.gov.in/', area: 'school', sector: 'Navodaya', keywords: ['jnvst', 'lateral'] },
   { id: 'aissee', india: true, name: 'AISSEE (Sainik Schools)', url: 'https://exams.nta.nic.in/sainik-school-society/', area: 'school', sector: 'Sainik', keywords: ['aissee', 'sainik'] },
   // The KVS site moved from kvsangathan.nic.in to kvs.gov.in in 2026.
-  { id: 'kvs', name: 'Kendriya Vidyalaya Sangathan', url: 'https://kvs.gov.in/en/', area: 'school', sector: 'Kendriya Vidyalaya', keywords: ['balvatika', 'class i'] },
-  { id: 'rms', name: 'Rashtriya Military Schools', url: 'https://www.rashtriyamilitaryschools.edu.in/', area: 'school', sector: 'Military School', keywords: ['cet'] },
-  { id: 'nests', name: 'NESTS (Eklavya schools)', url: 'https://nests.tribal.gov.in/', area: 'school', sector: 'EMRS', keywords: ['emrs', 'eklavya'] },
+  { id: 'kvs', name: 'Kendriya Vidyalaya Sangathan', url: 'https://kvs.gov.in/en/', area: 'school', sector: 'Kendriya Vidyalaya', keywords: ['balvatika', 'class i'], everyHours: 3 },
+  { id: 'rms', name: 'Rashtriya Military Schools', url: 'https://www.rashtriyamilitaryschools.edu.in/', area: 'school', sector: 'Military School', keywords: ['cet'], everyHours: 3 },
+  { id: 'nests', name: 'NESTS (Eklavya schools)', url: 'https://nests.tribal.gov.in/', area: 'school', sector: 'EMRS', keywords: ['emrs', 'eklavya'], everyHours: 3 },
   { id: 'tgcet', india: true, json: { url: 'https://tgcet.cgg.gov.in/TGCETWEB/getNotifications', items: 'data', title: 'DESCRIPTION', prefix: 'DEPT_SHORT_NAME', linkTemplate: 'https://tgcet.cgg.gov.in/TGCETWEB/?notification={NOTIFICATION_ID}' }, name: 'Telangana Gurukul (TGCET)', url: 'https://tgcet.cgg.gov.in/', area: 'school', sector: 'State residential', keywords: ['tgcet', 'gurukul'] },
   // Scholarships
   { id: 'nsp', name: 'National Scholarship Portal', url: 'https://scholarships.gov.in/', area: 'scholarship', sector: 'School scholarship', keywords: ['scheme', 'nmms'] },
