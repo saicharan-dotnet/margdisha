@@ -583,6 +583,23 @@ export const SCHOLARSHIPS: ScholarshipGuide[] = [
     links: [{ label: 'Swiss Government Excellence Scholarships', url: 'https://www.sbfi.admin.ch/sbfi/en/home/education/scholarships-and-grants/swiss-government-excellence-scholarships.html' }], note: CHECK,
   },
   {
+    id: 'abroad-eth-ssrf', title: 'ETH Zurich Student Summer Research Fellowship (Switzerland)', scope: 'Study abroad',
+    levels: ['Engineering', 'Degree', 'Masters'],
+    gives: 'Eight weeks of computer science research at ETH Zurich (2 July to 27 August 2027) with CHF 4,000 for housing and living, plus travel and visa costs paid back against receipts',
+    who: 'Students from any country (except current ETH students) now enrolled in a bachelor\'s or master\'s in computer science or a close field such as electrical engineering, maths or physics, who will have finished two years of study by the start and expect to graduate in 2028 or later. Master\'s students meet the two-year rule automatically.',
+    when: 'The 2027 round closes on 16 December 2026 at 13:00 Swiss time (5:30 PM IST). Results by the end of February 2027.',
+    steps: [
+      'Pick one or two research areas: machine learning, security, systems, robotics, programming languages and software engineering, bio and medical informatics, human-computer interaction, theory or visual computing.',
+      'Prepare PDFs of a Europass CV, your official transcript with GPA and a one-page motivation letter.',
+      'Apply on SiROP (the ETH application portal) before the deadline.',
+    ],
+    links: [
+      { label: 'ETH Zurich: Summer Research Fellowship', url: 'https://inf.ethz.ch/studies/summer-research-fellowship.html' },
+      { label: 'Apply on SiROP', url: 'https://sirop.org/app/1535d3bf-c2ef-4c74-8870-cb5bc17cb4da' },
+    ],
+    note: 'You do not need a completed degree: it is for students still studying. ' + CHECK,
+  },
+  {
     id: 'abroad-gates-rhodes', title: 'Gates Cambridge and Rhodes Scholarships (UK)', scope: 'Study abroad',
     levels: ['Degree', 'Engineering', 'Masters', 'PhD'],
     gives: 'Full cost of a master\'s or PhD at the University of Cambridge (Gates) or the University of Oxford (Rhodes): fees, living costs and travel',

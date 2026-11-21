@@ -10,13 +10,22 @@ export function ago(iso: string, t: ReturnType<typeof useApp>['t'], now = Date.n
   return `${Math.floor(h / 24)} ${t('daysAgo')}`;
 }
 
+/** The big recruiters and exam bodies: their new notices are pinned to the top where `pinMain` is set. */
+export const MAIN_SOURCES = new Set(['ssc', 'upsc', 'upsc-exams', 'rrb-secunderabad', 'rrb-chandigarh', 'ibps', 'sbi', 'rbi', 'tgpsc', 'appsc',
+  'nta', 'navodaya', 'aissee', 'army', 'indiapost', 'ntpc', 'ongc', 'coalindia', 'nsp']);
+const PIN_HOURS = 72;
+const isMain = (x: Notice) => MAIN_SOURCES.has(x.source_id) && Date.now() - new Date(x.first_seen).getTime() < PIN_HOURS * 3_600_000;
+
 /** Notices collected automatically from official websites. Always labelled as not checked. */
-export function NoticeFeed({ areas, limit = 8, title = true, more }: {
+export function NoticeFeed({ areas, limit = 8, title = true, more, pinMain = false }: {
   areas?: Notice['area'][]; limit?: number; title?: boolean; more?: () => void;
+  /** Put new notices from the big exam bodies (SSC, UPSC, RRB, IBPS, NTA ...) first, marked "Important". */
+  pinMain?: boolean;
 }) {
   const { t, notices } = useApp();
   const [n, setN] = useState(limit);
-  const list = notices.filter((x) => x.status !== 'ignored' && (!areas || areas.includes(x.area)));
+  const all = notices.filter((x) => x.status !== 'ignored' && (!areas || areas.includes(x.area)));
+  const list = pinMain ? [...all.filter(isMain), ...all.filter((x) => !isMain(x))] : all;
   return (
     <section className="feed" aria-labelledby="feed-h">
       {title && (
@@ -36,6 +45,7 @@ export function NoticeFeed({ areas, limit = 8, title = true, more }: {
                   <span className={'feed-src a-' + x.area}>{x.sector ?? x.source_name}</span>
                   <span className="feed-title">{x.title}</span>
                   <span className="feed-meta">
+                    {pinMain && isMain(x) && <span className="main-badge">★ {t('mainBadge')}</span>}
                     {fresh && <span className="new-badge">{t('newBadge')}</span>}
                     {x.source_name} · {ago(x.first_seen, t)} <Icon name="arrow" size={14} />
                   </span>

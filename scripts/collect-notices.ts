@@ -57,7 +57,11 @@ const run = async (src: NoticeSource) => {
   }
 };
 // Read a few sites at a time; each site still gets only one request.
-const queue = NOTICE_SOURCES.filter((s) => !only.length || only.includes(s.id));
+// On the 30-minute schedule, slow-changing sites (everyHours) are read only in every Nth hour.
+const scheduled = process.env.GITHUB_EVENT_NAME === 'schedule';
+const now = new Date();
+const due = (s: (typeof NOTICE_SOURCES)[number]) => !scheduled || !s.everyHours || now.getUTCHours() % s.everyHours === 0;
+const queue = NOTICE_SOURCES.filter((s) => (!only.length || only.includes(s.id)) && due(s));
 await Promise.all(Array.from({ length: 5 }, async () => { for (let s = queue.shift(); s; s = queue.shift()) await run(s); }));
 const summary = `### Notice collector\n${KEY ? `${totalNew} new notices saved.` : 'Dry run: SUPABASE_SECRET_KEY is not set, nothing was saved.'}` +
   `${functionMissing ? '\n\nThe Mumbai function is not deployed yet, so blocked sites were tried directly. See docs/NOTICES.md.' : ''}\n\n${lines.join('\n')}\n`;

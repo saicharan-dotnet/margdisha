@@ -19,7 +19,7 @@ export function Updates() {
       <div className="chips scroll">
         {AREAS.map(([a, k]) => <button key={a} className={'chip ' + (a === area ? 'on' : '')} onClick={() => setArea(a)}>{t(k)} <span className="n">{n(a)}</span></button>)}
       </div>
-      <NoticeFeed key={area} areas={area === 'all' ? undefined : [area]} limit={40} title={false} />
+      <NoticeFeed key={area} areas={area === 'all' ? undefined : [area]} limit={40} title={false} pinMain />
     </section>
   );
 }
