@@ -103,7 +103,7 @@ export function Home() {
           </ul>
         </div>}
         <div className="panel">
-          <NoticeFeed limit={6} more={() => go('updates')} />
+          <NoticeFeed limit={8} pinMain more={() => go('updates')} />
         </div>
       </section>
 

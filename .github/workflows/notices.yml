@@ -1,10 +1,10 @@
 name: Collect official notices
 
-# Every 6 hours, read official websites (SSC, UPSC, RRB, IBPS, Navodaya, Sainik, KVS ...)
+# Every 30 minutes, read official websites (SSC, UPSC, RRB, IBPS, Navodaya, Sainik, KVS ...)
 # and save the title and link of any new notice. Admins review them before they become listings.
 on:
   schedule:
-    - cron: '17 */6 * * *'
+    - cron: '7,37 * * * *'   # every 30 minutes, on odd minutes (GitHub often skips busy on-the-hour slots)
   workflow_dispatch:
     inputs:
       only:

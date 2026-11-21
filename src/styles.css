@@ -425,3 +425,4 @@ body {
 .live-job p { margin: 2px 0; overflow-wrap: anywhere; }
 .live-job .btn { flex: none; }
 @media (max-width: 560px) { .live-job { flex-direction: column; align-items: stretch; } }
+.main-badge { background: var(--marigold); color: #241600; font-size: .68rem; font-weight: 700; padding: 1px 7px; border-radius: 999px; text-transform: uppercase; letter-spacing: .04em; margin-right: 4px; }
