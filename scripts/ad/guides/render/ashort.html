@@ -1,0 +1,95 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Study-abroad and job explainer Shorts (9:16). Driven by ashort.cjs: window.S = script json, window.TL = timing. -->
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:540px;height:960px;background:#0b1020;overflow:hidden;font-family:'Inter Display','Inter',sans-serif;color:#fff}
+.bg{position:absolute;inset:0;opacity:0;transform-origin:50% 60%}
+.bg img{width:100%;height:100%;object-fit:cover;display:block}
+#shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,12,30,.92) 0%,rgba(8,12,30,.7) 22%,rgba(8,12,30,.15) 48%,rgba(8,12,30,0) 62%,rgba(8,12,30,.25) 80%,rgba(8,12,30,.65) 100%)}
+#cv{position:absolute;inset:0}
+#prog{position:absolute;left:0;top:0;height:4px;background:linear-gradient(90deg,#ff7a3c,#ffb347)}
+.top{position:absolute;left:18px;right:18px;top:14px;display:flex;align-items:center;gap:8px;font:900 19px 'Inter Display'}
+.top img{width:30px;height:30px;border-radius:8px}
+.top .tag{margin-left:auto;font:900 11.5px 'Inter';letter-spacing:1.3px;text-transform:uppercase;color:#3a2300;background:linear-gradient(160deg,#fff1b8,#ffd567 45%,#f6b73c);padding:6px 12px;border-radius:999px;box-shadow:0 0 16px rgba(255,200,80,.55)}
+#dots{position:absolute;left:0;right:0;top:62px;display:flex;justify-content:center;gap:6px}
+#dots i{width:22px;height:4px;border-radius:2px;background:rgba(255,255,255,.3)}
+#dots i.on{background:#ffd567;box-shadow:0 0 8px rgba(255,213,103,.8)}
+.scene{position:absolute;inset:0;opacity:0}
+.hk{position:absolute;left:20px;right:20px;top:140px;text-align:center}
+.hk h1{font:900 46px/1.04 'Inter Display';letter-spacing:-1.5px;text-shadow:0 4px 18px rgba(0,0,0,.6)}
+.hk .hl{display:inline-block;margin-top:6px;font:900 50px/1.1 'Inter Display';letter-spacing:-1.5px;color:#3a2300;background:linear-gradient(160deg,#fff1b8,#ffd567 45%,#e9a52c);padding:2px 18px 6px;border-radius:16px;transform:rotate(-2deg);box-shadow:0 0 30px rgba(255,200,80,.6)}
+.hk .sb{margin:22px auto 0;max-width:470px;font:800 19px/1.3 'Inter Display';padding:12px 18px;border-radius:18px;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.35);backdrop-filter:blur(6px)}
+#plane{position:absolute;font-size:34px;opacity:0}
+.hd{position:absolute;left:18px;right:18px;top:84px;display:flex;align-items:center;gap:12px}
+.hd .n{flex:none;width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font:900 22px 'Inter';color:#3a2300;background:linear-gradient(160deg,#fff1b8,#ffd567 45%,#e9a52c);box-shadow:0 0 18px rgba(255,200,80,.6)}
+.hd h2{font:900 26px/1.1 'Inter Display';letter-spacing:-.5px;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+.its{position:absolute;left:18px;right:18px;top:138px;display:flex;flex-direction:column;gap:8px}
+.it{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:12px;background:rgba(10,16,40,.55);border:1.5px solid rgba(255,255,255,.18);font:800 14.5px/1.3 'Inter';opacity:0;backdrop-filter:blur(4px)}
+.it.on{background:rgba(120,86,20,.55);border-color:rgba(255,213,103,.7)}
+.it .bx{flex:none;width:18px;height:18px;border-radius:5px;border:2px solid rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center}
+.it .bx svg{width:12px;height:12px;stroke:#fff;stroke-width:3.4;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.it.ck .bx{background:#2fbf6b;border-color:#2fbf6b}.it.ck .bx svg{opacity:1}
+.en{position:absolute;left:0;right:0;top:150px;text-align:center}
+.en .lg{display:inline-flex;align-items:center;gap:12px;font:900 44px 'Inter Display';letter-spacing:-1px;text-shadow:0 4px 18px rgba(0,0,0,.6)}
+.en .lg img{width:60px;height:60px;border-radius:14px}
+.en .l1{display:inline-block;margin-top:18px;font:800 19px 'Inter';padding:9px 18px;border-radius:999px;background:rgba(0,0,0,.45);border:2px solid #ffd567}
+.en .url{display:inline-block;margin-top:14px;font:900 34px 'Inter';color:#3a2300;background:linear-gradient(160deg,#fff1b8,#ffd567 45%,#f0a830);padding:9px 30px;border-radius:999px;box-shadow:0 0 34px rgba(255,190,60,.8)}
+.en .yt{display:inline-flex;align-items:center;gap:8px;margin-top:12px;font:900 19px 'Inter';background:#e8212b;padding:8px 18px;border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.en .yt small{font:700 13px 'Inter';opacity:.9}
+#sub{position:absolute;left:24px;right:24px;top:800px;text-align:center;font:800 22px/1.3 'Inter Display';text-shadow:0 2px 12px rgba(0,0,0,.95),0 0 2px #000}
+#black{position:absolute;inset:0;background:#000;opacity:0}
+</style></head><body>
+<div id="bgs"></div><div id="shade"></div><canvas id="cv" width="540" height="960"></canvas>
+<div id="scenes"></div><div id="plane">✈️</div>
+<div class="top"><img src="logo.png">MargDisha<span class="tag" id="tag"></span></div>
+<div id="dots"></div><div id="prog"></div><div id="sub"></div><div id="black"></div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ease=x=>{x=cl(x);return x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2};
+const out=x=>1-Math.pow(1-cl(x),3);
+const back=x=>{x=cl(x);const c=1.7;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const ramp=(t,a,b)=>cl((t-a)/(b-a));
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const CHECK='<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
+const S=window.S,TL=window.TL,SC=S.scenes,NSTEP=SC.filter(s=>s.num).length;
+const tidy=s=>s.replace(/Marg Disha dot com/g,'MargDisha.com').replace(/\bE T H\b/g,'ETH').replace(/\bP D F\b/g,'PDF').replace(/\bC V\b/g,'CV').replace(/\bG P A\b/g,'GPA').replace(/\bP M\b/g,'PM');
+$('tag').textContent='✈ '+(SC[0].tag||'Study abroad');
+$('dots').innerHTML=Array.from({length:NSTEP},()=>'<i></i>').join('');
+const bgs=[...new Set(SC.map(s=>s.bg))];
+$('bgs').innerHTML=bgs.map(b=>`<div class="bg" data-b="${b}"><img src="bg/${b}.png"></div>`).join('');
+$('scenes').innerHTML=SC.map((s,i)=>{
+  if(s.type==='hook')return `<div class="scene" id="s${i}"><div class="hk"><h1>${esc(s.h)}</h1>${s.hl?`<div class="hl">${esc(s.hl)}</div>`:''}<div class="sb">${esc(s.items[0])}</div></div></div>`;
+  if(s.type==='end')return `<div class="scene" id="s${i}"><div class="en"><div class="lg"><img src="logo.png">MargDisha</div><br><div class="l1">⬇ ${esc(s.h)} ⬇</div><br><div class="url">margdisha.com</div><br><div class="yt">▶ Subscribe <small>@margdishaindia</small></div></div></div>`;
+  return `<div class="scene" id="s${i}"><div class="hd"><span class="n">${s.num}</span><h2>${esc(s.h)}</h2></div><div class="its">${s.items.map(x=>`<div class="it"><span class="bx">${CHECK}</span><span>${esc(x)}</span></div>`).join('')}</div></div>`;
+}).join('');
+// subtitles: each line split into chunks of about 6 words, timed by word share of its voice clip
+const SUBS=[];SC.forEach((s,i)=>{const [vs,vd]=TL.v[i];const w=tidy(s.sub||s.say).split(/\s+/);const n=Math.ceil(w.length/6);const per=Math.ceil(w.length/n);let st=vs;
+  for(let k=0;k<w.length;k+=per){const c=w.slice(k,k+per);const len=vd*c.length/w.length;SUBS.push([st,st+len,c.join(' ')]);st+=len;}});
+let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
+const PT=[...Array(60)].map(()=>({x:rnd()*540,y:rnd()*960,vx:(rnd()-.5)*8,vy:8+rnd()*18,r:.6+rnd()*1.5,ph:rnd()*6.28,sp:1+rnd()*3}));
+const cx=$('cv').getContext('2d');
+window.setT=function(t){
+  const END=TL.end;
+  // which scene is showing: scene i from its start (TL.s[i]) to the next one's start
+  const st=TL.s;let cur=0;for(let i=0;i<SC.length;i++)if(t>=st[i])cur=i;
+  SC.forEach((s,i)=>{const a=st[i],b=i+1<SC.length?st[i+1]:END+1;const o=Math.min(ramp(t,a-.15,a+.3),1-ramp(t,b-.25,b+.05));const el=$('s'+i);el.style.opacity=o;el.style.transform=`translateY(${(1-out(ramp(t,a-.15,a+.4)))*18}px)`;
+    if(s.type==='card'||s.type==='list'){const [vs,vd]=TL.v[i];const its=el.querySelectorAll('.it');const n=its.length;
+      its.forEach((c,j)=>{const at=vs+vd*(0.02+0.8*j/n);const q=back(ramp(t,at-.3,at+.15));c.style.opacity=ramp(t,at-.3,at-.05);c.style.transform=`translateX(${(1-q)*-30}px)`;
+        const nx=j+1<n?vs+vd*(0.02+0.8*(j+1)/n):vs+vd+.3;c.classList.toggle('ck',t>at+.2);c.classList.toggle('on',t>=at-.05&&t<nx-.3);});}
+    if(s.type==='hook'){const hl=el.querySelector('.hl');if(hl){const q=back(ramp(t,a+.4,a+.9));hl.style.transform=`rotate(-2deg) scale(${.5+.5*q})`;hl.style.opacity=ramp(t,a+.4,a+.55);}}
+    if(s.type==='end'){el.querySelectorAll('.l1,.url,.yt').forEach((c,j)=>{const q=back(ramp(t,a+.3+j*.35,a+.75+j*.35));c.style.opacity=ramp(t,a+.3+j*.35,a+.5+j*.35);c.style.transform=`scale(${.6+.4*q})`;});}
+  });
+  // backgrounds: the current scene's picture, crossfading, slow zoom
+  document.querySelectorAll('.bg').forEach(d=>{let o=0;SC.forEach((s,i)=>{if(s.bg!==d.dataset.b)return;const a=st[i],b=i+1<SC.length?st[i+1]:END+1;o=Math.max(o,Math.min(ramp(t,a-.4,a+.2),1-ramp(t,b-.4,b+.2)));});
+    d.style.opacity=o;d.style.transform=`scale(${1.06+.08*ease(ramp(t,0,END))})`;});
+  const pl=$('plane'),pq=ramp(t,.2,2.6);pl.style.opacity=Math.min(ramp(t,.2,.5),1-ramp(t,2.2,2.6));pl.style.left=(-60+pq*620)+'px';pl.style.top=(330-pq*230)+'px';
+  const dots=$('dots').children;const num=SC[cur].num||0;[...dots].forEach((d,k)=>d.classList.toggle('on',k<num));$('dots').style.opacity=SC[cur].num?1:0;
+  $('prog').style.width=(540*cl(t/END))+'px';
+  const sb=SUBS.find(x=>t>=x[0]-.05&&t<x[1]+.1);$('sub').textContent=sb?sb[2]:'';
+  $('black').style.opacity=ramp(t,END-.4,END);
+  cx.clearRect(0,0,540,960);
+  for(const p of PT){const x=((p.x+p.vx*t)%540+540)%540,y=((p.y-p.vy*t)%960+960)%960;cx.globalAlpha=.45*(.35+.65*Math.abs(Math.sin(p.ph+t*p.sp)));cx.fillStyle='#ffe2a8';cx.shadowColor='#ffe2a8';cx.shadowBlur=6;cx.beginPath();cx.arc(x,y,p.r,0,6.283);cx.fill();}
+};
+</script></body></html>
