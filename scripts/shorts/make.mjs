@@ -46,9 +46,9 @@ Return JSON with:
 - hook: a punchy hook of at most 34 characters
 - update: the key update in at most 70 characters, using only the title's facts
 - voiceover: at most 38 words; start with the hook, state the update, end exactly with "Official link in the description. More free updates on Marg Disha dot com."
-- youtube_title: at most 62 characters, high click-through but truthful, ends with " #Shorts"
+- youtube_title: at most 62 characters, truthful, ends with " #Shorts". Most viewers find these videos by searching, so start with the exact words a student would type: the exam or organisation short name, then the year ONLY if it is in the notice title, then the update in plain search words (Admit Card Out, Result Out, Apply Online, Notification, Answer Key, Exam Date, Interview Schedule, Merit List). After that, a few words of detail may follow a " | ". No clickbait words, no emojis, no ALL CAPS sentences. Examples: "SSC CGL 2026 Admit Card Out | Download Steps #Shorts", "NTPC Deputy Manager Interview Schedule #Shorts", "UPSC Online Application Open | ORA Portal #Shorts"
 - summary: two sentences summarising the notice for the video description, only from the title and source
-- tags: 6 to 10 short tags without # (include MargDisha and the exam or organisation name)`;
+- tags: 6 to 10 short tags without # (include MargDisha, the exam or organisation name, and 2 or 3 phrases students would search, for example "ssc cgl admit card")`;
 
 // Text models to try, newest first; the first one this Google project can use is kept.
 const MODELS = (process.env.TEXT_MODELS || 'gemini-3-flash-preview,gemini-3.0-flash,gemini-2.5-flash,gemini-2.5-flash-lite,gemini-2.0-flash-001,gemini-flash-latest').split(',');
