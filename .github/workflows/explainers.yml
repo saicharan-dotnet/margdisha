@@ -6,8 +6,6 @@ name: Explainer videos
 # Each video is published as a GitHub release (video, thumbnail, title/description/chapters/tags), which
 # emails you. A person checks it and uploads it to YouTube; nothing is posted automatically.
 on:
-  push:
-    branches: [claude/project-thread-c9lwwy]   # TEMPORARY: one test run before merging
   schedule:
     - cron: '23 1 * * 0,3'   # Sunday and Wednesday 06:53 IST; an odd minute, because GitHub often drops busy on-the-hour schedules
   workflow_dispatch:
