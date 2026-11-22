@@ -1,0 +1,100 @@
+name: Explainer videos
+
+# Twice a week, and as soon as a big exam body posts a new notification, make a long (5-8 minute) 16:9
+# YouTube explainer video about one main exam or job: what it is, who can apply, age, selection stages,
+# subjects, when it usually comes, how to apply, documents and preparation tips. Female voice.
+# Each video is published as a GitHub release (video, thumbnail, title/description/chapters/tags), which
+# emails you. A person checks it and uploads it to YouTube; nothing is posted automatically.
+on:
+  schedule:
+    - cron: '23 1 * * 0,3'   # Sunday and Wednesday 06:53 IST; an odd minute, because GitHub often drops busy on-the-hour schedules
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: 'Topic ids from scripts/explainers/topics.json, comma-separated (blank = the topics made longest ago)'
+        required: false
+      count:
+        description: 'How many videos to make'
+        default: '1'
+      quality:
+        description: 'Video height: 1080, 1440 or 2160 (4K takes about three times longer than 1440)'
+        default: '1440'
+      voice:
+        description: 'Google voice (en-IN-Chirp3-HD-Kore = female, en-IN-Chirp3-HD-Charon = male)'
+        default: 'en-IN-Chirp3-HD-Kore'
+      main:
+        description: 'Only topics whose exam body just posted a new notification (the notices job starts this)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: explainers
+  cancel-in-progress: false
+
+jobs:
+  make:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Load the list of topics already made
+        run: |
+          mkdir -p state
+          if git fetch -q origin explainers-state 2>/dev/null; then git show FETCH_HEAD:explainers.json > state/explainers.json || true; fi
+      - name: Choose topics, write scripts, record voices
+        run: node --experimental-strip-types --no-warnings scripts/explainers/make.mjs
+        env:
+          VERTEX_API_KEY: ${{ secrets.VERTEX_API_KEY }}
+          GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
+          TOPIC: ${{ github.event.inputs.topic }}
+          COUNT: ${{ github.event.inputs.count || '1' }}
+          VOICE: ${{ github.event.inputs.voice || 'en-IN-Chirp3-HD-Kore' }}
+          MAIN: ${{ github.event.inputs.main }}
+      - name: Render the videos
+        run: |
+          if [ "$(cat explainer-out/made.json)" = "[]" ]; then echo "No explainer video to make."; exit 0; fi
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg python3-numpy > /dev/null
+          npm i -g --silent playwright@1.49.1 && npx -y playwright@1.49.1 install --with-deps chromium > /dev/null
+          case "${{ github.event.inputs.quality || '1440' }}" in 1080) S=1;; 2160) S=2;; *) S=1.3333333;; esac
+          SCALE=$S WORKERS=4 NODE_PATH=$(npm root -g) node scripts/explainers/render.cjs
+      - name: Publish as a release for review
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MAIN: ${{ github.event.inputs.main }}
+        run: |
+          ls explainer-out/explainer-*.mp4 >/dev/null 2>&1 || { echo "Nothing to publish."; exit 0; }
+          for f in explainer-out/explainer-*.mp4; do
+            id=$(basename "$f" .mp4); id=${id#explainer-}
+            name=$(node -e "console.log(require('./explainer-out/$id/job.json').name)")
+            tag="explainer-$id-$(date -u +%Y%m%d-%H%M)"
+            title="Explainer video: $name ($(TZ=Asia/Kolkata date '+%d %b %Y'))"
+            if [ "$MAIN" = "true" ]; then title="★ New notification explainer: $name ($(TZ=Asia/Kolkata date '+%d %b %Y'))"; fi
+            {
+              echo "A long YouTube explainer video (16:9) about **$name**, ready to check and upload."
+              echo
+              echo "**Please watch it once and check the facts against the official website before uploading.** The script is written by AI from the facts on MargDisha and the latest official notices; it is told not to state dates, fees, vacancies or marks that are not in those facts, but it can still make mistakes."
+              echo
+              echo "Upload: the .mp4 as the video, the -thumb.jpg as the thumbnail, and copy the title, description (with chapters) and tags from the .txt."
+              echo
+              echo '```'; cat "explainer-out/explainer-$id.txt"; echo '```'
+            } > notes.md
+            gh release create "$tag" "explainer-out/explainer-$id.mp4" "explainer-out/explainer-$id-thumb.jpg" "explainer-out/explainer-$id.txt" --title "$title" --notes-file notes.md
+            echo "Release: https://github.com/${{ github.repository }}/releases/tag/$tag" >> "$GITHUB_STEP_SUMMARY"
+          done
+      - name: Remember which topics are done
+        run: |
+          [ -f state/explainers.json ] || exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          cp state/explainers.json /tmp/explainers.json
+          if git fetch -q origin explainers-state 2>/dev/null; then git checkout -q -B explainers-state FETCH_HEAD; else git checkout -q --orphan explainers-state && git rm -rq --cached . && git clean -fdq -e explainer-out; fi
+          cp /tmp/explainers.json explainers.json
+          git add explainers.json
+          git commit -q -m "Explainers made up to run ${{ github.run_id }}" || exit 0
+          git push -q origin HEAD:explainers-state
