@@ -17,7 +17,7 @@ async function renderRange(G, TL, from, to, file) {
   await pg.goto('file://' + path.join(HERE, 'explainer.html'));
   await pg.evaluate(() => document.fonts.ready); await pg.waitForTimeout(600);
   const ff = spawn('ffmpeg', ['-loglevel', 'error', '-y', '-f', 'image2pipe', '-c:v', 'mjpeg', '-framerate', String(FPS), '-i', '-',
-    '-c:v', 'libx264', '-preset', SCALE > 1 ? 'veryfast' : 'medium', '-crf', SCALE > 1 ? '20' : '19', '-pix_fmt', 'yuv420p', file], { stdio: ['pipe', 'inherit', 'inherit'] });
+    '-c:v', 'libx264', '-preset', SCALE > 1 ? 'veryfast' : 'medium', '-crf', '16', '-tune', 'animation', '-pix_fmt', 'yuv420p', file], { stdio: ['pipe', 'inherit', 'inherit'] });
   const done = new Promise((ok, bad) => ff.on('close', (c) => (c === 0 ? ok() : bad(new Error('ffmpeg exited ' + c)))));
   for (let i = from; i < to; i++) {
     await pg.evaluate((t) => window.setT(t), i / FPS);
@@ -33,7 +33,7 @@ async function thumbnail(job, cover, logo, file) {
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const big = T.top.length > 11 ? 92 : 112;
   const tmp = file.replace(/\.jpg$/, '.html');
-  fs.writeFileSync(tmp, `<html><head><style>
+  fs.writeFileSync(tmp, `<html><head><link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=block" rel="stylesheet"><style>
 *{margin:0;padding:0;box-sizing:border-box}body{width:1280px;height:720px;overflow:hidden;background:#071a18;font-family:'Inter Display','Inter',sans-serif;color:#fff}
 #bg{position:absolute;left:660px;top:0;width:620px;height:720px;background:url('${cover}') 50% 66%/cover}
 #sh{position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,20,18,1) 0%,rgba(5,20,18,1) 51%,rgba(5,20,18,.55) 60%,rgba(5,20,18,0) 72%)}
@@ -43,7 +43,7 @@ h1{margin-top:30px;font-weight:900;font-size:${big}px;line-height:1;letter-spaci
 .free{position:absolute;right:40px;bottom:40px;font-weight:900;font-size:46px;color:#3a2300;background:linear-gradient(160deg,#fff1b8,#ffd567 40%,#f0a830);padding:10px 34px;border-radius:999px;box-shadow:0 0 40px rgba(255,190,60,.7);transform:rotate(-4deg)}
 </style></head><body><div id="bg"></div><div id="sh"></div><div class="t"><div class="k"><img src="${logo}">MargDisha</div><h1>${esc(T.top)}</h1><h2>${esc(T.bottom)}</h2>
 <div class="chips">${T.chips.map((c) => `<span>${esc(c)}</span>`).join('')}</div></div><div class="free">FULL GUIDE</div></body></html>`);
-  await p.goto('file://' + tmp); await p.waitForTimeout(500); fs.rmSync(tmp); await p.screenshot({ path: file, type: 'jpeg', quality: 92 }); await b.close();
+  await p.goto('file://' + tmp); await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(500); fs.rmSync(tmp); await p.screenshot({ path: file, type: 'jpeg', quality: 92 }); await b.close();
 }
 
 function description(job, TL) {
@@ -80,6 +80,11 @@ function description(job, TL) {
     // A dark, blurred copy of the picture for the background (drawn once here; a CSS blur on every frame is slow).
     const blur = path.join(dir, 'blur.jpg');
     sh('ffmpeg', ['-v', 'error', '-y', '-i', cover.replace('file://', ''), '-vf', 'scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,gblur=sigma=40,eq=brightness=-0.12:saturation=1.2,colorlevels=romax=0.42:gomax=0.42:bomax=0.42', '-q:v', '3', blur]);
+    // Each part shows a different picture, so a long video does not sit on one image: the topic's own picture first,
+    // then general exam and job pictures (school pictures for school admissions).
+    const pool = [job.bg, ...(job.kind === 'school' ? ['bg-school', 'bg-school2', 'bg-exam', 'bg-result'] : ['bg-examhall', 'bg-job', 'bg-exam', 'bg-admit', 'bg-result', 'bg-answerkey'])]
+      .filter((b, i, a) => a.indexOf(b) === i && fs.existsSync(path.resolve(HERE, '../shorts/bg', `${b}.jpg`)));
+    let k = 0; job.scenes.forEach((s) => { if (s.type !== 'title' && s.type !== 'end') s.pic = 'file://' + path.resolve(HERE, '../shorts/bg', `${pool[k++ % pool.length]}.jpg`); });
     const G = { ...job, cover, logo, blur: 'file://' + blur };
     const N = Math.ceil(END * FPS); const per = Math.ceil(N / WORKERS);
     console.log(`${id}: ${mmss(END)} long, ${N} frames at ${1920 * SCALE}x${1080 * SCALE}, ${WORKERS} workers`);
@@ -104,6 +109,8 @@ function description(job, TL) {
     segs.forEach((s) => fs.rmSync(s, { force: true }));
     await thumbnail(job, cover, logo, path.join(OUT, `explainer-${id}-thumb.jpg`));
     fs.writeFileSync(path.join(OUT, `explainer-${id}.txt`), `TITLE\n${job.title}\n\nDESCRIPTION\n${description(job, TL)}\n\nTAGS\n${job.tags.join(', ')}\n`);
+    // The narration as plain text, to check the facts quickly before uploading.
+    fs.writeFileSync(path.join(OUT, `explainer-${id}-script.txt`), job.scenes.map((s, i) => `[${mmss(Math.max(0, TL.v[i][0] - 0.45))}] ${s.h || (s.type === 'title' ? 'Introduction' : 'End')}\n${s.say}`).join('\n\n') + '\n');
     console.log(`  rendered ${mp4} (${mmss(dur(mp4))}, ${(fs.statSync(mp4).size / 1e6).toFixed(0)} MB) in ${((Date.now() - t0) / 60000).toFixed(1)} min`);
   }
 })().catch((e) => { console.error(e); process.exit(1); });

@@ -152,7 +152,7 @@ for (const t of picks) {
   }
   if (!ok) { console.log('  skipped (no voice)'); continue; }
   const tags = [...new Set(['MargDisha', ...(g.tags || []).map((x) => String(x).replace(/^#/, '').trim()).filter(Boolean)])].slice(0, 15);
-  const job = { id: t.id, name: t.name, entry: e.school, bg: t.bg, url: e.url, months: hasMonths ? [e.formsFrom, e.formsTo] : null,
+  const job = { id: t.id, name: t.name, entry: e.school, kind: t.data.split(':')[0], bg: t.bg, url: e.url, months: hasMonths ? [e.formsFrom, e.formsTo] : null,
     title: cut(g.youtube_title, 100), sub: cut(g.sub, 64), summary: cut(g.summary, 700), tags, thumb: { top: cut(g.thumb.top, 18), bottom: cut(g.thumb.bottom, 24), chips: (g.thumb.chips || []).slice(0, 4).map((c) => cut(c, 16)) },
     notices: latest.map((n) => ({ title: n.title, url: n.url, source: n.source_name, date: n.first_seen.slice(0, 10) })), trigger: trigger[t.id] ? { title: trigger[t.id].title, url: trigger[t.id].url } : null, scenes };
   writeFileSync(`${dir}/job.json`, JSON.stringify(job, null, 2));

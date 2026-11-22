@@ -61,7 +61,7 @@ jobs:
       - name: Render the videos
         run: |
           if [ "$(cat explainer-out/made.json)" = "[]" ]; then echo "No explainer video to make."; exit 0; fi
-          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg python3-numpy > /dev/null
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg python3-numpy fonts-inter fonts-noto-core > /dev/null
           npm i -g --silent playwright@1.49.1 && npx -y playwright@1.49.1 install --with-deps chromium > /dev/null
           case "${{ github.event.inputs.quality || '1440' }}" in 1080) S=1;; 2160) S=2;; *) S=1.3333333;; esac
           SCALE=$S WORKERS=4 NODE_PATH=$(npm root -g) node scripts/explainers/render.cjs
@@ -80,13 +80,13 @@ jobs:
             {
               echo "A long YouTube explainer video (16:9) about **$name**, ready to check and upload."
               echo
-              echo "**Please watch it once and check the facts against the official website before uploading.** The script is written by AI from the facts on MargDisha and the latest official notices; it is told not to state dates, fees, vacancies or marks that are not in those facts, but it can still make mistakes."
+              echo "**Please watch it once and check the facts against the official website before uploading.** The script is written by AI from the facts on MargDisha and the latest official notices; it is told not to state dates, fees, vacancies or marks that are not in those facts, but it can still make mistakes. The full narration is in the -script.txt file, with the time each part starts."
               echo
               echo "Upload: the .mp4 as the video, the -thumb.jpg as the thumbnail, and copy the title, description (with chapters) and tags from the .txt."
               echo
               echo '```'; cat "explainer-out/explainer-$id.txt"; echo '```'
             } > notes.md
-            gh release create "$tag" "explainer-out/explainer-$id.mp4" "explainer-out/explainer-$id-thumb.jpg" "explainer-out/explainer-$id.txt" --title "$title" --notes-file notes.md
+            gh release create "$tag" "explainer-out/explainer-$id.mp4" "explainer-out/explainer-$id-thumb.jpg" "explainer-out/explainer-$id.txt" "explainer-out/explainer-$id-script.txt" --title "$title" --notes-file notes.md
             echo "Release: https://github.com/${{ github.repository }}/releases/tag/$tag" >> "$GITHUB_STEP_SUMMARY"
           done
       - name: Remember which topics are done

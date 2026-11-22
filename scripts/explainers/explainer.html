@@ -1,5 +1,6 @@
 <!doctype html>
 <html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=block" rel="stylesheet">
 <!-- Long 16:9 explainer video, one frame per setT(t) call. Data comes from window.G (script) and window.TL (voice timings). -->
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -92,7 +93,7 @@ $('scenes').innerHTML=SC.map((s,i)=>{
     <div class="c-note">${(s.items||[]).slice(0,3).map(x=>`<div class="card"><span class="ic">${CHECK}</span><span>${esc(x)}</span></div>`).join('')}</div></div>`;}
   return `<div class="scene" id="sc${i}">${num}<div class="p-h">${esc(s.h)}</div><div class="p-bar"></div>
     <div class="p-list">${s.items.map((x,j)=>`<div class="card"><span class="ic">${s.type==='steps'?j+1:CHECK}</span><span>${esc(x)}</span></div>`).join('')}</div>
-    <div class="p-img"><div style="background-image:${COVER}"></div><span>${esc(G.name)}</span></div></div>`;
+    <div class="p-img"><div style="background-image:url('${s.pic||G.cover}')"></div><span>${esc(G.name)}</span></div></div>`;
 }).join('');
 // Subtitles: about 8 words per chunk, timed by each chunk's share of the scene's characters.
 const SUBS=[];
