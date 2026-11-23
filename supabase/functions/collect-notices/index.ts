@@ -9,6 +9,8 @@ var NOTICE_SOURCES = [
   { id: "upsc-exams", india: true, name: "UPSC", url: "https://upsc.gov.in/examinations/active-exams", area: "job", sector: "UPSC", keywords: ["examination"] },
   { id: "rrb-secunderabad", india: true, name: "RRB Secunderabad", url: "https://rrbsecunderabad.gov.in/", area: "job", sector: "Railways", keywords: ["cen"] },
   { id: "rrb-chandigarh", india: true, name: "RRB Chandigarh", url: "https://www.rrbcdg.gov.in/", area: "job", sector: "Railways", keywords: ["cen"] },
+  { id: "rrb-central", name: "RRB (all boards)", url: "https://rrb.indianrailways.gov.in/", area: "job", sector: "Railways", keywords: ["cen"] },
+  { id: "rrb-central-in", india: true, name: "RRB (all boards)", url: "https://rrb.indianrailways.gov.in/", area: "job", sector: "Railways", keywords: ["cen"] },
   { id: "rrb-mumbai", india: true, name: "RRB Mumbai", url: "https://www.rrbmumbai.gov.in/", area: "job", sector: "Railways", keywords: ["cen"] },
   { id: "rrb-chennai", india: true, name: "RRB Chennai", url: "https://www.rrbchennai.gov.in/", area: "job", sector: "Railways", keywords: ["cen"] },
   { id: "rrb-bengaluru", india: true, name: "RRB Bengaluru", url: "https://www.rrbbnc.gov.in/", area: "job", sector: "Railways", keywords: ["cen"] },
