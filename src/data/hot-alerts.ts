@@ -38,7 +38,7 @@ export const HOT_ALERTS: HotAlert[] = [
       ] },
     ],
     applyUrl: { label: 'rrbapply.gov.in', url: 'https://www.rrbapply.gov.in/' },
-    source: { label: 'Official notice CEN 08/2026 (rrb.indianrailways.gov.in)', url: 'https://rrb.indianrailways.gov.in/-/image/1793016771817CEN_08_2026_StationMaster.pdf/examsDocuments' },
+    source: { label: 'Official RRB website (CEN 08/2026 → Notification)', url: 'https://rrb.indianrailways.gov.in/secunderabad' },
     official: true, posted: '2026-10-27', expires: '2026-11-25',
   },
   {

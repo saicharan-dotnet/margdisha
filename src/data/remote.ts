@@ -67,12 +67,19 @@ export interface Notice {
   first_seen: string; status: 'new' | 'listed' | 'ignored'; listing_id: string | null;
 }
 
+/** Where a notice's link should open. The common RRB website rejects visitors who open its inner
+ *  "getdata?cennum=..." pages directly, so those open the RRB's own page, where the CEN is listed. */
+export function openUrl(url: string): string {
+  const m = /^https:\/\/rrb\.indianrailways\.gov\.in\/getdata\?.*\bloc=([a-z]+)/i.exec(url);
+  return m ? `https://rrb.indianrailways.gov.in/${m[1].toLowerCase()}` : url;
+}
+
 /** Latest notices collected from official websites (newest first). Null if the table is not set up yet. */
 export async function fetchNotices(limit = 300): Promise<Notice[] | null> {
   if (!supabase) return null;
   const { data, error } = await supabase.from('official_notices').select('*').order('first_seen', { ascending: false }).order('id', { ascending: true }).limit(limit);
   if (error || !data) return null;
-  return (data as Notice[]).filter((n) => isWebUrl(n.url));
+  return (data as Notice[]).filter((n) => isWebUrl(n.url)).map((n) => ({ ...n, url: openUrl(n.url) }));
 }
 
 /** Admin-only (enforced by RLS). */

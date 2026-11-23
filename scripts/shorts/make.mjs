@@ -12,6 +12,8 @@ const VOICE = process.env.VOICE || 'en-IN-Chirp3-HD-Kore';
 const STATE = process.env.STATE || 'state/processed.json';
 const OUT = 'shorts-out'; mkdirSync(OUT, { recursive: true });
 const done = new Set(existsSync(STATE) ? JSON.parse(readFileSync(STATE, 'utf8')) : []);
+// The common RRB website rejects direct visits to its inner getdata pages: link the RRB's own page instead (as on the site).
+const openUrl = (u) => { const m = /^https:\/\/rrb\.indianrailways\.gov\.in\/getdata\?.*\bloc=([a-z]+)/i.exec(u); return m ? `https://rrb.indianrailways.gov.in/${m[1].toLowerCase()}` : u; };
 const AREA = { job: 'Government jobs', school: 'School admissions', exam: 'Entrance exams', scholarship: 'Scholarships' };
 
 const r = await fetch(`${SB}/rest/v1/official_notices?select=id,url,title,source_id,source_name,sector,area,first_seen,status&status=neq.ignored&order=first_seen.desc&limit=80`,
@@ -94,10 +96,10 @@ for (const n of picks) {
   let title = cut(g.youtube_title, 70); if (!/#Shorts$/.test(title)) title = cut(title.replace(/\s*#Shorts$/i, ''), 61) + ' #Shorts';
   const tags = [...new Set(['MargDisha', 'EducationUpdates', 'Shorts', ...(g.tags || []).map((t) => String(t).replace(/^#/, '').trim()).filter(Boolean)])].slice(0, 12);
   // The official link and the website go in the description (the channel is verified, so links are allowed).
-  const description = [cut(g.summary, 400), '', `Official notice (${n.source_name}): ${n.url}`, 'More free updates: https://margdisha.com', '',
+  const description = [cut(g.summary, 400), '', `Official notice (${n.source_name}): ${openUrl(n.url)}`, 'More free updates: https://margdisha.com', '',
     'MargDisha collects official notices and links you to the official website for free. Always read the full official notification before applying. We do not guarantee selection or admission.', '',
     'Exams, jobs, school admissions and scholarships, free on MargDisha.', '', tags.map((t) => '#' + t.replace(/\s+/g, '')).join(' ')].join('\n');
-  const job = { id: n.id, area: n.area, areaLabel: AREA[n.area] || 'Updates', source: n.source_name, noticeTitle: n.title, url: n.url,
+  const job = { id: n.id, area: n.area, areaLabel: AREA[n.area] || 'Updates', source: n.source_name, noticeTitle: n.title, url: openUrl(n.url),
     name: cut(g.name, 24), badge: cut(g.badge, 20), hook: cut(g.hook, 40), update: cut(g.update, 90), voiceover: vo, title, description, tags };
   writeFileSync(`${dir}/job.json`, JSON.stringify(job, null, 2));
   console.log(`  ok: ${title}`); made.push(n.id); done.add(n.id);
