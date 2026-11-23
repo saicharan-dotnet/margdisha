@@ -29,7 +29,7 @@ var NOTICE_SOURCES = [
   { id: "tgschooledu", india: true, name: "TG School Education", url: "https://schooledu.telangana.gov.in/", area: "job", sector: "Telangana", keywords: ["dsc", "teacher"] },
   { id: "apslprb", india: true, name: "AP Police Recruitment Board", url: "https://slprb.ap.gov.in/", area: "job", sector: "Andhra Pradesh", keywords: ["sct", "constable", "press note"] },
   { id: "t-tgprb", india: true, name: "TG Police Recruitment Board", url: "https://www.tgprb.in/", area: "job", sector: "Telangana", scriptLinks: "https://(?:www|doc)\\.tgprb\\.in/[^\"'`]+?\\.pdf" },
-  { id: "t-apdsc", india: true, name: "AP DSC", url: "https://apdsc.apcfss.in/", area: "job", sector: "Andhra Pradesh", scriptLinks: "[^\"'`\\s]+?\\.pdf" },
+  { id: "t-apdsc", india: true, name: "AP DSC", url: "https://apdsc.apcfss.in/", area: "job", sector: "Andhra Pradesh", scriptLinks: "(?:https?://[\\w.-]+)?/[\\w%+().\\-/]+\\.pdf" },
   { id: "t-tgnpdcl", name: "TGNPDCL", url: "https://tgnpdcl.com/Careers", area: "job", sector: "Telangana" },
   { id: "t-apspdcl", india: true, name: "APSPDCL", url: "https://www.apspdcl.in/careers.php", area: "job", sector: "Andhra Pradesh" },
   { id: "t-apcpdcl", india: true, name: "APCPDCL", url: "https://apcpdcl.in/careers.php", area: "job", sector: "Andhra Pradesh" },
