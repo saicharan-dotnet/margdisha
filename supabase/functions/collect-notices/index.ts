@@ -27,6 +27,9 @@ var NOTICE_SOURCES = [
   { id: "treirb", india: true, name: "TG Gurukul Recruitment Board (TREI-RB)", url: "https://treirb.cgg.gov.in/", area: "job", sector: "Telangana" },
   { id: "tghc", india: true, name: "Telangana High Court", url: "https://tshc.gov.in/", area: "job", sector: "Telangana", keywords: ["recruitment", "vacancy"], linkMust: ["/documents/"] },
   { id: "tgschooledu", india: true, name: "TG School Education", url: "https://schooledu.telangana.gov.in/", area: "job", sector: "Telangana", keywords: ["dsc", "teacher"] },
+  // TG Police RB's page is built by a script that holds every notice link (press notes, notifications, results).
+  { id: "tgprb", india: true, name: "TG Police Recruitment Board", url: "https://www.tgprb.in/", area: "job", sector: "Telangana", scriptLinks: "https://(?:www|doc)\\.tgprb\\.in/[^\"'`]+?\\.pdf" },
+  { id: "apcpdcl", india: true, name: "APCPDCL (AP power)", url: "https://apcpdcl.in/careers.php", area: "job", sector: "Andhra Pradesh", linkMust: ["careers", "recruitment"], everyHours: 3 },
   { id: "apslprb", india: true, name: "AP Police Recruitment Board", url: "https://slprb.ap.gov.in/", area: "job", sector: "Andhra Pradesh", keywords: ["sct", "constable", "press note"] },
   { id: "tgpsc", india: true, name: "Telangana PSC", url: "https://www.tgpsc.gov.in/", area: "job", sector: "State PSC", keywords: ["group"] },
   { id: "appsc", india: true, name: "Andhra Pradesh PSC", url: "https://portal-psc.ap.gov.in/Default.aspx", area: "job", sector: "State PSC", keywords: ["group"] },
@@ -322,14 +325,17 @@ async function collectSource(src, supabaseUrl, key, debug = false) {
       found = pickNotices(all.filter((l) => isOfficialLink(l.url, src.url)), src);
       if (src.headingItems) found = pickNotices(headingNotices(html, src.url, src.headingItems), src);
       if (src.cenMenu) found = cenMenuNotices(all, src.cenMenu.minYear, src.cenMenu.names);
+      if (src.scriptLinks) found = await scriptNotices(html, src.url, src.scriptLinks);
     }
     if (debug && src.probe) {
       const probes = [];
       for (const u of src.probe) {
+        const [pu, pat] = u.split("||");
         try {
-          probes.push(`${u} => ${(await fetchPage(u, 2e4, 0, "application/json, text/plain, */*")).replace(/\s+/g, " ").slice(0, 1500)}`);
+          const body = await fetchPage(pu, 2e4, 0, "application/json, text/plain, */*");
+          probes.push(pat ? `${pu} => ${[...new Set([...body.matchAll(new RegExp(pat, "gi"))].map((m) => m[0]))].slice(0, 60).join("  |  ")}` : `${pu} => ${body.replace(/\s+/g, " ").slice(0, 1500)}`);
         } catch (e) {
-          probes.push(`${u} => ERROR ${errorText(e)}`);
+          probes.push(`${pu} => ERROR ${errorText(e)}`);
         }
       }
       return { id: src.id, ok: true, found: found.length, fresh: 0, sample: found, debug: { bytes: html.length, head: "", links: [], apis: [...probes, ...await findApis(html, src.url)] } };
@@ -352,6 +358,32 @@ async function collectSource(src, supabaseUrl, key, debug = false) {
   } catch (e) {
     return { id: src.id, ok: false, found: 0, fresh: 0, error: errorText(e) };
   }
+}
+async function scriptNotices(html, base, pattern) {
+  const scripts = [...html.matchAll(/<script[^>]+src=["']([^"']+)["']/gi)].map((m) => new URL(m[1], base).toString()).filter((u) => new URL(u).hostname === new URL(base).hostname).slice(0, 6);
+  const seen = /* @__PURE__ */ new Set();
+  const out = [];
+  for (const u of scripts) {
+    const js = await fetchPage(u, 25e3, 0, "*/*").catch(() => "");
+    for (const m of js.matchAll(new RegExp(pattern, "gi"))) {
+      let url;
+      try {
+        url = new URL(m[0].replace(/ /g, "%20"), base).toString();
+      } catch {
+        continue;
+      }
+      if (seen.has(url)) continue;
+      seen.add(url);
+      let name = url.split("/").pop() ?? "";
+      try {
+        name = decodeURIComponent(name.replace(/\+/g, " "));
+      } catch {
+      }
+      const title = name.replace(/\.pdf$/i, "").replace(/[_]+/g, " ").replace(/\s+/g, " ").trim();
+      if (title.length >= 8) out.push({ url, title });
+    }
+  }
+  return out.slice(0, 40);
 }
 async function findApis(html, base) {
   const scripts = [...html.matchAll(/<script[^>]+src=["']([^"']+)["']/gi)].map((m) => new URL(m[1], base).toString()).filter((u) => new URL(u).hostname === new URL(base).hostname).slice(0, 4);

@@ -27,6 +27,8 @@ export interface NoticeSource {
   probe?: string[];
   /** The RRB website's CEN menu: read each CEN's notice types instead of ordinary links (see cenMenuNotices). */
   cenMenu?: { minYear: number; names?: Record<string, string> };
+  /** Pattern for notice links kept inside the page's own script files (see scriptNotices). */
+  scriptLinks?: string;
   /** The site builds its page with scripts from a JSON feed: read the feed instead of the page. */
   json?: JsonFeed;
 }
@@ -63,6 +65,9 @@ export const NOTICE_SOURCES: NoticeSource[] = [
   { id: 'treirb', india: true, name: 'TG Gurukul Recruitment Board (TREI-RB)', url: 'https://treirb.cgg.gov.in/', area: 'job', sector: 'Telangana' },
   { id: 'tghc', india: true, name: 'Telangana High Court', url: 'https://tshc.gov.in/', area: 'job', sector: 'Telangana', keywords: ['recruitment', 'vacancy'], linkMust: ['/documents/'] },
   { id: 'tgschooledu', india: true, name: 'TG School Education', url: 'https://schooledu.telangana.gov.in/', area: 'job', sector: 'Telangana', keywords: ['dsc', 'teacher'] },
+  // TG Police RB's page is built by a script that holds every notice link (press notes, notifications, results).
+  { id: 'tgprb', india: true, name: 'TG Police Recruitment Board', url: 'https://www.tgprb.in/', area: 'job', sector: 'Telangana', scriptLinks: 'https://(?:www|doc)\\.tgprb\\.in/[^"\'`]+?\\.pdf' },
+  { id: 'apcpdcl', india: true, name: 'APCPDCL (AP power)', url: 'https://apcpdcl.in/careers.php', area: 'job', sector: 'Andhra Pradesh', linkMust: ['careers', 'recruitment'], everyHours: 3 },
   { id: 'apslprb', india: true, name: 'AP Police Recruitment Board', url: 'https://slprb.ap.gov.in/', area: 'job', sector: 'Andhra Pradesh', keywords: ['sct', 'constable', 'press note'] },
   { id: 'tgpsc', india: true, name: 'Telangana PSC', url: 'https://www.tgpsc.gov.in/', area: 'job', sector: 'State PSC', keywords: ['group'] },
   { id: 'appsc', india: true, name: 'Andhra Pradesh PSC', url: 'https://portal-psc.ap.gov.in/Default.aspx', area: 'job', sector: 'State PSC', keywords: ['group'] },
