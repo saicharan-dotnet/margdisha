@@ -23,7 +23,7 @@ var NOTICE_SOURCES = [
   { id: "rbi", name: "Reserve Bank of India", url: "https://opportunities.rbi.org.in/Scripts/Vacancies.aspx", area: "job", sector: "Banking" },
   { id: "x-tgprb", india: true, name: "TG Police Recruitment Board", url: "https://www.tgprb.in/", area: "job", sector: "State" },
   { id: "y-tgprb", name: "TG Police Recruitment Board", url: "https://www.tgprb.in/", area: "job", sector: "State" },
-  { id: "x-tgmhsrb", india: true, name: "TG Medical & Health Services RB", url: "https://mhsrb.telangana.gov.in/", area: "job", sector: "State" },
+  { id: "x-tgmhsrb", india: true, name: "TG Medical & Health Services RB", url: "https://mhsrb.telangana.gov.in/", area: "job", sector: "State", probe: ["https://mhsrb.telangana.gov.in/mhsrb/v2/apis/api/public/news?category=regular", "https://mhsrb.telangana.gov.in/mhsrb/v2/apis/api/public/news?category=notifications", "https://mhsrb.telangana.gov.in/mhsrb/v2/apis/api/public/news?category=latest", "https://mhsrb.telangana.gov.in/mhsrb/v2/apis/api/public/gos"] },
   { id: "y-tgmhsrb", name: "TG Medical & Health Services RB", url: "https://mhsrb.telangana.gov.in/", area: "job", sector: "State" },
   { id: "x-treirb", india: true, name: "TG Gurukul Recruitment Board (TREI-RB)", url: "https://treirb.cgg.gov.in/", area: "job", sector: "State" },
   { id: "y-treirb", name: "TG Gurukul Recruitment Board (TREI-RB)", url: "https://treirb.cgg.gov.in/", area: "job", sector: "State" },
