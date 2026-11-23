@@ -3,6 +3,7 @@ import { useApp } from '../app-context';
 import type { Notice } from '../data/remote';
 import { Icon } from './Icon';
 import mainSources from '../notices/main-sources.json';
+import stateSources from '../notices/state-sources.json';
 
 export function ago(iso: string, t: ReturnType<typeof useApp>['t'], now = Date.now()) {
   const h = Math.floor((now - new Date(iso).getTime()) / 3_600_000);
@@ -18,14 +19,17 @@ const PIN_HOURS = 72;
 const isMain = (x: Notice) => MAIN_SOURCES.has(x.source_id) && Date.now() - new Date(x.first_seen).getTime() < PIN_HOURS * 3_600_000;
 
 /** Notices collected automatically from official websites. Always labelled as not checked. */
-export function NoticeFeed({ areas, limit = 8, title = true, more, pinMain = false }: {
+export function NoticeFeed({ areas, limit = 8, title = true, more, pinMain = false, state }: {
   areas?: Notice['area'][]; limit?: number; title?: boolean; more?: () => void;
   /** Put new notices from the big exam bodies (SSC, UPSC, RRB, IBPS, NTA ...) first, marked "Important". */
   pinMain?: boolean;
+  /** Only notices from this state's own boards (list in src/notices/state-sources.json). */
+  state?: string;
 }) {
   const { t, notices } = useApp();
   const [n, setN] = useState(limit);
-  const all = notices.filter((x) => x.status !== 'ignored' && (!areas || areas.includes(x.area)));
+  const own = state ? new Set<string>((stateSources as Record<string, string[]>)[state] ?? []) : null;
+  const all = notices.filter((x) => x.status !== 'ignored' && (!areas || areas.includes(x.area)) && (!own || own.has(x.source_id)));
   const list = pinMain ? [...all.filter(isMain), ...all.filter((x) => !isMain(x))] : all;
   return (
     <section className="feed" aria-labelledby="feed-h">
