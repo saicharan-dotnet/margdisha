@@ -82,7 +82,12 @@ export async function collectSource(src: NoticeSource, supabaseUrl: string, key:
     if (debug && src.probe) {
       const probes: string[] = [];
       for (const u of src.probe) {
-        try { probes.push(`${u} => ${(await fetchPage(u, 20_000, 0, 'application/json, text/plain, */*')).replace(/\s+/g, ' ').slice(0, 1500)}`); } catch (e) { probes.push(`${u} => ERROR ${errorText(e)}`); }
+        // "address||pattern" prints every distinct match of the pattern in that file instead of its start.
+        const [pu, pat] = u.split('||');
+        try {
+          const body = await fetchPage(pu, 20_000, 0, 'application/json, text/plain, */*');
+          probes.push(pat ? `${pu} => ${[...new Set([...body.matchAll(new RegExp(pat, 'gi'))].map((m) => m[0]))].slice(0, 60).join('  |  ')}` : `${pu} => ${body.replace(/\s+/g, ' ').slice(0, 1500)}`);
+        } catch (e) { probes.push(`${pu} => ERROR ${errorText(e)}`); }
       }
       return { id: src.id, ok: true, found: found.length, fresh: 0, sample: found, debug: { bytes: html.length, head: '', links: [], apis: [...probes, ...(await findApis(html, src.url))] } };
     }

@@ -28,6 +28,26 @@ var NOTICE_SOURCES = [
   { id: "tghc", india: true, name: "Telangana High Court", url: "https://tshc.gov.in/", area: "job", sector: "Telangana", keywords: ["recruitment", "vacancy"], linkMust: ["/documents/"] },
   { id: "tgschooledu", india: true, name: "TG School Education", url: "https://schooledu.telangana.gov.in/", area: "job", sector: "Telangana", keywords: ["dsc", "teacher"] },
   { id: "apslprb", india: true, name: "AP Police Recruitment Board", url: "https://slprb.ap.gov.in/", area: "job", sector: "Andhra Pradesh", keywords: ["sct", "constable", "press note"] },
+  { id: "t-tgprb", india: true, name: "tgprb", url: "https://www.tgprb.in/", area: "job", sector: "State", probe: ["https://www.tgprb.in/assets/index-D_sIr6TK.js||https?://[^\\\"'\\s`)]+|[\\\"'`](/[a-zA-Z0-9_\\-]+){2,}[\\\"'`]"] },
+  { id: "t-apdsc", india: true, name: "apdsc", url: "https://apdsc.apcfss.in/", area: "job", sector: "State", probe: ["https://apdsc.apcfss.in/static/js/main.eb6c619e.js||https?://[^\\\"'\\s`)]+|[\\\"'`](/[a-zA-Z0-9_\\-]+){2,}[\\\"'`]"] },
+  { id: "t-appsc-gh", name: "appsc-gh", url: "https://portal-psc.ap.gov.in/Default.aspx", area: "job", sector: "State" },
+  { id: "t-appsc-http", india: true, name: "appsc-http", url: "http://portal-psc.ap.gov.in/Default.aspx", area: "job", sector: "State" },
+  { id: "t-tgnpdcl-gh", name: "tgnpdcl-gh", url: "https://tgnpdcl.com/", area: "job", sector: "State", probe: ['https://tgnpdcl.com/||[^<>\\"]{0,60}(recruit|career|notification|vacanc)[^<>\\"]{0,80}'] },
+  { id: "t-tggenco", india: true, name: "tggenco", url: "https://tggenco.com/", area: "job", sector: "State", probe: ['https://tggenco.com/||[^<>\\"]{0,60}(recruit|career|notification|vacanc)[^<>\\"]{0,80}'] },
+  { id: "t-tgtransco", india: true, name: "tgtransco", url: "https://tgtransco.com/", area: "job", sector: "State", probe: ['https://tgtransco.com/||[^<>\\"]{0,60}(recruit|career|notification|vacanc)[^<>\\"]{0,80}'] },
+  { id: "t-aptransco2", india: true, name: "aptransco2", url: "https://www.aptransco.gov.in/", area: "job", sector: "State", probe: ['https://www.aptransco.gov.in/||[^<>\\"]{0,60}(recruit|career|notification|vacanc)[^<>\\"]{0,80}'] },
+  { id: "t-apeprdcl", india: true, name: "apeprdcl", url: "https://www.apeasternpower.com/", area: "job", sector: "State", probe: ['https://www.apeasternpower.com/||[^<>\\"]{0,60}(recruit|career|notification|vacanc)[^<>\\"]{0,80}'] },
+  { id: "t-apcpdcl", india: true, name: "apcpdcl", url: "https://apcpdcl.in/", area: "job", sector: "State", probe: ['https://apcpdcl.in/||[^<>\\"]{0,60}(recruit|career|notification|vacanc)[^<>\\"]{0,80}'] },
+  { id: "t-apgenco-car", india: true, name: "apgenco-car", url: "https://apgenco.gov.in/", area: "job", sector: "State", probe: ['https://apgenco.gov.in/||[^<>\\"]{0,60}(recruit|career|notification|vacanc)[^<>\\"]{0,80}'] },
+  { id: "t-apspdcl-car", india: true, name: "apspdcl-car", url: "https://www.apspdcl.in/", area: "job", sector: "State", probe: ['https://www.apspdcl.in/||[^<>\\"]{0,60}(recruit|career|notification|vacanc)[^<>\\"]{0,80}'] },
+  { id: "t-ntr-en", india: true, name: "ntr-en", url: "https://ntr.ap.gov.in/en/notice_category/recruitment/", area: "job", sector: "State" },
+  { id: "t-guntur", india: true, name: "guntur", url: "https://guntur.ap.gov.in/notice_category/recruitment/", area: "job", sector: "State" },
+  { id: "t-krishna", india: true, name: "krishna", url: "https://krishna.ap.gov.in/notice_category/recruitment/", area: "job", sector: "State" },
+  { id: "t-rangareddy", india: true, name: "rangareddy", url: "https://rangareddy.telangana.gov.in/notice_category/recruitment/", area: "job", sector: "State" },
+  { id: "t-warangal", india: true, name: "warangal", url: "https://warangal.telangana.gov.in/notice_category/recruitment/", area: "job", sector: "State" },
+  { id: "t-hyd2", india: true, name: "hyd2", url: "https://hyderabad.telangana.gov.in/notice_category/recruitment/", area: "job", sector: "State" },
+  { id: "t-gsws", india: true, name: "gsws", url: "https://gsws-nbm.ap.gov.in/", area: "job", sector: "State", probe: ['https://gsws-nbm.ap.gov.in/||[^<>\\"]{0,60}(recruit|career|notification|vacanc)[^<>\\"]{0,80}'] },
+  { id: "t-vsws", india: true, name: "vsws", url: "https://vswsonline.ap.gov.in/", area: "job", sector: "State" },
   { id: "tgpsc", india: true, name: "Telangana PSC", url: "https://www.tgpsc.gov.in/", area: "job", sector: "State PSC", keywords: ["group"] },
   { id: "appsc", india: true, name: "Andhra Pradesh PSC", url: "https://portal-psc.ap.gov.in/Default.aspx", area: "job", sector: "State PSC", keywords: ["group"] },
   { id: "army", india: true, name: "Indian Army", url: "https://joinindianarmy.nic.in/", area: "job", sector: "Defence", keywords: ["agniveer", "entry"] },
@@ -326,10 +346,12 @@ async function collectSource(src, supabaseUrl, key, debug = false) {
     if (debug && src.probe) {
       const probes = [];
       for (const u of src.probe) {
+        const [pu, pat] = u.split("||");
         try {
-          probes.push(`${u} => ${(await fetchPage(u, 2e4, 0, "application/json, text/plain, */*")).replace(/\s+/g, " ").slice(0, 1500)}`);
+          const body = await fetchPage(pu, 2e4, 0, "application/json, text/plain, */*");
+          probes.push(pat ? `${pu} => ${[...new Set([...body.matchAll(new RegExp(pat, "gi"))].map((m) => m[0]))].slice(0, 60).join("  |  ")}` : `${pu} => ${body.replace(/\s+/g, " ").slice(0, 1500)}`);
         } catch (e) {
-          probes.push(`${u} => ERROR ${errorText(e)}`);
+          probes.push(`${pu} => ERROR ${errorText(e)}`);
         }
       }
       return { id: src.id, ok: true, found: found.length, fresh: 0, sample: found, debug: { bytes: html.length, head: "", links: [], apis: [...probes, ...await findApis(html, src.url)] } };
