@@ -22,8 +22,9 @@ var NOTICE_SOURCES = [
   { id: "sbi", india: true, name: "State Bank of India", url: "https://sbi.co.in/web/careers/current-openings", area: "job", sector: "Banking" },
   { id: "rbi", name: "Reserve Bank of India", url: "https://opportunities.rbi.org.in/Scripts/Vacancies.aspx", area: "job", sector: "Banking" },
   // Telangana and Andhra Pradesh recruitment boards (the user's main focus). All refuse servers outside India.
-  // TG Medical & Health Services RB builds its page from this feed; each notice opens at /view/notif/<id>.
-  { id: "tgmhsrb", india: true, json: { url: "https://mhsrb.telangana.gov.in/mhsrb/v2/apis/api/public/news?category=regular", items: "data", title: "title", linkTemplate: "https://mhsrb.telangana.gov.in/mhsrb/v2/apis/view/notif/{id}" }, name: "TG Medical & Health Services RB", url: "https://mhsrb.telangana.gov.in/", area: "job", sector: "Telangana" },
+  // TG Medical & Health Services RB builds its page from this feed; each notice's PDF opens at /api/view/notif/<id> (checked 2026-11-23).
+  // linkMust hides the first links saved without /api/, which did not open.
+  { id: "tgmhsrb", india: true, json: { url: "https://mhsrb.telangana.gov.in/mhsrb/v2/apis/api/public/news?category=regular", items: "data", title: "title", link: ["externalUrl"], linkTemplate: "https://mhsrb.telangana.gov.in/mhsrb/v2/apis/api/view/notif/{id}" }, name: "TG Medical & Health Services RB", url: "https://mhsrb.telangana.gov.in/", area: "job", sector: "Telangana", linkMust: ["/api/view/notif/"] },
   { id: "treirb", india: true, name: "TG Gurukul Recruitment Board (TREI-RB)", url: "https://treirb.cgg.gov.in/", area: "job", sector: "Telangana" },
   { id: "tghc", india: true, name: "Telangana High Court", url: "https://tshc.gov.in/", area: "job", sector: "Telangana", keywords: ["recruitment", "vacancy"], linkMust: ["/documents/"] },
   { id: "tgschooledu", india: true, name: "TG School Education", url: "https://schooledu.telangana.gov.in/", area: "job", sector: "Telangana", keywords: ["dsc", "teacher"] },
