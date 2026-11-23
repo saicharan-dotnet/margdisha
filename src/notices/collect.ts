@@ -78,6 +78,7 @@ export async function collectSource(src: NoticeSource, supabaseUrl: string, key:
       // Sites whose links change on every visit: each notice heading becomes a stable link to the page.
       if (src.headingItems) found = pickNotices(headingNotices(html, src.url, src.headingItems), src);
       if (src.cenMenu) found = cenMenuNotices(all, src.cenMenu.minYear, src.cenMenu.names);
+      if (src.scriptLinks) found = await scriptNotices(html, src.url, src.scriptLinks);
     }
     if (debug && src.probe) {
       const probes: string[] = [];
@@ -101,6 +102,25 @@ export async function collectSource(src: NoticeSource, supabaseUrl: string, key:
   } catch (e) {
     return { id: src.id, ok: false, found: 0, fresh: 0, error: errorText(e) };
   }
+}
+
+/** Script-built pages that keep their notice links inside the page's own script files: every matching link,
+ *  titled from its file name ("Supplementary+Notification+2026.pdf" -> "Supplementary Notification 2026"). */
+async function scriptNotices(html: string, base: string, pattern: string): Promise<FoundNotice[]> {
+  const scripts = [...html.matchAll(/<script[^>]+src=["']([^"']+)["']/gi)].map((m) => new URL(m[1], base).toString())
+    .filter((u) => new URL(u).hostname === new URL(base).hostname).slice(0, 6);
+  const seen = new Set<string>(); const out: FoundNotice[] = [];
+  for (const u of scripts) {
+    const js = await fetchPage(u, 25_000, 0, '*/*').catch(() => '');
+    for (const m of js.matchAll(new RegExp(pattern, 'gi'))) {
+      let url: string; try { url = new URL(m[0].replace(/ /g, '%20'), base).toString(); } catch { continue; }
+      if (seen.has(url)) continue; seen.add(url);
+      let name = url.split('/').pop() ?? ''; try { name = decodeURIComponent(name.replace(/\+/g, ' ')); } catch { /* keep as is */ }
+      const title = name.replace(/\.pdf$/i, '').replace(/[_]+/g, ' ').replace(/\s+/g, ' ').trim();
+      if (title.length >= 8) out.push({ url, title });
+    }
+  }
+  return out.slice(0, 40);
 }
 
 /** Diagnostics for script-built pages: look inside the page's scripts for data addresses. */
