@@ -7,8 +7,17 @@ var NOTICE_SOURCES = [
   { id: "ssc", json: { url: "https://ssc.gov.in/api/general-website/portal/records?page=1&limit=25&contentType=notice-boards&key=createdAt&order=DESC&isPaginationRequired=true&isAttachment=true&language=english&attributes=id,headline,examId,contentType,redirectUrl,language,createdAt", items: "data", title: "headline", link: ["redirectUrl"], linkTemplate: "https://ssc.gov.in/api/attachment/{attachments.0.path}" }, name: "Staff Selection Commission", url: "https://ssc.gov.in/", area: "job", sector: "SSC" },
   { id: "upsc", india: true, name: "UPSC", url: "https://upsc.gov.in/whats-new", area: "job", sector: "UPSC" },
   { id: "upsc-exams", india: true, name: "UPSC", url: "https://upsc.gov.in/examinations/active-exams", area: "job", sector: "UPSC", keywords: ["examination"] },
-  { id: "rrb-secunderabad", india: true, name: "RRB Secunderabad", url: "https://rrbsecunderabad.gov.in/", area: "job", sector: "Railways", keywords: ["cen"] },
-  { id: "rrb-chandigarh", india: true, name: "RRB Chandigarh", url: "https://www.rrbcdg.gov.in/", area: "job", sector: "Railways", keywords: ["cen"] },
+  // All RRBs now share one website; the old regional sites (rrbsecunderabad.gov.in, rrbcdg.gov.in ...) fail or block us.
+  // Its menu lists every CEN's notices (notification, exam schedule, admit cards, results ...). CEN names: from the notice PDFs.
+  {
+    id: "rrb",
+    india: true,
+    name: "Railway Recruitment Boards",
+    url: "https://rrb.indianrailways.gov.in/secunderabad",
+    area: "job",
+    sector: "Railways",
+    cenMenu: { minYear: 2026, names: { "08/2026": "Station Master" } }
+  },
   { id: "ibps", india: true, name: "IBPS", url: "https://www.ibps.in/", area: "job", sector: "Banking", keywords: ["crp"] },
   { id: "sbi", india: true, name: "State Bank of India", url: "https://sbi.co.in/web/careers/current-openings", area: "job", sector: "Banking" },
   { id: "rbi", name: "Reserve Bank of India", url: "https://opportunities.rbi.org.in/Scripts/Vacancies.aspx", area: "job", sector: "Banking" },
@@ -234,6 +243,21 @@ function headingNotices(html, pageUrl, tag) {
   }
   return out;
 }
+function cenMenuNotices(links, minYear, names = {}) {
+  const SKIP = /^(mock test link|objection tracker)$/i;
+  const seen = /* @__PURE__ */ new Set();
+  const out = [];
+  for (const l of links) {
+    const m = l.url.match(/[?&]cennum=(\d+\/(\d{4}))(?:&|$)/);
+    const c = l.url.match(/[?&]category=([^&#]*)/);
+    if (!m || !c) continue;
+    const cat = decodeURIComponent(c[1].replace(/\+/g, " ")).trim();
+    if (!cat || SKIP.test(cat) || Number(m[2]) < minYear || seen.has(l.url)) continue;
+    seen.add(l.url);
+    out.push({ url: l.url, title: `RRB CEN ${m[1]}${names[m[1]] ? ` (${names[m[1]]})` : ""}: ${cat}` });
+  }
+  return out;
+}
 
 // src/notices/collect.ts
 async function fetchPage(url, timeoutMs = 25e3, depth = 0, accept = "text/html,application/xhtml+xml") {
@@ -290,6 +314,7 @@ async function collectSource(src, supabaseUrl, key, debug = false) {
       all = extractLinks(html, src.url);
       found = pickNotices(all.filter((l) => isOfficialLink(l.url, src.url)), src);
       if (src.headingItems) found = pickNotices(headingNotices(html, src.url, src.headingItems), src);
+      if (src.cenMenu) found = cenMenuNotices(all, src.cenMenu.minYear, src.cenMenu.names);
     }
     if (debug && src.probe) {
       const probes = [];

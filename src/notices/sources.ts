@@ -25,6 +25,8 @@ export interface NoticeSource {
   debugAround?: string;
   /** Diagnostics only: extra addresses on the same site to fetch and print in a debug run. */
   probe?: string[];
+  /** The RRB website's CEN menu: read each CEN's notice types instead of ordinary links (see cenMenuNotices). */
+  cenMenu?: { minYear: number; names?: Record<string, string> };
   /** The site builds its page with scripts from a JSON feed: read the feed instead of the page. */
   json?: JsonFeed;
 }
@@ -48,8 +50,10 @@ export const NOTICE_SOURCES: NoticeSource[] = [
   { id: 'ssc', json: { url: 'https://ssc.gov.in/api/general-website/portal/records?page=1&limit=25&contentType=notice-boards&key=createdAt&order=DESC&isPaginationRequired=true&isAttachment=true&language=english&attributes=id,headline,examId,contentType,redirectUrl,language,createdAt', items: 'data', title: 'headline', link: ['redirectUrl'], linkTemplate: 'https://ssc.gov.in/api/attachment/{attachments.0.path}' }, name: 'Staff Selection Commission', url: 'https://ssc.gov.in/', area: 'job', sector: 'SSC' },
   { id: 'upsc', india: true, name: 'UPSC', url: 'https://upsc.gov.in/whats-new', area: 'job', sector: 'UPSC' },
   { id: 'upsc-exams', india: true, name: 'UPSC', url: 'https://upsc.gov.in/examinations/active-exams', area: 'job', sector: 'UPSC', keywords: ['examination'] },
-  { id: 'rrb-secunderabad', india: true, name: 'RRB Secunderabad', url: 'https://rrbsecunderabad.gov.in/', area: 'job', sector: 'Railways', keywords: ['cen'] },
-  { id: 'rrb-chandigarh', india: true, name: 'RRB Chandigarh', url: 'https://www.rrbcdg.gov.in/', area: 'job', sector: 'Railways', keywords: ['cen'] },
+  // All RRBs now share one website; the old regional sites (rrbsecunderabad.gov.in, rrbcdg.gov.in ...) fail or block us.
+  // Its menu lists every CEN's notices (notification, exam schedule, admit cards, results ...). CEN names: from the notice PDFs.
+  { id: 'rrb', india: true, name: 'Railway Recruitment Boards', url: 'https://rrb.indianrailways.gov.in/secunderabad', area: 'job', sector: 'Railways',
+    cenMenu: { minYear: 2026, names: { '08/2026': 'Station Master' } } },
   { id: 'ibps', india: true, name: 'IBPS', url: 'https://www.ibps.in/', area: 'job', sector: 'Banking', keywords: ['crp'] },
   { id: 'sbi', india: true, name: 'State Bank of India', url: 'https://sbi.co.in/web/careers/current-openings', area: 'job', sector: 'Banking' },
   { id: 'rbi', name: 'Reserve Bank of India', url: 'https://opportunities.rbi.org.in/Scripts/Vacancies.aspx', area: 'job', sector: 'Banking' },

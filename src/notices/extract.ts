@@ -138,3 +138,19 @@ export function headingNotices(html: string, pageUrl: string, tag: string): Foun
   }
   return out;
 }
+
+/** The RRB website's menu: one link per notice type of each CEN (getdata?cennum=08/2026&...&category=Notification).
+ *  Each CEN from `minYear` on, with its notice type, becomes one notice, e.g. "RRB CEN 08/2026 (Station Master): Notification". */
+export function cenMenuNotices(links: FoundNotice[], minYear: number, names: Record<string, string> = {}): FoundNotice[] {
+  const SKIP = /^(mock test link|objection tracker)$/i;
+  const seen = new Set<string>(); const out: FoundNotice[] = [];
+  for (const l of links) {
+    const m = l.url.match(/[?&]cennum=(\d+\/(\d{4}))(?:&|$)/); const c = l.url.match(/[?&]category=([^&#]*)/);
+    if (!m || !c) continue;
+    const cat = decodeURIComponent(c[1].replace(/\+/g, ' ')).trim();
+    if (!cat || SKIP.test(cat) || Number(m[2]) < minYear || seen.has(l.url)) continue;
+    seen.add(l.url);
+    out.push({ url: l.url, title: `RRB CEN ${m[1]}${names[m[1]] ? ` (${names[m[1]]})` : ''}: ${cat}` });
+  }
+  return out;
+}

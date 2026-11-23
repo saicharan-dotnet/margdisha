@@ -5,11 +5,12 @@
 // Without SUPABASE_SECRET_KEY it only prints what it found (dry run).
 import { appendFileSync } from 'node:fs';
 import { NOTICE_SOURCES, type NoticeSource } from '../src/notices/sources';
-import { collectSource, errorText, hideOffTopic, type CollectResult } from '../src/notices/collect';
+import { collectSource, errorText, hideOffTopic, markKnown, type CollectResult } from '../src/notices/collect';
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://rimsuaeqnxntgfmbicyb.supabase.co';
 const KEY = process.env.SUPABASE_SECRET_KEY || '';
 const DEBUG = process.env.DEBUG === 'true';
+const seed = (process.env.SEED ?? '').split(',').map((s) => s.trim()).filter(Boolean);
 const only = (process.env.ONLY ?? '').split(',').map((s) => s.trim()).filter(Boolean);
 let functionMissing = false;
 
@@ -48,6 +49,7 @@ const run = async (src: NoticeSource) => {
   if (r.ok) {
     ok++; totalNew += r.fresh;
     if (!DEBUG) await hideOffTopic(SUPABASE_URL, KEY, src).catch(() => undefined);
+    if (!DEBUG && seed.includes(src.id)) await markKnown(SUPABASE_URL, KEY, src.id).catch(() => undefined);
     console.log(`✓ ${src.id} [${r.route}]: ${r.found} notices, ${r.fresh} new`);
     for (const f of r.sample ?? []) console.log(`    · ${f.title}  ${f.url}`);
     lines.push(`| ${src.name} | ${r.route} | ok | ${r.found} | ${KEY ? r.fresh : 'dry run'} |`);
