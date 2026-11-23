@@ -31,7 +31,7 @@ var NOTICE_SOURCES = [
   { id: "tgprb", india: true, name: "TG Police Recruitment Board", url: "https://www.tgprb.in/", area: "job", sector: "Telangana", scriptLinks: "https://(?:www|doc)\\.tgprb\\.in/[^\"'`]+?\\.pdf" },
   { id: "apcpdcl", india: true, name: "APCPDCL (AP power)", url: "https://apcpdcl.in/careers.php", area: "job", sector: "Andhra Pradesh", linkMust: ["careers", "recruitment"], everyHours: 3 },
   { id: "apslprb", india: true, name: "AP Police Recruitment Board", url: "https://slprb.ap.gov.in/", area: "job", sector: "Andhra Pradesh", keywords: ["sct", "constable", "press note"] },
-  { id: "linkcheck", india: true, name: "check", url: "https://www.tgpsc.gov.in/", area: "job", probe: ["https://mhsrb.telangana.gov.in/mhsrb/v2/apis/api/view/notif/NTF-1795088607299", "https://mhsrb.telangana.gov.in/mhsrb/v2/apis/api/view/notif/NTF-1794240401688"] },
+  { id: "linkcheck", india: true, name: "check", url: "https://www.tgpsc.gov.in/", area: "job", probe: ["https://schooledu.telangana.gov.in/downloadDocs.do?mode=downloadProceedings&Go=Recruitment%20of%20Lecturers%20in%20Government%20Colleges%20of%20Physical%20Education%20(GCPEs).pdf||%PDF-1.d|<title>[^<]{0,80}"] },
   { id: "tgpsc", india: true, name: "Telangana PSC", url: "https://www.tgpsc.gov.in/", area: "job", sector: "State PSC", keywords: ["group"] },
   { id: "appsc", india: true, name: "Andhra Pradesh PSC", url: "https://portal-psc.ap.gov.in/Default.aspx", area: "job", sector: "State PSC", keywords: ["group"] },
   { id: "army", india: true, name: "Indian Army", url: "https://joinindianarmy.nic.in/", area: "job", sector: "Defence", keywords: ["agniveer", "entry"] },
