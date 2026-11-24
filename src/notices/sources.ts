@@ -29,6 +29,8 @@ export interface NoticeSource {
   cenMenu?: { minYear: number; names?: Record<string, string> };
   /** Pattern for notice links kept inside the page's own script files (see scriptNotices). */
   scriptLinks?: string;
+  /** Pattern removed from every title (dates and office names some sites put before the real title). */
+  titleDrop?: string;
   /** The site builds its page with scripts from a JSON feed: read the feed instead of the page. */
   json?: JsonFeed;
 }
@@ -67,6 +69,11 @@ export const NOTICE_SOURCES: NoticeSource[] = [
   // TG Police RB's page is built by a script that holds every notice link (press notes, notifications, results).
   { id: 'tgprb', india: true, name: 'TG Police Recruitment Board', url: 'https://www.tgprb.in/', area: 'job', sector: 'Telangana', scriptLinks: 'https://(?:www|doc)\\.tgprb\\.in/[^"\'`]+?\\.pdf' },
   { id: 'apslprb', india: true, name: 'AP Police Recruitment Board', url: 'https://slprb.ap.gov.in/', area: 'job', sector: 'Andhra Pradesh', keywords: ['sct', 'constable', 'press note'] },
+  // AP High Court's Recruitment Cell list: Civil Judge, District Judge and district court staff notices.
+  { id: 'aphc', india: true, name: 'AP High Court', url: 'https://aphc.gov.in/recruitments.php', area: 'job', sector: 'Andhra Pradesh', linkMust: ['/docs/notification_'], titleDrop: '^.*?\\d{2}/\\d{2}/\\d{4} Recruitment Cell\\.\\s*' },
+  // AP Police RB's own recruitment and press note pages (SI, constable, fireman, warder, FSL posts).
+  { id: 'apslprb-rec', india: true, name: 'AP Police Recruitment Board', url: 'https://slprb.ap.gov.in/UI/recruitments.aspx', area: 'job', sector: 'Andhra Pradesh', linkMust: ['_PDFS/'] },
+  { id: 'apslprb-press', india: true, name: 'AP Police Recruitment Board', url: 'https://slprb.ap.gov.in/UI/pressRelease.aspx', area: 'job', sector: 'Andhra Pradesh', linkMust: ['PDFS/'] },
   { id: 'tgpsc', india: true, name: 'Telangana PSC', url: 'https://www.tgpsc.gov.in/', area: 'job', sector: 'State PSC', keywords: ['group'] },
   { id: 'appsc', india: true, name: 'Andhra Pradesh PSC', url: 'https://portal-psc.ap.gov.in/Default.aspx', area: 'job', sector: 'State PSC', keywords: ['group'] },
   { id: 'army', india: true, name: 'Indian Army', url: 'https://joinindianarmy.nic.in/', area: 'job', sector: 'Defence', keywords: ['agniveer', 'entry'] },
