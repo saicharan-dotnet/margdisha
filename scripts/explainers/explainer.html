@@ -42,10 +42,10 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:#061614;font-fam
 .c-note{position:absolute;left:110px;right:110px;top:600px;display:flex;flex-direction:column;gap:16px}
 .c-note .card{min-height:84px;font-size:34px}
 /* end */
-.e-row{position:absolute;left:0;right:0;top:230px;display:flex;align-items:center;justify-content:center;gap:34px}
+.e-row{position:absolute;left:110px;top:200px;display:flex;align-items:center;gap:30px;transform-origin:0 50%}
 .e-row img{width:150px;height:150px;border-radius:36px;box-shadow:0 0 60px rgba(255,200,90,.4)}
-.e-row div{font-weight:900;font-size:140px;letter-spacing:-5px}
-.e-c{position:absolute;left:0;right:0;text-align:center;opacity:0}
+.e-row div{font-weight:900;font-size:110px;letter-spacing:-4px}
+.e-c{position:absolute;left:110px;width:900px;text-align:left;opacity:0}
 .e-url{display:inline-block;font-weight:900;font-size:62px;color:#3a2300;background:linear-gradient(160deg,#fff1b8,#ffd567 40%,#f0a830);padding:12px 54px;border-radius:999px;box-shadow:0 0 60px rgba(255,190,60,.7)}
 .e-free{font:700 38px 'Inter';color:#e8f5f2}
 .e-sub{display:inline-flex;align-items:center;gap:16px;font:800 40px 'Inter';background:#e62117;padding:14px 36px;border-radius:999px;box-shadow:0 10px 40px rgba(230,33,23,.45)}
@@ -83,10 +83,10 @@ $('scenes').innerHTML=SC.map((s,i)=>{
   if(s.type==='title')return `<div class="scene" id="sc${i}"><div class="t-card" id="tc${i}"><div class="t-img" id="ti${i}" style="background-image:${COVER}"></div></div>
     <div class="t-box"><span class="t-k">Full explainer</span><div class="t-h">${esc(G.name)}</div><div class="t-s">${esc(G.sub)}</div></div></div>`;
   if(s.type==='end')return `<div class="scene" id="sc${i}"><div class="e-row"><img src="${G.logo}"><div>MargDisha</div></div>
-    <div class="e-c" style="top:450px"><span class="e-url">margdisha.com</span></div>
-    <div class="e-c e-free" style="top:600px">100% free · Official links · English · తెలుగు · हिन्दी</div>
+    <div class="e-c" style="top:400px"><span class="e-url">margdisha.com</span></div>
+    <div class="e-c e-free" style="top:530px">100% free · Official links<br>English · తెలుగు · हिन्दी</div>
     <div class="e-c" style="top:700px"><span class="e-sub">▶ Subscribe <small>@margdishaindia</small></span></div>
-    <div class="e-c" style="top:830px"><span class="e-desc">⬇ All official links in the description below ⬇</span></div></div>`;
+    <div class="e-c" style="top:830px"><span class="e-desc">⬇ Official links in the description</span></div></div>`;
   body++; const num=`<div class="p-n">PART ${body}</div>`;
   if(s.type==='calendar'){const [a,b]=G.months;return `<div class="scene" id="sc${i}">${num}<div class="p-h">${esc(s.h)}</div><div class="p-bar"></div>
     <div class="c-row">${MON.map((m,j)=>`<div class="mo${inWin(j+1,a,b)?' hl':''}">${m}</div>`).join('')}</div>
@@ -106,7 +106,7 @@ let seed=17;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
 const P=[...Array(90)].map(()=>({x:rnd()*1920,y:rnd()*1080,vx:(rnd()-.5)*12,vy:8+rnd()*22,r:.7+rnd()*2,ph:rnd()*6.28,sp:1+rnd()*2.5}));
 const cx=$('cv').getContext('2d');
 window.setT=function(t){
-  $('black').style.opacity=Math.max(1-ramp(t,0,.5),ramp(t,END-.7,END));
+  $('black').style.opacity=Math.max(1-ramp(t,0,.15),ramp(t,END-.7,END));
   const firstBody=W[1][0], lastStart=W[SC.length-1][0];
   const bar=Math.min(ramp(t,firstBody,firstBody+.5),1-ramp(t,lastStart-.2,lastStart+.3));
   $('top').style.opacity=bar;$('prog').style.opacity=bar;$('pi').style.width=(100*ramp(t,firstBody,lastStart))+'%';
@@ -114,8 +114,8 @@ window.setT=function(t){
     const o=i==0?1-ramp(t,b-.1,b+.4):Math.min(ramp(t,a,a+.45),i==SC.length-1?1:1-ramp(t,b-.1,b+.35));
     el.style.opacity=o; if(o<=0){el.style.display='none';return;} el.style.display='';
     const k=out(ramp(t,a,a+.7));
-    if(s.type==='title'){$('ti'+i).style.transform=`scale(${1.03+.08*ease(ramp(t,0,b))})`;const q0=out(ramp(t,.2,1.1));$('tc'+i).style.opacity=q0;$('tc'+i).style.transform=`translateX(${(1-q0)*80}px)`;
-      el.querySelectorAll('.t-k,.t-h,.t-s').forEach((e,j)=>{const q=out(ramp(t,.4+j*.35,1.0+j*.35));e.style.opacity=q;e.style.transform=`translateY(${(1-q)*30}px)`});}
+    if(s.type==='title'){$('ti'+i).style.transform=`scale(${1.03+.08*ease(ramp(t,0,b))})`;const q0=out(ramp(t,0,.6));$('tc'+i).style.opacity=q0;$('tc'+i).style.transform=`translateX(${(1-q0)*80}px)`;
+      el.querySelectorAll('.t-k,.t-h,.t-s').forEach((e,j)=>{const q=out(ramp(t,j*.2,.35+j*.2));e.style.opacity=q;e.style.transform=`translateY(${(1-q)*30}px)`});}
     if(s.type==='points'||s.type==='steps'||s.type==='calendar'){
       el.querySelector('.p-h').style.transform=`translateX(${(1-k)*-40}px)`;el.querySelector('.p-bar').style.width=(120*k)+'px';el.querySelector('.p-n').style.opacity=k;
       const im=el.querySelector('.p-img');if(im){im.style.transform=`translateX(${(1-k)*80}px)`;im.style.opacity=k;im.firstChild.style.transform=`scale(${1.08+.08*ease(ramp(t,a,b))})`;}

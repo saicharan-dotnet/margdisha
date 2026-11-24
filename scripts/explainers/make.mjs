@@ -57,22 +57,25 @@ else if (MAIN) {
 if (process.env.CHECK) { writeFileSync(process.env.CHECK, String(picks.length)); console.log(`${picks.length} to make: ${picks.map((t) => t.id).join(', ')}`); process.exit(0); }
 console.log(`${notices.length} notices read. Making: ${picks.map((t) => t.id).join(', ') || 'nothing'}`);
 
+const END_LINE = 'That is the complete guide. If it helped you, subscribe to Marg Disha India, because we explain every new notification for free. All official links are in the description below, and your next video is on the screen now.';
 const RULES = `You write the script for a 5 to 8 minute YouTube explainer video (16:9, one female narrator) for MargDisha.com, a free Indian website that helps students, parents and job seekers with entrance exams, government and private jobs, school admissions and scholarships, always linking to the official website.
 The audience: students and job seekers from small towns in India, many reading English as a second language. Use clear, simple, friendly Indian English, short sentences, no slang.
 
 FACTS. Use the facts given below. You may also explain well-known, long-standing things about this exam or job that you are very sure of (for example what the posts are, the stages of selection, the subjects tested, the kind of questions, and general preparation advice). Never state an exact date, year-specific schedule, number of vacancies, salary figure, fee, cut-off, number of questions, marks or time limit unless it appears in the facts below. When something changes every year, say "usually" or "in recent years" and tell viewers to check the latest official notification. Never promise selection or a job. Never mention coaching centres or paid courses.
 
 Return JSON with:
-- youtube_title: at most 90 characters, truthful, no emojis, no ALL CAPS sentences, no clickbait. Start with the words students search: the exam name, then what the video covers, e.g. "SSC CGL Complete Guide: Eligibility, Exam Pattern, Syllabus and How to Apply"
+- youtube_title: at most 90 characters, truthful, no emojis, no hashtags, no ALL CAPS sentences, no clickbait. Most viewers find these videos by searching, so start with the exact words a student types: the exam name, then the year ONLY if it appears in a latest notice title below, then "Notification" if a new notification is listed below or "Complete Guide" otherwise, then a colon and what the video covers in search words, e.g. "SSC CGL 2026 Notification: Eligibility, Exam Pattern, Syllabus, How to Apply"
 - sub: one line under the title on screen, at most 60 characters, e.g. "Eligibility · Exam pattern · How to apply"
-- summary: 3 sentences for the YouTube description
+- summary: 3 sentences for the YouTube description. YouTube shows only the first two lines in search, so the first sentence must contain the exam name and the main search words (eligibility, exam pattern, how to apply)
+- hashtags: exactly 3 hashtags without #, most specific first: the exam with the topic (e.g. "SSCCGL2026" or "SSCCGLEligibility"), the exam (e.g. "SSCCGL"), and the broad area (e.g. "GovernmentJobs")
+- pinned_comment: one friendly question (at most 110 characters) that invites viewers to comment about this exam, e.g. "Which SSC CGL post is your dream job? Tell us in the comments 👇". No promises, no links
 - tags: 10 to 14 short tags without # (include MargDisha and phrases students search, e.g. "ssc cgl eligibility", "ssc cgl exam pattern")
-- thumb: { top: at most 16 characters (the exam name, e.g. "SSC CGL"), bottom: at most 22 characters (e.g. "Complete guide"), chips: 3 or 4 items of at most 14 characters (e.g. "Eligibility", "Exam pattern", "How to apply") }
+- thumb: { top: the exam name in at most 14 characters (e.g. "SSC CGL"), bottom: 1 or 2 words, at most 14 characters, the strongest reason to click (e.g. "Full Guide", "Who Can Apply", "Exam Pattern") }. The whole thumbnail must read in 3 or 4 big words, so nothing else
 - scenes: an array of 12 to 16 scenes, in this order:
-  1. {type:"title", say}: 25 to 40 words. A warm hook, then what this video will cover.
+  1. {type:"title", say}: 20 to 35 words. No greeting, no "welcome", no channel name: the first sentence states exactly what the viewer will know by the end (e.g. "In the next six minutes you will know if you can apply for SSC CGL, how the exam works, and how to apply step by step.").
   2. Then 10 to 14 body scenes, each {type, h, items, say}, covering in a sensible order: what this exam or job is and what you get; who can apply (education); age limit and relaxation; how selection works, stage by stage (one scene per main stage if there are several); what is tested (subjects); when the notification usually comes (use type "calendar" for this one, ONLY if usual months are given in the facts); how to apply, step by step (type "steps"); documents to keep ready; the latest official notices (only if notices are listed below; name them plainly, never read a web address aloud); preparation tips; common mistakes to avoid. Use type "points" for the rest.
      h: heading of at most 34 characters. items: 3 to 5 short on-screen lines of at most 46 characters each (2 or 3 for "calendar"), which the narrator's lines expand on, in the same order. say: 60 to 95 words of narration.
-  3. {type:"end", say}: exactly "That is the complete guide. All official links are in the description below. For free updates on exams, jobs, admissions and scholarships, subscribe to Marg Disha India and visit Marg Disha dot com."
+  3. {type:"end", say}: exactly "${END_LINE}"
 In "say", write "Marg Disha dot com" for the website, never read out a web address, and never use bullet symbols, brackets or emojis. Total narration: 800 to 1150 words.`;
 
 const MODELS = (process.env.TEXT_MODELS || 'gemini-3-pro-preview,gemini-2.5-pro,gemini-3-flash-preview,gemini-2.5-flash').split(',');
@@ -102,9 +105,10 @@ async function speak(text) {
   }
   return null;
 }
+// Gemini sometimes returns a list as one comma-separated string.
+const list = (x) => (Array.isArray(x) ? x : String(x || '').split(/[,\n]/)).map((v) => String(v).replace(/^#/, '').trim()).filter(Boolean);
 const words = (s) => String(s || '').trim().split(/\s+/).filter(Boolean).length;
 const cut = (s, n) => String(s || '').trim().slice(0, n);
-const END_LINE = 'That is the complete guide. All official links are in the description below. For free updates on exams, jobs, admissions and scholarships, subscribe to Marg Disha India and visit Marg Disha dot com.';
 function check(g, hasMonths) {
   const sc = g?.scenes;
   if (!Array.isArray(sc) || sc.length < 10 || sc.length > 18) return 'wrong number of scenes';
@@ -151,9 +155,11 @@ for (const t of picks) {
     writeFileSync(`${dir}/v${String(i + 1).padStart(2, '0')}.wav`, a);
   }
   if (!ok) { console.log('  skipped (no voice)'); continue; }
-  const tags = [...new Set(['MargDisha', ...(g.tags || []).map((x) => String(x).replace(/^#/, '').trim()).filter(Boolean)])].slice(0, 15);
+  const tags = [...new Set(['MargDisha', ...list(g.tags).map((x) => String(x).replace(/^#/, '').trim()).filter(Boolean)])].slice(0, 15);
   const job = { id: t.id, name: t.name, entry: e.school, kind: t.data.split(':')[0], bg: t.bg, url: e.url, months: hasMonths ? [e.formsFrom, e.formsTo] : null,
-    title: cut(g.youtube_title, 100), sub: cut(g.sub, 64), summary: cut(g.summary, 700), tags, thumb: { top: cut(g.thumb.top, 18), bottom: cut(g.thumb.bottom, 24), chips: (g.thumb.chips || []).slice(0, 4).map((c) => cut(c, 16)) },
+    title: cut(g.youtube_title, 100), sub: cut(g.sub, 64), summary: cut(g.summary, 700), tags, thumb: { top: cut(g.thumb.top, 16), bottom: cut(g.thumb.bottom, 16) },
+    hashtags: list(g.hashtags).map((h) => h.replace(/[^\p{L}\p{N}]/gu, '')).filter(Boolean).slice(0, 3),
+    pinned: cut(g.pinned_comment, 140) || `Which ${t.name} topic should we explain next? Tell us in the comments 👇`,
     notices: latest.map((n) => ({ title: n.title, url: n.url, source: n.source_name, date: n.first_seen.slice(0, 10) })), trigger: trigger[t.id] ? { title: trigger[t.id].title, url: trigger[t.id].url } : null, scenes };
   writeFileSync(`${dir}/job.json`, JSON.stringify(job, null, 2));
   console.log(`  ok: ${job.title} (${scenes.length} scenes, ${scenes.reduce((n, s) => n + words(s.say), 0)} words)`);

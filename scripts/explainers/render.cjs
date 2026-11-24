@@ -31,18 +31,17 @@ async function thumbnail(job, cover, logo, file) {
   const T = job.thumb; const b = await chromium.launch();
   const p = await b.newPage({ viewport: { width: 1280, height: 720 } });
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const big = T.top.length > 11 ? 92 : 112;
+  const big = T.top.length > 11 ? 120 : 150;
   const tmp = file.replace(/\.jpg$/, '.html');
   fs.writeFileSync(tmp, `<html><head><link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=block" rel="stylesheet"><style>
 *{margin:0;padding:0;box-sizing:border-box}body{width:1280px;height:720px;overflow:hidden;background:#071a18;font-family:'Inter Display','Inter',sans-serif;color:#fff}
 #bg{position:absolute;left:660px;top:0;width:620px;height:720px;background:url('${cover}') 50% 66%/cover}
 #sh{position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,20,18,1) 0%,rgba(5,20,18,1) 51%,rgba(5,20,18,.55) 60%,rgba(5,20,18,0) 72%)}
 .t{position:absolute;left:56px;top:54px;width:860px}.k{display:flex;align-items:center;gap:16px;font-weight:900;font-size:42px}.k img{width:64px;height:64px;border-radius:16px}
-h1{margin-top:30px;font-weight:900;font-size:${big}px;line-height:1;letter-spacing:-3px;text-shadow:0 4px 20px rgba(0,0,0,.6)}h2{margin-top:12px;font-weight:900;font-size:66px;line-height:1.05;letter-spacing:-2px;color:#ffd567}
-.chips{margin-top:34px;display:flex;flex-wrap:wrap;gap:12px;width:720px}.chips span{font-weight:800;font-size:31px;padding:8px 20px;border-radius:999px;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.4)}
-.free{position:absolute;right:40px;bottom:40px;font-weight:900;font-size:46px;color:#3a2300;background:linear-gradient(160deg,#fff1b8,#ffd567 40%,#f0a830);padding:10px 34px;border-radius:999px;box-shadow:0 0 40px rgba(255,190,60,.7);transform:rotate(-4deg)}
+h1{margin-top:44px;font-weight:900;font-size:${big}px;line-height:.95;letter-spacing:-4px;text-shadow:0 6px 30px rgba(0,0,0,.8)}
+h2{display:inline-block;margin-top:26px;font-weight:900;font-size:84px;line-height:1;letter-spacing:-2px;color:#2a1800;background:linear-gradient(160deg,#fff1b8,#ffd567 40%,#f0a830);padding:10px 30px 16px;border-radius:22px;box-shadow:0 0 50px rgba(255,190,60,.55);transform:rotate(-2deg)}
 </style></head><body><div id="bg"></div><div id="sh"></div><div class="t"><div class="k"><img src="${logo}">MargDisha</div><h1>${esc(T.top)}</h1><h2>${esc(T.bottom)}</h2>
-<div class="chips">${T.chips.map((c) => `<span>${esc(c)}</span>`).join('')}</div></div><div class="free">FULL GUIDE</div></body></html>`);
+</div></body></html>`);
   await p.goto('file://' + tmp); await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(500); fs.rmSync(tmp); await p.screenshot({ path: file, type: 'jpeg', quality: 92 }); await b.close();
 }
 
@@ -51,7 +50,7 @@ function description(job, TL) {
   const ch = [[0, 'Introduction']];
   job.scenes.forEach((s, i) => { if (s.type === 'title' || s.type === 'end') return; const at = Math.max(0, TL.v[i][0] - 0.45);
     if (at - ch[ch.length - 1][0] >= 10) ch.push([at, s.h]); });
-  const lines = [job.summary, ''];
+  const lines = [job.summary, 'Subscribe for every new notification, explained free: https://www.youtube.com/@margdishaindia?sub_confirmation=1', ''];
   if (ch.length >= 3) lines.push('Chapters', ...ch.map(([t, h]) => `${mmss(t)} ${h}`), '');
   lines.push(`Official website: ${job.url}`);
   if (job.trigger) lines.push(`New official notice: ${job.trigger.title}`, job.trigger.url);
@@ -59,7 +58,8 @@ function description(job, TL) {
   if (more.length) lines.push('', 'Latest official notices', ...more.map((n) => `- ${n.title}: ${n.url}`));
   lines.push('', 'Free updates on exams, jobs, admissions and scholarships: https://margdisha.com', '',
     'MargDisha is free and links you to the official websites. Dates, fees and rules change every year, so always read the latest official notification before applying. We do not guarantee selection.', '',
-    job.tags.slice(0, 8).map((t) => '#' + t.replace(/\s+/g, '')).join(' '));
+    // YouTube shows the first three hashtags above the title, so the most specific ones go first.
+    [...new Set([...(job.hashtags || []), 'MargDisha'])].map((h) => '#' + h).join(' '));
   return lines.join('\n');
 }
 
@@ -73,9 +73,9 @@ function description(job, TL) {
     const bgf = path.resolve(HERE, '../shorts/bg', `${job.bg}.jpg`);
     const cover = 'file://' + (fs.existsSync(bgf) ? bgf : path.resolve(HERE, '../shorts/bg/bg-exam.jpg'));
     // Voice timings: each scene's line starts after the previous one plus a short pause.
-    const v = []; let t = 1.0;
+    const v = []; let t = 0.35; // the narrator starts at once: the payoff is in the first seconds
     job.scenes.forEach((s, i) => { const d = dur(path.join(dir, `v${String(i + 1).padStart(2, '0')}.wav`)); v.push([+t.toFixed(3), +d.toFixed(3)]); t += d + (i === 0 ? 1.4 : 0.9); });
-    const END = +(v[v.length - 1][0] + v[v.length - 1][1] + 3.5).toFixed(2);
+    const END = +(v[v.length - 1][0] + v[v.length - 1][1] + 7).toFixed(2); // the end screen needs the last 20 seconds
     const TL = { v, end: END };
     // A dark, blurred copy of the picture for the background (drawn once here; a CSS blur on every frame is slow).
     const blur = path.join(dir, 'blur.jpg');
@@ -108,7 +108,7 @@ function description(job, TL) {
       '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', mp4]);
     segs.forEach((s) => fs.rmSync(s, { force: true }));
     await thumbnail(job, cover, logo, path.join(OUT, `explainer-${id}-thumb.jpg`));
-    fs.writeFileSync(path.join(OUT, `explainer-${id}.txt`), `TITLE\n${job.title}\n\nDESCRIPTION\n${description(job, TL)}\n\nTAGS\n${job.tags.join(', ')}\n`);
+    fs.writeFileSync(path.join(OUT, `explainer-${id}.txt`), `TITLE\n${job.title}\n\nDESCRIPTION\n${description(job, TL)}\n\nTAGS\n${job.tags.join(', ')}\n\nPINNED COMMENT (post it after uploading, then pin it)\n${job.pinned}\n\nEND SCREEN (YouTube Studio > Editor > End screen, last 20 seconds, ${mmss(Math.max(0, END - 20))} to ${mmss(END)})\nPut the Subscribe button and one video on the RIGHT half of the screen (the left half shows the MargDisha logo). Video: your newest Short or long video on ${job.name}, otherwise "Best for viewer".\n`);
     // The narration as plain text, to check the facts quickly before uploading.
     fs.writeFileSync(path.join(OUT, `explainer-${id}-script.txt`), job.scenes.map((s, i) => `[${mmss(Math.max(0, TL.v[i][0] - 0.45))}] ${s.h || (s.type === 'title' ? 'Introduction' : 'End')}\n${s.say}`).join('\n\n') + '\n');
     console.log(`  rendered ${mp4} (${mmss(dur(mp4))}, ${(fs.statSync(mp4).size / 1e6).toFixed(0)} MB) in ${((Date.now() - t0) / 60000).toFixed(1)} min`);
