@@ -158,7 +158,8 @@ export function Jobs({ tab }: { tab: 'govt' | 'private' }) {
         <div className="grid">{shown.map(({ opp, result }) => <OppCard key={opp.id} opp={opp} result={result} />)}</div>
         {!shown.length && <p className="empty">{inTab.length ? t('noResults') : t('verifyingSoon')}</p>}
       </>}
-      {tab === 'govt' && <NoticeFeed areas={['job', 'exam']} limit={inTab.length ? 6 : 12} more={() => go('updates')} />}
+      {tab === 'govt' && <NoticeFeed key={region} areas={['job', 'exam']} limit={inTab.length ? 6 : 12} more={() => go('updates')}
+        state={region === 'Telangana' || region === 'Andhra Pradesh' ? region : undefined} />}
     </section>
   );
 }

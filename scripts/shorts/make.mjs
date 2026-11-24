@@ -12,6 +12,8 @@ const VOICE = process.env.VOICE || 'en-IN-Chirp3-HD-Kore';
 const STATE = process.env.STATE || 'state/processed.json';
 const OUT = 'shorts-out'; mkdirSync(OUT, { recursive: true });
 const done = new Set(existsSync(STATE) ? JSON.parse(readFileSync(STATE, 'utf8')) : []);
+// The common RRB website rejects direct visits to its inner getdata pages: link the RRB's own page instead (as on the site).
+const openUrl = (u) => { const m = /^https:\/\/rrb\.indianrailways\.gov\.in\/getdata\?.*\bloc=([a-z]+)/i.exec(u); return m ? `https://rrb.indianrailways.gov.in/${m[1].toLowerCase()}` : u; };
 const AREA = { job: 'Government jobs', school: 'School admissions', exam: 'Entrance exams', scholarship: 'Scholarships' };
 
 const r = await fetch(`${SB}/rest/v1/official_notices?select=id,url,title,source_id,source_name,sector,area,first_seen,status&status=neq.ignored&order=first_seen.desc&limit=80`,
@@ -45,9 +47,11 @@ Return JSON with:
 - badge: what happened in at most 18 characters, chosen from words in the title (for example "Result Out", "Admit Card", "Apply Now", "Answer Key", "New Notice")
 - hook: a punchy hook of at most 34 characters
 - update: the key update in at most 70 characters, using only the title's facts
-- voiceover: at most 38 words; start with the hook, state the update, end exactly with "Official link in the description. More free updates on Marg Disha dot com."
-- youtube_title: at most 62 characters, truthful, ends with " #Shorts". Most viewers find these videos by searching, so start with the exact words a student would type: the exam or organisation short name, then the year ONLY if it is in the notice title, then the update in plain search words (Admit Card Out, Result Out, Apply Online, Notification, Answer Key, Exam Date, Interview Schedule, Merit List). After that, a few words of detail may follow a " | ". No clickbait words, no emojis, no ALL CAPS sentences. Examples: "SSC CGL 2026 Admit Card Out | Download Steps #Shorts", "NTPC Deputy Manager Interview Schedule #Shorts", "UPSC Online Application Open | ORA Portal #Shorts"
-- summary: two sentences summarising the notice for the video description, only from the title and source
+- voiceover: at most 38 words; the very first words are the hook (viewers decide to stay or swipe in the first two seconds, so no greeting and no channel name first), then the update, and end exactly with "Official link in the description. Subscribe to Marg Disha for daily updates."
+- youtube_title: at most 70 characters, truthful, without hashtags. Most viewers find these videos by searching, so start with the exact words a student would type: the exam or organisation short name, then the year ONLY if it is in the notice title, then the update in plain search words (Admit Card Out, Result Out, Apply Online, Notification, Answer Key, Exam Date, Interview Schedule, Merit List). After that, a few words of detail may follow a " | ". No clickbait words, no emojis, no ALL CAPS sentences. Examples: "SSC CGL 2026 Admit Card Out | Download Steps", "NTPC Deputy Manager Interview Schedule ", "UPSC Online Application Open | ORA Portal "
+- summary: two sentences summarising the notice for the video description, only from the title and source; the first sentence starts with the same search words as youtube_title
+- pinned_comment: one friendly question (at most 110 characters) that invites viewers to comment, about this exam or update, for example "Which post are you applying for? Tell us in the comments 👇". No promises, no links
+- hashtags: exactly 3 hashtags without #, most specific first: the exam or organisation with the update (for example "SSCCHSLAdmitCard"), the exam or organisation (for example "SSCCHSL"), and the broad area (for example "GovernmentJobs")
 - tags: 6 to 10 short tags without # (include MargDisha, the exam or organisation name, and 2 or 3 phrases students would search, for example "ssc cgl admit card")`;
 
 // Text models to try, newest first; the first one this Google project can use is kept.
@@ -75,7 +79,9 @@ async function speak(text) {
   if (!j.audioContent) console.log('  tts', res.status, JSON.stringify(j.error?.message ?? '').slice(0, 160));
   return j.audioContent ? Buffer.from(j.audioContent, 'base64') : null;
 }
-const cut = (s, n) => (s || '').trim().slice(0, n);
+const cut = (s, n) => String(s ?? '').trim().slice(0, n);
+// Gemini sometimes returns a list as one string ("a, b, c"): accept both.
+const list = (v) => (Array.isArray(v) ? v : String(v ?? '').split(/[,\n]+|\s+(?=#)/)).map((x) => String(x).replace(/^#/, '').trim()).filter(Boolean);
 const made = [];
 for (const n of picks) {
   console.log(`- [${n.area}] ${n.title} (${n.source_name})`);
@@ -84,21 +90,25 @@ for (const n of picks) {
   if (g.usable === false) { console.log('  skipped (not a useful notice)'); done.add(n.id); continue; }
   if (!String(g.youtube_title || '').trim() || !String(g.voiceover || '').trim() || !String(g.name || '').trim() || !String(g.summary || '').trim()) { console.log('  skipped (script came back incomplete, will retry next run)'); continue; }
   let vo = String(g.voiceover || '').trim();
-  const ENDING = 'Official link in the description. More free updates on Marg Disha dot com.';
-  if (!vo.endsWith(ENDING)) vo = vo.replace(/(?:[^.!?]*Marg Disha dot com[.!]?\s*)+$/i, '').trim().replace(/[.!]?$/, '.') + ' ' + ENDING;
+  const ENDING = 'Official link in the description. Subscribe to Marg Disha for daily updates.';
+  if (!vo.endsWith(ENDING)) vo = vo.replace(/(?:[^.!?]*(?:Marg Disha|description)[^.!?]*[.!]?\s*)+$/i, '').trim().replace(/[.!]?$/, '.') + ' ' + ENDING;
   if (vo.split(/\s+/).length > 48) { console.log('  skipped (voiceover too long)'); continue; }
   const audio = TTS ? await speak(vo) : null;
   if (!audio) { console.log('  skipped (no voice)'); continue; }
   const dir = `${OUT}/${n.id}`; mkdirSync(dir, { recursive: true });
   writeFileSync(`${dir}/voice.wav`, audio);
-  let title = cut(g.youtube_title, 70); if (!/#Shorts$/.test(title)) title = cut(title.replace(/\s*#Shorts$/i, ''), 61) + ' #Shorts';
-  const tags = [...new Set(['MargDisha', 'EducationUpdates', 'Shorts', ...(g.tags || []).map((t) => String(t).replace(/^#/, '').trim()).filter(Boolean)])].slice(0, 12);
+  // No #Shorts in the title: YouTube already knows it is a Short, and the space is better spent on search words.
+  const title = cut(String(g.youtube_title).replace(/\s*#\w+/g, ''), 70);
+  const tags = [...new Set(['MargDisha', ...list(g.tags)])].slice(0, 12);
   // The official link and the website go in the description (the channel is verified, so links are allowed).
-  const description = [cut(g.summary, 400), '', `Official notice (${n.source_name}): ${n.url}`, 'More free updates: https://margdisha.com', '',
+  const description = [cut(g.summary, 400), '', `Official notice (${n.source_name}): ${openUrl(n.url)}`, 'More free updates: https://margdisha.com', '',
     'MargDisha collects official notices and links you to the official website for free. Always read the full official notification before applying. We do not guarantee selection or admission.', '',
-    'Exams, jobs, school admissions and scholarships, free on MargDisha.', '', tags.map((t) => '#' + t.replace(/\s+/g, '')).join(' ')].join('\n');
-  const job = { id: n.id, area: n.area, areaLabel: AREA[n.area] || 'Updates', source: n.source_name, noticeTitle: n.title, url: n.url,
-    name: cut(g.name, 24), badge: cut(g.badge, 20), hook: cut(g.hook, 40), update: cut(g.update, 90), voiceover: vo, title, description, tags };
+    'Subscribe for a new official update every day: https://www.youtube.com/@margdishaindia?sub_confirmation=1', '',
+    // YouTube shows the first three hashtags above the title, so the most specific ones go first.
+    [...new Set([...list(g.hashtags).map((h) => h.replace(/[^\p{L}\p{N}]/gu, '')).filter(Boolean).slice(0, 3), 'MargDisha'])].map((h) => '#' + h).join(' ')].join('\n');
+  const pinned = cut(g.pinned_comment, 140) || 'Which exam are you preparing for? Tell us in the comments 👇';
+  const job = { id: n.id, area: n.area, areaLabel: AREA[n.area] || 'Updates', source: n.source_name, noticeTitle: n.title, url: openUrl(n.url),
+    name: cut(g.name, 24), badge: cut(g.badge, 20), hook: cut(g.hook, 40), update: cut(g.update, 90), voiceover: vo, title, description, tags, pinned };
   writeFileSync(`${dir}/job.json`, JSON.stringify(job, null, 2));
   console.log(`  ok: ${title}`); made.push(n.id); done.add(n.id);
 }

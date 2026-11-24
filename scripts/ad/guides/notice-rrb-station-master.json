@@ -1,0 +1,73 @@
+{
+ "title": "RRB Station Master 2026: last date 25 November",
+ "short": true,
+ "icon": "🚆",
+ "scenes": [
+  {
+   "type": "hook",
+   "bg": "rail",
+   "h": "Station Master jobs · last date 25 Nov",
+   "items": [
+    "Railways · RRB CEN 08/2026 · about 1,265 posts"
+   ],
+   "say": "Railway Station Master jobs! About twelve hundred and sixty five posts across all Railway Recruitment Boards. The last date to apply is the twenty fifth of November.",
+   "sub": "Railway Station Master jobs! About 1,265 posts across all Railway Recruitment Boards. The last date to apply is 25 November.",
+   "tag": "Railway jobs"
+  },
+  {
+   "type": "card",
+   "bg": "rail",
+   "flag": "🎓",
+   "num": 1,
+   "h": "Who can apply",
+   "items": [
+    "Any graduate, degree complete by 25 Nov 2026",
+    "Result awaited? Not eligible",
+    "Age 20 to 33 as on 1 Jan 2027",
+    "OBC +3 years · SC/ST +5 years"
+   ],
+   "say": "Who can apply? Any graduate, with the degree completed by the twenty fifth of November. Age twenty to thirty three, as on the first of January twenty twenty seven. O B C get three years more, and S C and S T get five years more.",
+   "sub": "Who can apply? Any graduate, with the degree completed by 25 November. Age 20 to 33, as on 1 January 2027. OBC get 3 years more, and SC and ST get 5 years more."
+  },
+  {
+   "type": "card",
+   "bg": "rail",
+   "flag": "💰",
+   "num": 2,
+   "h": "Pay and selection",
+   "items": [
+    "Level 6 · starting basic pay ₹35,400",
+    "Computer test (CBT)",
+    "Aptitude test (CBAT)",
+    "Documents + medical"
+   ],
+   "say": "The starting basic pay is thirty five thousand four hundred rupees. Selection is a computer based test, then an aptitude test, then document verification and medical.",
+   "sub": "The starting basic pay is ₹35,400. Selection is a computer based test, then an aptitude test, then document verification and medical."
+  },
+  {
+   "type": "card",
+   "bg": "rail",
+   "flag": "📝",
+   "num": 3,
+   "h": "How to apply",
+   "items": [
+    "Apply only on rrbapply.gov.in",
+    "Last date 25 Nov 2026, 11:59 PM",
+    "Fee ₹500 (₹400 back after CBT)",
+    "₹250 for SC/ST, women and other listed groups"
+   ],
+   "say": "Apply only on R R B apply dot gov dot in, before eleven fifty nine P M on the twenty fifth of November. The fee is five hundred rupees, and four hundred comes back after you take the exam. It is two hundred and fifty rupees for S C, S T, women and other listed groups.",
+   "sub": "Apply only on rrbapply.gov.in, before 11:59 PM on 25 November. The fee is ₹500, and ₹400 comes back after you take the exam. It is ₹250 for SC, ST, women and other listed groups."
+  },
+  {
+   "type": "end",
+   "bg": "rail",
+   "h": "Official notice link in the description",
+   "items": [
+    "More free job updates on MargDisha.com"
+   ],
+   "say": "Read the official notice, linked in the description, before you apply. More free job updates on Marg Disha dot com.",
+   "sub": "Read the official notice, linked in the description, before you apply. More free job updates on MargDisha.com."
+  }
+ ]
+}

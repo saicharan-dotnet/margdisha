@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { areaFor } from './collect';
-import { extractLinks, headingNotices, isOfficialLink, noticesFromJson, pickNotices, resolve } from './extract';
+import { extractLinks, headingNotices, cenMenuNotices, isOfficialLink, noticesFromJson, pickNotices, resolve } from './extract';
 
 const PAGE = `
 <html><head><script>var a = '<a href="/x">recruitment exam fake</a>';</script></head><body>
@@ -83,5 +83,21 @@ describe('headingNotices', () => {
     expect(a[0].title).toBe('Recruitment of Engineers, Advt.18/26 & more');
     expect(a[0].url).toMatch(/^https:\/\/careers\.example\.in\/recruitment\/#n[0-9a-z]+$/);
     expect(a[1].url).not.toBe(a[0].url);
+  });
+});
+
+describe('cenMenuNotices', () => {
+  it('turns the RRB CEN menu into one notice per CEN and notice type', () => {
+    const base = 'https://rrb.indianrailways.gov.in/getdata?loc=secunderabad&';
+    const links = [
+      { title: 'Notification', url: base.replace('loc', 'cennum=08/2026&loc') + 'category=Notification' },
+      { title: 'Notification', url: base.replace('loc', 'cennum=08/2026&loc') + 'category=Notification' },
+      { title: 'E-Call Letters', url: base.replace('loc', 'cennum=03/2026&loc') + 'category=E-Call%20Letters' },
+      { title: 'Mock Test Link', url: base.replace('loc', 'cennum=03/2026&loc') + 'category=Mock%20Test%20Link' },
+      { title: 'Notification', url: base.replace('loc', 'cennum=06/2025&loc') + 'category=Notification' },
+      { title: 'Home', url: 'https://rrb.indianrailways.gov.in/' },
+    ];
+    expect(cenMenuNotices(links, 2026, { '08/2026': 'Station Master' }).map((n) => n.title)).toEqual([
+      'RRB CEN 08/2026 (Station Master): Notification', 'RRB CEN 03/2026: E-Call Letters']);
   });
 });

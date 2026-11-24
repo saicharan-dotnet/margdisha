@@ -10,7 +10,7 @@ html,body{width:540px;height:960px;background:#000;overflow:hidden;font-family:'
 #tint{position:absolute;inset:0;background:linear-gradient(180deg,var(--f4) 0%,transparent 38%,transparent 62%,var(--f4) 100%);opacity:.38;mix-blend-mode:overlay}
 #cv{position:absolute;inset:0}
 #flash{position:absolute;inset:0;background:radial-gradient(circle at 50% 30%,rgba(255,255,255,1),var(--fl) 40%,transparent 75%);opacity:0;mix-blend-mode:screen}
-.hook{position:absolute;left:22px;right:22px;top:150px;text-align:center;color:#fff;font:900 34px/1.12 'Inter';letter-spacing:-.5px;text-shadow:0 3px 16px rgba(0,0,0,.75);opacity:0}
+.hook{position:absolute;left:22px;right:22px;top:140px;text-align:center;color:#fff;font:900 44px/1.1 'Inter';letter-spacing:-.5px;text-shadow:0 3px 16px rgba(0,0,0,.75);opacity:0}
 #phone{position:absolute;left:55px;top:140px;width:430px;height:330px;border-radius:38px;padding:9px;opacity:0;
  background:linear-gradient(145deg,var(--f1),var(--f2) 45%,var(--f3) 70%,var(--f4));box-shadow:0 0 50px var(--glow),0 20px 50px rgba(0,0,0,.45)}
 #screen{position:relative;width:100%;height:100%;border-radius:30px;background:linear-gradient(180deg,var(--s1),var(--s2));overflow:hidden;color:#fff;padding:20px 22px}
@@ -23,7 +23,8 @@ html,body{width:540px;height:960px;background:#000;overflow:hidden;font-family:'
 .upd{margin-top:12px;font:700 17px/1.3 'Inter';color:#eef4f3;opacity:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .src{position:absolute;left:22px;right:22px;bottom:18px;font:600 13px 'Inter';color:var(--ac);opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sub{position:absolute;left:24px;right:24px;top:628px;text-align:center;color:#fff;font:800 23px/1.3 'Inter';text-shadow:0 2px 12px rgba(0,0,0,.9),0 0 2px #000;opacity:0}
-#cta{position:absolute;left:0;right:0;top:612px;text-align:center;opacity:0}
+#cta{position:absolute;left:0;right:0;top:592px;text-align:center;opacity:0}
+#cta .l2{display:inline-block;margin-bottom:10px;font:900 19px 'Inter';color:#fff;padding:8px 18px;border-radius:999px;background:#e62117;box-shadow:0 0 22px rgba(230,33,23,.6)}
 #cta .l1{display:inline-block;font:800 18px 'Inter';color:#fff;padding:7px 16px;border-radius:999px;background:rgba(0,0,0,.45);border:1.5px solid rgba(255,255,255,.6)}
 #cta .url{display:inline-block;margin-top:10px;font:900 34px 'Inter';color:var(--ut);background:linear-gradient(160deg,var(--u1),var(--u2) 40%,var(--u3));padding:9px 30px;border-radius:999px;box-shadow:0 0 34px var(--ug)}
 #ribbon{position:absolute;left:0;right:0;top:84px;text-align:center;opacity:0}
@@ -37,13 +38,13 @@ html,body{width:540px;height:960px;background:#000;overflow:hidden;font-family:'
 .th-purple{--f1:#f1e4ff;--f2:#9a5cff;--f3:#d3b4ff;--f4:#5a27c0;--glow:rgba(160,100,255,.75);--fl:rgba(190,140,255,.55);--s1:#1c1236;--s2:#100a22;--ac:#d8c4ff;--acbg:#2f2058;--acbd:#56419c;--b1:#b6f5c8;--b2:#3fcf7a;--bt:#06301f;--bg:rgba(80,220,140,.6);--u1:#f4eaff;--u2:#c99eff;--u3:#8a4dff;--ut:#1e0a46;--ug:rgba(160,100,255,.85);--pt:#eadcff}
 .th-teal{--f1:#d8fff7;--f2:#18c2a8;--f3:#90f1de;--f4:#0a8573;--glow:rgba(40,210,180,.75);--fl:rgba(110,240,215,.55);--s1:#0b2a2a;--s2:#061919;--ac:#a6f3e6;--acbg:#12403d;--acbd:#287a71;--b1:#fff4b0;--b2:#ffc531;--bt:#3a2600;--bg:rgba(255,200,60,.65);--u1:#fff1b8;--u2:#ffd567;--u3:#f0a830;--ut:#3a2300;--ug:rgba(255,190,60,.8);--pt:#c9fff3}
 .thumb #hook{top:150px;font-size:50px;line-height:1.08;opacity:1}
-.thumb #hook em{font-style:normal;color:var(--pt)}
+.hook em{font-style:normal;color:var(--pt)}
 .thumb #phone{top:430px;opacity:1}
 .thumb #ribbon{top:76px;opacity:1}
 .thumb #ribbon span{font-size:20px;padding:10px 22px}
 .thumb .badge,.thumb .upd{opacity:1}
 .thumb #cta{top:808px;opacity:1}
-.thumb #cta .l1,.thumb #subs,.thumb #flash,.thumb #black{display:none}
+.thumb #cta .l1,.thumb #cta .l2,.thumb #subs,.thumb #flash,.thumb #black{display:none}
 .thumb #shade{background:linear-gradient(180deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.35) 40%,rgba(0,0,0,.2) 70%,rgba(0,0,0,.7) 100%)}
 </style></head><body class="th-gold">
 <div id="bg"><img id="bgimg"></div>
@@ -61,7 +62,7 @@ html,body{width:540px;height:960px;background:#000;overflow:hidden;font-family:'
 <div id="ribbon"><span><i id="dot"></i><b id="rtxt"></b></span></div>
 <div id="flash"></div>
 <div id="subs"></div>
-<div id="cta"><div class="l1">⬇ Official link in the description ⬇</div><br><div class="url">margdisha.com</div></div>
+<div id="cta"><div class="l2">🔔 Subscribe for daily updates</div><br><div class="l1">⬇ Official link in the description ⬇</div><br><div class="url">margdisha.com</div></div>
 <div id="black"></div>
 <script>
 const $=id=>document.getElementById(id);
@@ -78,10 +79,10 @@ window.init=function(job,voiceStart,voiceDur,end){
   $('bgimg').src='bg/'+(job.bg||('bg-'+(job.area||'job')))+'.jpg';
   $('rtxt').textContent=job.ribbon||'New update';
   PC=getComputedStyle(document.body).getPropertyValue('--pt').trim()||'#ffe2a8';
-  $('hook').textContent=job.hook;$('name').textContent=job.name;$('badge').textContent=job.badge;$('upd').textContent=job.update;
+  {const w=esc(job.hook).split(' ');const k=Math.max(1,Math.ceil(w.length/2));$('hook').innerHTML=w.slice(0,k).join(' ')+' <em>'+w.slice(k).join(' ')+'</em>';}$('name').textContent=job.name;$('badge').textContent=job.badge;$('upd').textContent=job.update;
   $('area').textContent=job.areaLabel;$('src').textContent='Source: '+job.source;
   // subtitles: the voiceover split into chunks of about 6 words, timed by word share
-  const words=job.voiceover.replace(/Marg Disha dot com/g,'MargDisha.com').split(/\s+/);const chunks=[];
+  const words=job.voiceover.replace(/Marg Disha dot com/g,'MargDisha.com').replace(/Marg Disha/g,'MargDisha').split(/\s+/);const chunks=[];
   for(let i=0;i<words.length;i+=6)chunks.push(words.slice(i,i+6).join(' '));
   let s=V0;const tot=words.length;
   chunks.forEach(c=>{const len=VD*c.split(/\s+/).length/tot;SUBS.push([s,s+len,c]);s+=len;});
@@ -101,19 +102,22 @@ let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
 const PT=[...Array(70)].map(()=>({x:rnd()*540,y:rnd()*960,vx:(rnd()-.5)*8,vy:8+rnd()*18,r:.6+rnd()*1.6,ph:rnd()*6.28,sp:1+rnd()*3}));
 const cx=$('cv').getContext('2d');
 window.setT=function(t){
-  const k=ease(ramp(t,0,END));$('bg').style.transform=`scale(${1.2+.08*k})`;
-  const ctaAt=END-3.2;
-  $('hook').style.opacity=Math.min(out(ramp(t,.2,.6)),1-ramp(t,1.3,1.6));
-  const pk=back(ramp(t,1.3,2.1));$('phone').style.opacity=Math.min(ramp(t,1.3,1.6),1-ramp(t,END-.8,END-.3));
+  // The first frame already shows the hook (viewers decide to stay or swipe in the first second), and the last
+  // half second brings the same hook back, so when the Short loops the replay starts without a jump.
+  $('bg').style.transform=`scale(${1.2+.08*Math.sin(Math.PI*cl(t/END))})`;
+  const ctaAt=END-3.2, loop=ramp(t,END-.5,END-.15);
+  $('hook').style.opacity=Math.max(1-ramp(t,1.7,2.0),loop);
+  $('hook').style.transform=`scale(${1.1-.1*out(ramp(t,0,.35))})`;
+  const pk=back(ramp(t,1.6,2.4));$('phone').style.opacity=Math.min(ramp(t,1.6,1.9),1-ramp(t,END-.8,END-.3));
   $('phone').style.transform=`translateY(${(1-pk)*520+Math.sin(t*1.3)*4}px)`;
-  const r=out(ramp(t,1.5,1.9));$('ribbon').style.opacity=Math.min(r,1-ramp(t,END-.8,END-.3));$('ribbon').style.transform=`translateY(${(1-r)*-20}px)`;$('dot').style.opacity=.35+.65*Math.abs(Math.sin(t*4));
-  $('shine').style.left=(-160+ramp(t,2.0,2.9)*640)+'px';
-  $('flash').style.opacity=Math.exp(-Math.pow((t-1.85)/.25,2))*.7;
-  const b=back(ramp(t,2.3,2.8));$('badge').style.opacity=ramp(t,2.3,2.5);$('badge').style.transform=`scale(${.4+.6*b})`;
-  $('upd').style.opacity=ramp(t,2.7,3.2);
-  SUBS.forEach((s,i)=>{$('sb'+i).style.opacity=Math.min(ramp(t,s[0]-.05,s[0]+.15),1-ramp(t,s[1]-.05,s[1]+.12),1-ramp(t,ctaAt-.2,ctaAt),ramp(t,1.4,1.7))});
-  const c=out(ramp(t,ctaAt,ctaAt+.5));$('cta').style.opacity=c;$('cta').style.transform=`translateY(${(1-c)*24}px)`;
-  $('black').style.opacity=ramp(t,END-.5,END);
+  const r=out(ramp(t,1.8,2.2));$('ribbon').style.opacity=Math.min(r,1-ramp(t,END-.8,END-.3));$('ribbon').style.transform=`translateY(${(1-r)*-20}px)`;$('dot').style.opacity=.35+.65*Math.abs(Math.sin(t*4));
+  $('shine').style.left=(-160+ramp(t,2.3,3.2)*640)+'px';
+  $('flash').style.opacity=Math.exp(-Math.pow((t-2.15)/.25,2))*.7;
+  const b=back(ramp(t,2.6,3.1));$('badge').style.opacity=ramp(t,2.6,2.8);$('badge').style.transform=`scale(${.4+.6*b})`;
+  $('upd').style.opacity=ramp(t,3.0,3.5);
+  SUBS.forEach((s,i)=>{$('sb'+i).style.opacity=Math.min(ramp(t,s[0]-.05,s[0]+.15),1-ramp(t,s[1]-.05,s[1]+.12),1-ramp(t,ctaAt-.2,ctaAt),ramp(t,1.75,1.95))});
+  const c=out(ramp(t,ctaAt,ctaAt+.5));$('cta').style.opacity=Math.min(c,1-ramp(t,END-.55,END-.25));$('cta').style.transform=`translateY(${(1-c)*24}px)`;
+  $('black').style.opacity=0;
   cx.clearRect(0,0,540,960);
   for(const p of PT){const x=((p.x+p.vx*t)%540+540)%540,y=((p.y-p.vy*t)%960+960)%960;cx.globalAlpha=.5*(.35+.65*Math.abs(Math.sin(p.ph+t*p.sp)));cx.fillStyle=PC;cx.shadowColor=PC;cx.shadowBlur=6;cx.beginPath();cx.arc(x,y,p.r,0,6.283);cx.fill();}
 };

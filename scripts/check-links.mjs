@@ -18,7 +18,7 @@ const urls = new Map();
 for (const f of files) {
   for (const m of readFileSync(f, 'utf8').matchAll(/https?:\/\/[^\s'"`)<>\\]+/g)) {
     const u = m[0].replace(/[.,;]+$/, '');
-    if (SKIP.test(u) || /[${}]/.test(u)) continue;
+    if (SKIP.test(u) || /[${}|]|\(\?/.test(u)) continue; // template strings and link patterns (regexes) are not links
     if (!urls.has(u)) urls.set(u, f);
   }
 }

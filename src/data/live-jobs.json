@@ -1,27 +1,27 @@
 {
- "updated": "2026-11-20",
+ "updated": "2026-11-24",
  "jobs": [
   {
-   "id": "gh-agoda-6323041",
-   "title": "Software Engineer Internship 2027 (6 months) - India-based, Gurgaon office",
-   "company": "Agoda",
-   "location": "Gurgaon",
-   "url": "https://job-boards.greenhouse.io/agoda/jobs/6323041",
+   "id": "lv-paytm-c8886602-f1b7-4c08-b181-f4d36b2d0e80",
+   "title": "Learning Experience Design Intern",
+   "company": "Paytm",
+   "location": "Noida, Uttar Pradesh",
+   "url": "https://jobs.lever.co/paytm/c8886602-f1b7-4c08-b181-f4d36b2d0e80",
    "intern": true,
-   "firstSeen": "2026-11-20",
-   "expires": "2026-12-04",
-   "source": "Agoda careers"
+   "firstSeen": "2026-11-24",
+   "expires": "2026-12-08",
+   "source": "Paytm careers"
   },
   {
-   "id": "gh-rubrik-8166523",
-   "title": "Software Engineer - Winter Intern",
-   "company": "Rubrik",
-   "location": "Bangalore",
-   "url": "https://www.rubrik.com/company/careers/departments/job.8166523?gh_jid=8166523",
-   "intern": true,
-   "firstSeen": "2026-11-20",
-   "expires": "2026-12-04",
-   "source": "Rubrik careers"
+   "id": "lv-cred-70783f5e-1264-4149-b165-bd3b72854da8",
+   "title": "product design",
+   "company": "CRED",
+   "location": "bengaluru",
+   "url": "https://jobs.lever.co/cred/70783f5e-1264-4149-b165-bd3b72854da8",
+   "intern": false,
+   "firstSeen": "2026-11-23",
+   "expires": "2026-12-07",
+   "source": "CRED careers"
   },
   {
    "id": "ab-sarvam-0a5bf81d-3370-47e6-88f4-14aa5102ba72",
@@ -57,19 +57,8 @@
    "source": "ChargePoint careers"
   },
   {
-   "id": "gh-chargepoint-8932406002",
-   "title": "PLM Analyst",
-   "company": "ChargePoint",
-   "location": "India - Remote",
-   "url": "https://www.chargepoint.com/about/opportunities/job/?gh_jid=8932406002",
-   "intern": false,
-   "firstSeen": "2026-11-19",
-   "expires": "2026-12-03",
-   "source": "ChargePoint careers"
-  },
-  {
    "id": "lv-cred-913a6616-78c9-4ca3-8c92-67ddea8a80df",
-   "title": "fraud analyst",
+   "title": "fraud analytics engineer",
    "company": "CRED",
    "location": "bengaluru",
    "url": "https://jobs.lever.co/cred/913a6616-78c9-4ca3-8c92-67ddea8a80df",
@@ -117,17 +106,6 @@
    "company": "Paytm",
    "location": "Noida, Uttar Pradesh",
    "url": "https://jobs.lever.co/paytm/20d54134-b6e5-4816-8da9-42e3a3ed8f57",
-   "intern": false,
-   "firstSeen": "2026-11-19",
-   "expires": "2026-12-03",
-   "source": "Paytm careers"
-  },
-  {
-   "id": "lv-paytm-7097240e-c9be-430b-816e-259e96fee507",
-   "title": "Client Onboarding - Paytm Pi Agent (SMB)",
-   "company": "Paytm",
-   "location": "Noida, Uttar Pradesh, Gurugram, Haryana",
-   "url": "https://jobs.lever.co/paytm/7097240e-c9be-430b-816e-259e96fee507",
    "intern": false,
    "firstSeen": "2026-11-19",
    "expires": "2026-12-03",
@@ -242,17 +220,6 @@
    "firstSeen": "2026-11-19",
    "expires": "2026-12-03",
    "source": "Paytm careers"
-  },
-  {
-   "id": "gh-razorpaysoftwareprivatelimited-4731054005",
-   "title": "Frontend Engineer",
-   "company": "Razorpay",
-   "location": "Bengaluru",
-   "url": "https://job-boards.greenhouse.io/razorpaysoftwareprivatelimited/jobs/4731054005",
-   "intern": false,
-   "firstSeen": "2026-11-19",
-   "expires": "2026-12-03",
-   "source": "Razorpay careers"
   },
   {
    "id": "gh-rubrik-8166514",

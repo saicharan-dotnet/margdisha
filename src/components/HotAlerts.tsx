@@ -27,12 +27,13 @@ export function HotAlerts() {
                 </div>
               ))}
             </div>
-            <p className="hot-apply">
+            {a.applyUrl && <p className="hot-apply"><b>{t('applyOnline')}:</b> <a href={a.applyUrl.url} target="_blank" rel="noreferrer">{a.applyUrl.label} ↗</a></p>}
+            {a.email && <p className="hot-apply">
               <b>{t('applyByEmail')}:</b> <a href={`mailto:${a.email}?subject=${encodeURIComponent('Application' + (a.referral ? ' – Referral ID ' + a.referral : ''))}`}>{a.email}</a>
               {a.referral && <><br /><b>{t('referralId')}:</b> <code>{a.referral}</code> <span className="muted">({t('mentionRole')})</span></>}
-            </p>
+            </p>}
             {a.source && <p className="small"><b>{t('sourceLbl')}:</b> <a href={a.source.url} target="_blank" rel="noreferrer nofollow">{a.source.label} ↗</a></p>}
-            <p className="small muted">{t('notRecruiter')}</p>
+            <p className="small muted">{t(a.official ? 'officialNote' : 'notRecruiter')}</p>
           </article>
         );
       })}

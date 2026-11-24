@@ -25,6 +25,12 @@ export interface NoticeSource {
   debugAround?: string;
   /** Diagnostics only: extra addresses on the same site to fetch and print in a debug run. */
   probe?: string[];
+  /** The RRB website's CEN menu: read each CEN's notice types instead of ordinary links (see cenMenuNotices). */
+  cenMenu?: { minYear: number; names?: Record<string, string> };
+  /** Pattern for notice links kept inside the page's own script files (see scriptNotices). */
+  scriptLinks?: string;
+  /** Pattern removed from every title (dates and office names some sites put before the real title). */
+  titleDrop?: string;
   /** The site builds its page with scripts from a JSON feed: read the feed instead of the page. */
   json?: JsonFeed;
 }
@@ -47,12 +53,27 @@ export const NOTICE_SOURCES: NoticeSource[] = [
   // ssc.gov.in builds its page with scripts; this is the feed behind its Notice Board.
   { id: 'ssc', json: { url: 'https://ssc.gov.in/api/general-website/portal/records?page=1&limit=25&contentType=notice-boards&key=createdAt&order=DESC&isPaginationRequired=true&isAttachment=true&language=english&attributes=id,headline,examId,contentType,redirectUrl,language,createdAt', items: 'data', title: 'headline', link: ['redirectUrl'], linkTemplate: 'https://ssc.gov.in/api/attachment/{attachments.0.path}' }, name: 'Staff Selection Commission', url: 'https://ssc.gov.in/', area: 'job', sector: 'SSC' },
   { id: 'upsc', india: true, name: 'UPSC', url: 'https://upsc.gov.in/whats-new', area: 'job', sector: 'UPSC' },
-  { id: 'upsc-exams', india: true, name: 'UPSC', url: 'https://upsc.gov.in/examinations/active-exams', area: 'job', sector: 'UPSC', keywords: ['examination'] },
-  { id: 'rrb-secunderabad', india: true, name: 'RRB Secunderabad', url: 'https://rrbsecunderabad.gov.in/', area: 'job', sector: 'Railways', keywords: ['cen'] },
-  { id: 'rrb-chandigarh', india: true, name: 'RRB Chandigarh', url: 'https://www.rrbcdg.gov.in/', area: 'job', sector: 'Railways', keywords: ['cen'] },
+  // All RRBs now share one website; the old regional sites (rrbsecunderabad.gov.in, rrbcdg.gov.in ...) fail or block us.
+  // Its menu lists every CEN's notices (notification, exam schedule, admit cards, results ...). CEN names: from the notice PDFs.
+  { id: 'rrb', india: true, name: 'Railway Recruitment Boards', url: 'https://rrb.indianrailways.gov.in/secunderabad', area: 'job', sector: 'Railways',
+    cenMenu: { minYear: 2026, names: { '08/2026': 'Station Master' } } },
   { id: 'ibps', india: true, name: 'IBPS', url: 'https://www.ibps.in/', area: 'job', sector: 'Banking', keywords: ['crp'] },
   { id: 'sbi', india: true, name: 'State Bank of India', url: 'https://sbi.co.in/web/careers/current-openings', area: 'job', sector: 'Banking' },
   { id: 'rbi', name: 'Reserve Bank of India', url: 'https://opportunities.rbi.org.in/Scripts/Vacancies.aspx', area: 'job', sector: 'Banking' },
+  // Telangana and Andhra Pradesh recruitment boards (the user's main focus). All refuse servers outside India.
+  // TG Medical & Health Services RB builds its page from this feed; each notice's PDF opens at /api/view/notif/<id> (checked 2026-11-23).
+  // linkMust hides the first links saved without /api/, which did not open.
+  { id: 'tgmhsrb', india: true, json: { url: 'https://mhsrb.telangana.gov.in/mhsrb/v2/apis/api/public/news?category=regular', items: 'data', title: 'title', link: ['externalUrl'], linkTemplate: 'https://mhsrb.telangana.gov.in/mhsrb/v2/apis/api/view/notif/{id}' }, name: 'TG Medical & Health Services RB', url: 'https://mhsrb.telangana.gov.in/', area: 'job', sector: 'Telangana', linkMust: ['/api/view/notif/'] },
+  { id: 'treirb', india: true, name: 'TG Gurukul Recruitment Board (TREI-RB)', url: 'https://treirb.cgg.gov.in/', area: 'job', sector: 'Telangana' },
+  { id: 'tghc', india: true, name: 'Telangana High Court', url: 'https://tshc.gov.in/', area: 'job', sector: 'Telangana', keywords: ['recruitment', 'vacancy'], linkMust: ['/documents/'] },
+  // TG Police RB's page is built by a script that holds every notice link (press notes, notifications, results).
+  { id: 'tgprb', india: true, name: 'TG Police Recruitment Board', url: 'https://www.tgprb.in/', area: 'job', sector: 'Telangana', scriptLinks: 'https://(?:www|doc)\\.tgprb\\.in/[^"\'`]+?\\.pdf' },
+  { id: 'apslprb', india: true, name: 'AP Police Recruitment Board', url: 'https://slprb.ap.gov.in/', area: 'job', sector: 'Andhra Pradesh', keywords: ['sct', 'constable', 'press note'] },
+  // AP High Court's Recruitment Cell list: Civil Judge, District Judge and district court staff notices.
+  { id: 'aphc', india: true, name: 'AP High Court', url: 'https://aphc.gov.in/recruitments.php', area: 'job', sector: 'Andhra Pradesh', linkMust: ['/docs/notification_'], titleDrop: '^.*?\\d{2}/\\d{2}/\\d{4} Recruitment Cell\\.\\s*' },
+  // AP Police RB's own recruitment and press note pages (SI, constable, fireman, warder, FSL posts).
+  { id: 'apslprb-rec', india: true, name: 'AP Police Recruitment Board', url: 'https://slprb.ap.gov.in/UI/recruitments.aspx', area: 'job', sector: 'Andhra Pradesh', linkMust: ['_PDFS/'] },
+  { id: 'apslprb-press', india: true, name: 'AP Police Recruitment Board', url: 'https://slprb.ap.gov.in/UI/pressRelease.aspx', area: 'job', sector: 'Andhra Pradesh', linkMust: ['PDFS/'] },
   { id: 'tgpsc', india: true, name: 'Telangana PSC', url: 'https://www.tgpsc.gov.in/', area: 'job', sector: 'State PSC', keywords: ['group'] },
   { id: 'appsc', india: true, name: 'Andhra Pradesh PSC', url: 'https://portal-psc.ap.gov.in/Default.aspx', area: 'job', sector: 'State PSC', keywords: ['group'] },
   { id: 'army', india: true, name: 'Indian Army', url: 'https://joinindianarmy.nic.in/', area: 'job', sector: 'Defence', keywords: ['agniveer', 'entry'] },

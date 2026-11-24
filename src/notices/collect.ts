@@ -1,6 +1,6 @@
 // Shared by the GitHub Actions script (Node) and the Supabase Edge Function (Deno).
 import type { NoticeSource } from './sources';
-import { extractLinks, headingNotices, isOfficialLink, noticesFromJson, pickNotices, type FoundNotice } from './extract';
+import { extractLinks, headingNotices, cenMenuNotices, isOfficialLink, noticesFromJson, pickNotices, type FoundNotice } from './extract';
 
 export async function fetchPage(url: string, timeoutMs = 25_000, depth = 0, accept = 'text/html,application/xhtml+xml'): Promise<string> {
   const ctrl = new AbortController();
@@ -38,6 +38,13 @@ export async function hideOffTopic(supabaseUrl: string, key: string, src: Pick<N
     method: 'PATCH', body: JSON.stringify({ status: 'ignored' }), headers: { ...keyHeaders(key), 'Content-Type': 'application/json' } });
 }
 
+/** First run of a new source: mark everything it lists today as already known, so only later notices show as new. */
+export async function markKnown(supabaseUrl: string, key: string, id: string): Promise<void> {
+  if (!key) return;
+  await fetch(`${supabaseUrl}/rest/v1/official_notices?source_id=eq.${encodeURIComponent(id)}&status=eq.new`, {
+    method: 'PATCH', body: JSON.stringify({ status: 'ignored' }), headers: { ...keyHeaders(key), 'Content-Type': 'application/json' } });
+}
+
 /** True only for a key that may write notices (the secret key). The anon/publishable key is refused by the database. */
 export async function canWrite(supabaseUrl: string, key: string): Promise<boolean> {
   if (!key) return false;
@@ -70,11 +77,22 @@ export async function collectSource(src: NoticeSource, supabaseUrl: string, key:
       found = pickNotices(all.filter((l) => isOfficialLink(l.url, src.url)), src);
       // Sites whose links change on every visit: each notice heading becomes a stable link to the page.
       if (src.headingItems) found = pickNotices(headingNotices(html, src.url, src.headingItems), src);
+      if (src.cenMenu) found = cenMenuNotices(all, src.cenMenu.minYear, src.cenMenu.names);
+      if (src.scriptLinks) found = await scriptNotices(html, src.url, src.scriptLinks);
+    }
+    if (src.titleDrop) {
+      const drop = new RegExp(src.titleDrop, 'i');
+      found = found.map((f) => ({ ...f, title: f.title.replace(drop, '').trim() })).filter((f) => f.title.length >= 8);
     }
     if (debug && src.probe) {
       const probes: string[] = [];
       for (const u of src.probe) {
-        try { probes.push(`${u} => ${(await fetchPage(u, 20_000, 0, 'application/json, text/plain, */*')).replace(/\s+/g, ' ').slice(0, 1500)}`); } catch (e) { probes.push(`${u} => ERROR ${errorText(e)}`); }
+        // "address||pattern" prints every distinct match of the pattern in that file instead of its start.
+        const [pu, pat] = u.split('||');
+        try {
+          const body = await fetchPage(pu, 20_000, 0, 'application/json, text/plain, */*');
+          probes.push(pat ? `${pu} => ${[...new Set([...body.matchAll(new RegExp(pat, 'gi'))].map((m) => m[0]))].slice(0, 60).join('  |  ')}` : `${pu} => ${body.replace(/\s+/g, ' ').slice(0, 1500)}`);
+        } catch (e) { probes.push(`${pu} => ERROR ${errorText(e)}`); }
       }
       return { id: src.id, ok: true, found: found.length, fresh: 0, sample: found, debug: { bytes: html.length, head: '', links: [], apis: [...probes, ...(await findApis(html, src.url))] } };
     }
@@ -88,6 +106,25 @@ export async function collectSource(src: NoticeSource, supabaseUrl: string, key:
   } catch (e) {
     return { id: src.id, ok: false, found: 0, fresh: 0, error: errorText(e) };
   }
+}
+
+/** Script-built pages that keep their notice links inside the page's own script files: every matching link,
+ *  titled from its file name ("Supplementary+Notification+2026.pdf" -> "Supplementary Notification 2026"). */
+async function scriptNotices(html: string, base: string, pattern: string): Promise<FoundNotice[]> {
+  const scripts = [...html.matchAll(/<script[^>]+src=["']([^"']+)["']/gi)].map((m) => new URL(m[1], base).toString())
+    .filter((u) => new URL(u).hostname === new URL(base).hostname).slice(0, 6);
+  const seen = new Set<string>(); const out: FoundNotice[] = [];
+  for (const u of scripts) {
+    const js = await fetchPage(u, 25_000, 0, '*/*').catch(() => '');
+    for (const m of js.matchAll(new RegExp(pattern, 'gi'))) {
+      let url: string; try { url = new URL(m[0].replace(/ /g, '%20'), base).toString(); } catch { continue; }
+      if (seen.has(url)) continue; seen.add(url);
+      let name = url.split('/').pop() ?? ''; try { name = decodeURIComponent(name.replace(/\+/g, ' ')); } catch { /* keep as is */ }
+      const title = name.replace(/\.pdf$/i, '').replace(/[_]+/g, ' ').replace(/\s+/g, ' ').trim();
+      if (title.length >= 8) out.push({ url, title });
+    }
+  }
+  return out.slice(0, 40);
 }
 
 /** Diagnostics for script-built pages: look inside the page's scripts for data addresses. */

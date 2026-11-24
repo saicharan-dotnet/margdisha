@@ -10,6 +10,9 @@ on:
       only:
         description: 'Comma-separated source ids to run (blank = all)'
         required: false
+      seed:
+        description: 'New source ids: save what they list today as already known (not shown as new)'
+        required: false
       debug:
         description: 'Print every link found, save nothing'
         type: boolean
@@ -39,6 +42,7 @@ jobs:
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
           ONLY: ${{ github.event.inputs.only }}
           DEBUG: ${{ github.event.inputs.debug }}
+          SEED: ${{ github.event.inputs.seed }}
       # A new notice from a big exam body (SSC, UPSC, RRB, IBPS, NTA ...): make its Short and thumbnail now
       # instead of waiting for the morning run. The Short is published as a release; nothing goes to YouTube.
       - name: Start a Short for new main exam notices
