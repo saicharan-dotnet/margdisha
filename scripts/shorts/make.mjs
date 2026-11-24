@@ -79,7 +79,9 @@ async function speak(text) {
   if (!j.audioContent) console.log('  tts', res.status, JSON.stringify(j.error?.message ?? '').slice(0, 160));
   return j.audioContent ? Buffer.from(j.audioContent, 'base64') : null;
 }
-const cut = (s, n) => (s || '').trim().slice(0, n);
+const cut = (s, n) => String(s ?? '').trim().slice(0, n);
+// Gemini sometimes returns a list as one string ("a, b, c"): accept both.
+const list = (v) => (Array.isArray(v) ? v : String(v ?? '').split(/[,\n]+|\s+(?=#)/)).map((x) => String(x).replace(/^#/, '').trim()).filter(Boolean);
 const made = [];
 for (const n of picks) {
   console.log(`- [${n.area}] ${n.title} (${n.source_name})`);
@@ -97,13 +99,13 @@ for (const n of picks) {
   writeFileSync(`${dir}/voice.wav`, audio);
   // No #Shorts in the title: YouTube already knows it is a Short, and the space is better spent on search words.
   const title = cut(String(g.youtube_title).replace(/\s*#\w+/g, ''), 70);
-  const tags = [...new Set(['MargDisha', ...(g.tags || []).map((t) => String(t).replace(/^#/, '').trim()).filter(Boolean)])].slice(0, 12);
+  const tags = [...new Set(['MargDisha', ...list(g.tags)])].slice(0, 12);
   // The official link and the website go in the description (the channel is verified, so links are allowed).
   const description = [cut(g.summary, 400), '', `Official notice (${n.source_name}): ${openUrl(n.url)}`, 'More free updates: https://margdisha.com', '',
     'MargDisha collects official notices and links you to the official website for free. Always read the full official notification before applying. We do not guarantee selection or admission.', '',
     'Subscribe for a new official update every day: https://www.youtube.com/@margdishaindia?sub_confirmation=1', '',
     // YouTube shows the first three hashtags above the title, so the most specific ones go first.
-    [...new Set([...(g.hashtags || []).map((h) => String(h).replace(/[^\p{L}\p{N}]/gu, '')).filter(Boolean).slice(0, 3), 'MargDisha'])].map((h) => '#' + h).join(' ')].join('\n');
+    [...new Set([...list(g.hashtags).map((h) => h.replace(/[^\p{L}\p{N}]/gu, '')).filter(Boolean).slice(0, 3), 'MargDisha'])].map((h) => '#' + h).join(' ')].join('\n');
   const pinned = cut(g.pinned_comment, 140) || 'Which exam are you preparing for? Tell us in the comments 👇';
   const job = { id: n.id, area: n.area, areaLabel: AREA[n.area] || 'Updates', source: n.source_name, noticeTitle: n.title, url: openUrl(n.url),
     name: cut(g.name, 24), badge: cut(g.badge, 20), hook: cut(g.hook, 40), update: cut(g.update, 90), voiceover: vo, title, description, tags, pinned };
