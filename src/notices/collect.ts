@@ -80,6 +80,10 @@ export async function collectSource(src: NoticeSource, supabaseUrl: string, key:
       if (src.cenMenu) found = cenMenuNotices(all, src.cenMenu.minYear, src.cenMenu.names);
       if (src.scriptLinks) found = await scriptNotices(html, src.url, src.scriptLinks);
     }
+    if (src.titleDrop) {
+      const drop = new RegExp(src.titleDrop, 'i');
+      found = found.map((f) => ({ ...f, title: f.title.replace(drop, '').trim() })).filter((f) => f.title.length >= 8);
+    }
     if (debug && src.probe) {
       const probes: string[] = [];
       for (const u of src.probe) {

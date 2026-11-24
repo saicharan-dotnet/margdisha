@@ -29,6 +29,13 @@ var NOTICE_SOURCES = [
   // TG Police RB's page is built by a script that holds every notice link (press notes, notifications, results).
   { id: "tgprb", india: true, name: "TG Police Recruitment Board", url: "https://www.tgprb.in/", area: "job", sector: "Telangana", scriptLinks: "https://(?:www|doc)\\.tgprb\\.in/[^\"'`]+?\\.pdf" },
   { id: "apslprb", india: true, name: "AP Police Recruitment Board", url: "https://slprb.ap.gov.in/", area: "job", sector: "Andhra Pradesh", keywords: ["sct", "constable", "press note"] },
+  // AP High Court's Recruitment Cell list: Civil Judge, District Judge and district court staff notices.
+  { id: "aphc", india: true, name: "AP High Court", url: "https://aphc.gov.in/recruitments.php", area: "job", sector: "Andhra Pradesh", linkMust: ["/docs/notification_"], titleDrop: "^.*?\\d{2}/\\d{2}/\\d{4} Recruitment Cell\\.\\s*" },
+  { id: "apslprb-rec", india: true, name: "AP Police Recruitment Board", url: "https://slprb.ap.gov.in/UI/recruitments.aspx", area: "job", sector: "Andhra Pradesh", linkMust: ["_PDFS/"] },
+  { id: "z-p1", india: true, name: "probe", url: "https://slprb.ap.gov.in/UI/pressRelease.aspx", area: "job", sector: "Andhra Pradesh", probe: ["https://slprb.ap.gov.in/2026_PDFS/SLPRB_AP_PC_Notification_2026.pdf||%PDF-\\d\\.\\d"] },
+  { id: "z-p2", india: true, name: "probe", url: "https://slprb.ap.gov.in/UI/pressRelease.aspx", area: "job", sector: "Andhra Pradesh", probe: ["https://aphc.gov.in/docs/notification_1793977011_0.pdf||%PDF-\\d\\.\\d"] },
+  { id: "z-p3", india: true, name: "probe", url: "https://slprb.ap.gov.in/UI/pressRelease.aspx", area: "job", sector: "Andhra Pradesh", probe: ["https://slprb.ap.gov.in/2026_PDFS/FSL-%20Scientific%20Assistant%20Notification-2026.pdf||%PDF-\\d\\.\\d"] },
+  { id: "z-p4", india: true, name: "probe", url: "https://slprb.ap.gov.in/UI/pressRelease.aspx", area: "job", sector: "Andhra Pradesh", probe: ["https://aphc.gov.in/docs/notification_1790338711_0.pdf||%PDF-\\d\\.\\d"] },
   { id: "tgpsc", india: true, name: "Telangana PSC", url: "https://www.tgpsc.gov.in/", area: "job", sector: "State PSC", keywords: ["group"] },
   { id: "appsc", india: true, name: "Andhra Pradesh PSC", url: "https://portal-psc.ap.gov.in/Default.aspx", area: "job", sector: "State PSC", keywords: ["group"] },
   { id: "army", india: true, name: "Indian Army", url: "https://joinindianarmy.nic.in/", area: "job", sector: "Defence", keywords: ["agniveer", "entry"] },
@@ -324,6 +331,10 @@ async function collectSource(src, supabaseUrl, key, debug = false) {
       if (src.headingItems) found = pickNotices(headingNotices(html, src.url, src.headingItems), src);
       if (src.cenMenu) found = cenMenuNotices(all, src.cenMenu.minYear, src.cenMenu.names);
       if (src.scriptLinks) found = await scriptNotices(html, src.url, src.scriptLinks);
+    }
+    if (src.titleDrop) {
+      const drop = new RegExp(src.titleDrop, "i");
+      found = found.map((f) => ({ ...f, title: f.title.replace(drop, "").trim() })).filter((f) => f.title.length >= 8);
     }
     if (debug && src.probe) {
       const probes = [];

@@ -29,6 +29,8 @@ export interface NoticeSource {
   cenMenu?: { minYear: number; names?: Record<string, string> };
   /** Pattern for notice links kept inside the page's own script files (see scriptNotices). */
   scriptLinks?: string;
+  /** Pattern removed from every title (dates and office names some sites put before the real title). */
+  titleDrop?: string;
   /** The site builds its page with scripts from a JSON feed: read the feed instead of the page. */
   json?: JsonFeed;
 }
@@ -67,21 +69,13 @@ export const NOTICE_SOURCES: NoticeSource[] = [
   // TG Police RB's page is built by a script that holds every notice link (press notes, notifications, results).
   { id: 'tgprb', india: true, name: 'TG Police Recruitment Board', url: 'https://www.tgprb.in/', area: 'job', sector: 'Telangana', scriptLinks: 'https://(?:www|doc)\\.tgprb\\.in/[^"\'`]+?\\.pdf' },
   { id: 'apslprb', india: true, name: 'AP Police Recruitment Board', url: 'https://slprb.ap.gov.in/', area: 'job', sector: 'Andhra Pradesh', keywords: ['sct', 'constable', 'press note'] },
-  { id: 'z-aphc-rec', india: true, name: 'AP High Court rec', url: 'https://aphc.gov.in/aboutus.php?abt=rec', area: 'job', sector: 'Andhra Pradesh' },
-  { id: 'z-aphc', india: true, name: 'AP High Court', url: 'https://aphc.gov.in/', area: 'job', sector: 'Andhra Pradesh' },
-  { id: 'z-apsrtc', india: true, name: 'APSRTC', url: 'https://apsrtc.ap.gov.in/Recruitments.php', area: 'job', sector: 'Andhra Pradesh' },
-  { id: 'z-slprb-rec', india: true, name: 'AP SLPRB rec', url: 'https://slprb.ap.gov.in/UI/recruitments.aspx', area: 'job', sector: 'Andhra Pradesh' },
-  { id: 'z-ttd', india: true, name: 'TTD', url: 'https://www.tirumala.org/', area: 'job', sector: 'Andhra Pradesh' },
-  { id: 'z-apcos', india: true, name: 'APCOS', url: 'https://apcos.ap.gov.in/', area: 'job', sector: 'Andhra Pradesh' },
-  { id: 'z-aptet', india: true, name: 'AP TET', url: 'https://aptet.apcfss.in/', area: 'job', sector: 'Andhra Pradesh' },
-  { id: 'z-apssdc', india: true, name: 'APSSDC', url: 'https://www.apssdc.in/', area: 'job', sector: 'Andhra Pradesh' },
-  { id: 'z-apmsrb', india: true, name: 'AP MSRB', url: 'https://apmsrb.ap.gov.in/msrb/', area: 'job', sector: 'Andhra Pradesh' },
-  { id: 'z-cse-ap', india: true, name: 'AP School Education', url: 'https://cse.ap.gov.in/', area: 'job', sector: 'Andhra Pradesh' },
-  { id: 'z-aphc-recs', india: true, name: 'AP High Court recruitments', url: 'https://aphc.gov.in/recruitments.php', area: 'job', sector: 'Andhra Pradesh' },
-  { id: 'z-aphc-recs26', india: true, name: 'AP High Court recruitments 2026', url: 'https://aphc.gov.in/recruitments.php?year=2026', area: 'job', sector: 'Andhra Pradesh' },
-  { id: 'z-cse-aided', india: true, name: 'AP aided recruitment', url: 'https://cse.ap.gov.in/AidedRecruitmentNotifications', area: 'job', sector: 'Andhra Pradesh' },
-  { id: 'z-tet2dsc', india: true, name: 'AP TET DSC', url: 'https://tet2dsc.apcfss.in/', area: 'job', sector: 'Andhra Pradesh' },
-  { id: 'z-probe', india: true, name: 'probe', url: 'https://slprb.ap.gov.in/UI/recruitments.aspx', area: 'job', sector: 'Andhra Pradesh', probe: ['https://slprb.ap.gov.in/2026_PDFS/SLPRB_AP_PC_Notification_2026.pdf', 'https://slprb.ap.gov.in/2026_PDFS/FSL-%20Scientific%20Assistant%20Notification-2026.pdf', 'https://aphc.gov.in/docs/notification_1793977011_0.pdf', 'https://aphc.gov.in/docs/notification_1783595907_0.pdf', 'https://cse.ap.gov.in/downloadNotificationPdf/XM8TS2FRGT2611211738805.pdf'] },
+  // AP High Court's Recruitment Cell list: Civil Judge, District Judge and district court staff notices.
+  { id: 'aphc', india: true, name: 'AP High Court', url: 'https://aphc.gov.in/recruitments.php', area: 'job', sector: 'Andhra Pradesh', linkMust: ['/docs/notification_'], titleDrop: '^.*?\\d{2}/\\d{2}/\\d{4} Recruitment Cell\\.\\s*' },
+  { id: 'apslprb-rec', india: true, name: 'AP Police Recruitment Board', url: 'https://slprb.ap.gov.in/UI/recruitments.aspx', area: 'job', sector: 'Andhra Pradesh', linkMust: ['_PDFS/'] },
+  { id: 'z-p1', india: true, name: 'probe', url: 'https://slprb.ap.gov.in/UI/pressRelease.aspx', area: 'job', sector: 'Andhra Pradesh', probe: ['https://slprb.ap.gov.in/2026_PDFS/SLPRB_AP_PC_Notification_2026.pdf||%PDF-\\d\\.\\d'] },
+  { id: 'z-p2', india: true, name: 'probe', url: 'https://slprb.ap.gov.in/UI/pressRelease.aspx', area: 'job', sector: 'Andhra Pradesh', probe: ['https://aphc.gov.in/docs/notification_1793977011_0.pdf||%PDF-\\d\\.\\d'] },
+  { id: 'z-p3', india: true, name: 'probe', url: 'https://slprb.ap.gov.in/UI/pressRelease.aspx', area: 'job', sector: 'Andhra Pradesh', probe: ['https://slprb.ap.gov.in/2026_PDFS/FSL-%20Scientific%20Assistant%20Notification-2026.pdf||%PDF-\\d\\.\\d'] },
+  { id: 'z-p4', india: true, name: 'probe', url: 'https://slprb.ap.gov.in/UI/pressRelease.aspx', area: 'job', sector: 'Andhra Pradesh', probe: ['https://aphc.gov.in/docs/notification_1790338711_0.pdf||%PDF-\\d\\.\\d'] },
   { id: 'tgpsc', india: true, name: 'Telangana PSC', url: 'https://www.tgpsc.gov.in/', area: 'job', sector: 'State PSC', keywords: ['group'] },
   { id: 'appsc', india: true, name: 'Andhra Pradesh PSC', url: 'https://portal-psc.ap.gov.in/Default.aspx', area: 'job', sector: 'State PSC', keywords: ['group'] },
   { id: 'army', india: true, name: 'Indian Army', url: 'https://joinindianarmy.nic.in/', area: 'job', sector: 'Defence', keywords: ['agniveer', 'entry'] },
