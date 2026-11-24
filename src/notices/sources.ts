@@ -51,7 +51,6 @@ export const NOTICE_SOURCES: NoticeSource[] = [
   // ssc.gov.in builds its page with scripts; this is the feed behind its Notice Board.
   { id: 'ssc', json: { url: 'https://ssc.gov.in/api/general-website/portal/records?page=1&limit=25&contentType=notice-boards&key=createdAt&order=DESC&isPaginationRequired=true&isAttachment=true&language=english&attributes=id,headline,examId,contentType,redirectUrl,language,createdAt', items: 'data', title: 'headline', link: ['redirectUrl'], linkTemplate: 'https://ssc.gov.in/api/attachment/{attachments.0.path}' }, name: 'Staff Selection Commission', url: 'https://ssc.gov.in/', area: 'job', sector: 'SSC' },
   { id: 'upsc', india: true, name: 'UPSC', url: 'https://upsc.gov.in/whats-new', area: 'job', sector: 'UPSC' },
-  { id: 'upsc-exams', india: true, name: 'UPSC', url: 'https://upsc.gov.in/examinations/active-exams', area: 'job', sector: 'UPSC', keywords: ['examination'] },
   // All RRBs now share one website; the old regional sites (rrbsecunderabad.gov.in, rrbcdg.gov.in ...) fail or block us.
   // Its menu lists every CEN's notices (notification, exam schedule, admit cards, results ...). CEN names: from the notice PDFs.
   { id: 'rrb', india: true, name: 'Railway Recruitment Boards', url: 'https://rrb.indianrailways.gov.in/secunderabad', area: 'job', sector: 'Railways',
