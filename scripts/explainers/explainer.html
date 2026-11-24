@@ -1,0 +1,136 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=block" rel="stylesheet">
+<!-- Long 16:9 explainer video, one frame per setT(t) call. Data comes from window.G (script) and window.TL (voice timings). -->
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#061614;font-family:'Inter Display','Inter',sans-serif;color:#fff}
+#bgbase{position:absolute;inset:0;background:radial-gradient(1300px 900px at 70% 35%,#16463f 0%,#0b2522 50%,#051311 100%)}
+#bgimg{position:absolute;inset:0;background-size:cover;background-position:center}
+#cv{position:absolute;inset:0;pointer-events:none}
+.scene{position:absolute;inset:0;opacity:0}
+#top{position:absolute;left:0;right:0;top:0;height:96px;display:flex;align-items:center;gap:16px;padding:0 64px;opacity:0}
+#top img{width:52px;height:52px;border-radius:13px}
+#top .b{font-weight:900;font-size:32px}
+#top .g{margin-left:auto;font:700 26px 'Inter';color:#9fe0d3}
+#prog{position:absolute;left:64px;right:64px;top:92px;height:5px;border-radius:9px;background:rgba(255,255,255,.12);overflow:hidden;opacity:0}
+#prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffd567,#f0a830)}
+.t-card{position:absolute;left:1200px;top:110px;width:620px;height:860px;border-radius:40px;overflow:hidden;box-shadow:0 0 0 2px rgba(255,255,255,.22),0 40px 100px rgba(0,0,0,.6)}
+.t-img{position:absolute;inset:0;background-size:cover;background-position:50% 60%;transform-origin:50% 60%}
+.t-box{position:absolute;left:110px;top:300px;width:1020px}
+.t-k{display:inline-block;font:800 30px 'Inter';color:#3a2300;background:linear-gradient(160deg,#fff1b8,#ffd567 40%,#f0a830);padding:8px 24px;border-radius:999px}
+.t-h{margin-top:26px;font-weight:900;font-size:110px;line-height:1;letter-spacing:-4px;text-shadow:0 4px 30px rgba(0,0,0,.6)}
+.t-s{margin-top:28px;font:700 40px/1.25 'Inter';color:#d6efe9}
+.p-n{position:absolute;left:112px;top:128px;font:800 26px 'Inter';color:#ffd567;letter-spacing:2px}
+.p-h{position:absolute;left:110px;top:168px;width:1100px;font-weight:900;font-size:74px;letter-spacing:-2.5px;line-height:1.02}
+.p-bar{position:absolute;left:112px;top:262px;width:120px;height:8px;border-radius:9px;background:linear-gradient(90deg,#ffd567,#f0a830)}
+.p-list{position:absolute;left:110px;top:300px;width:1080px;display:flex;flex-direction:column;gap:18px}
+.card{display:flex;align-items:center;gap:26px;min-height:100px;padding:18px 30px;border-radius:26px;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.16);
+ box-shadow:0 14px 40px rgba(0,0,0,.25);font:700 38px/1.2 'Inter Display';opacity:0}
+.card .ic{flex:none;width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#fff1b8,#ffd567 40%,#f0a830);color:#3a2300;font:900 32px 'Inter'}
+.card .ic svg{width:34px;height:34px;stroke:#3a2300;stroke-width:3.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.card.on{background:rgba(255,213,103,.13);border-color:rgba(255,213,103,.65)}
+.p-img{position:absolute;left:1270px;top:170px;width:560px;height:720px;border-radius:34px;overflow:hidden;box-shadow:0 0 0 2px rgba(255,255,255,.2),0 40px 90px rgba(0,0,0,.5)}
+.p-img div{position:absolute;inset:0;background-size:cover;background-position:50% 62%}
+.p-img span{position:absolute;left:26px;right:26px;bottom:26px;font:900 44px/1.05 'Inter Display';letter-spacing:-1px;text-shadow:0 2px 20px rgba(0,0,0,.9)}
+.p-img:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.75))}
+.p-img span{z-index:2}
+/* calendar */
+.c-row{position:absolute;left:110px;right:110px;top:360px;display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.mo{height:190px;border-radius:22px;background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.14);display:flex;align-items:flex-end;justify-content:center;padding-bottom:22px;font:800 34px 'Inter';color:#cfe6e1;opacity:0}
+.mo.hl{background:linear-gradient(180deg,rgba(255,213,103,.95),rgba(240,168,48,.95));color:#3a2300;border-color:transparent;box-shadow:0 0 40px rgba(255,190,60,.45)}
+.c-note{position:absolute;left:110px;right:110px;top:600px;display:flex;flex-direction:column;gap:16px}
+.c-note .card{min-height:84px;font-size:34px}
+/* end */
+.e-row{position:absolute;left:110px;top:200px;display:flex;align-items:center;gap:30px;transform-origin:0 50%}
+.e-row img{width:150px;height:150px;border-radius:36px;box-shadow:0 0 60px rgba(255,200,90,.4)}
+.e-row div{font-weight:900;font-size:110px;letter-spacing:-4px}
+.e-c{position:absolute;left:110px;width:900px;text-align:left;opacity:0}
+.e-url{display:inline-block;font-weight:900;font-size:62px;color:#3a2300;background:linear-gradient(160deg,#fff1b8,#ffd567 40%,#f0a830);padding:12px 54px;border-radius:999px;box-shadow:0 0 60px rgba(255,190,60,.7)}
+.e-free{font:700 38px 'Inter';color:#e8f5f2}
+.e-sub{display:inline-flex;align-items:center;gap:16px;font:800 40px 'Inter';background:#e62117;padding:14px 36px;border-radius:999px;box-shadow:0 10px 40px rgba(230,33,23,.45)}
+.e-sub small{font:700 30px 'Inter';opacity:.9}
+.e-desc{display:inline-block;font:800 40px 'Inter';color:#fff;padding:12px 34px;border-radius:999px;background:rgba(0,0,0,.35);border:3px solid #ffd567}
+.subt{position:absolute;left:120px;right:120px;top:968px;text-align:center;font:700 40px/1.25 'Inter Display';text-shadow:0 2px 14px rgba(0,0,0,.95),0 0 3px #000;opacity:0}
+#flash{position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(255,245,215,1),rgba(255,205,110,.5) 40%,transparent 75%);opacity:0;mix-blend-mode:screen}
+#black{position:absolute;inset:0;background:#000;opacity:1}
+</style></head><body>
+<div id="bgbase"></div><div id="bgimg"></div>
+<canvas id="cv" width="1920" height="1080"></canvas>
+<div id="scenes"></div>
+<div id="top"><img id="logo"><span class="b">MargDisha</span><span class="g" id="gt"></span></div>
+<div id="prog"><i id="pi"></i></div>
+<div id="subs"></div>
+<div id="flash"></div>
+<div id="black"></div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ease=x=>{x=cl(x);return x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2};
+const out=x=>1-Math.pow(1-cl(x),3);
+const back=x=>{x=cl(x);const c=1.5;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const ramp=(t,a,b)=>cl((t-a)/(b-a));
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const G=window.G, TL=window.TL; const END=TL.end; const SC=G.scenes;
+const COVER=`url('${G.cover}')`;
+$('bgimg').style.backgroundImage=`url('${G.blur}')`; $('gt').textContent=G.name; $('logo').src=G.logo;
+const CHECK='<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const inWin=(m,a,b)=>a<=b?m>=a&&m<=b:m>=a||m<=b;
+const W=SC.map((s,i)=>{const [vs,vd]=TL.v[i];const from=i==0?0:vs-.45;const to=i==SC.length-1?END:TL.v[i+1][0]-.45;return [from,to,vs,vd]});
+let body=0;
+$('scenes').innerHTML=SC.map((s,i)=>{
+  if(s.type==='title')return `<div class="scene" id="sc${i}"><div class="t-card" id="tc${i}"><div class="t-img" id="ti${i}" style="background-image:${COVER}"></div></div>
+    <div class="t-box"><span class="t-k">Full explainer</span><div class="t-h">${esc(G.name)}</div><div class="t-s">${esc(G.sub)}</div></div></div>`;
+  if(s.type==='end')return `<div class="scene" id="sc${i}"><div class="e-row"><img src="${G.logo}"><div>MargDisha</div></div>
+    <div class="e-c" style="top:400px"><span class="e-url">margdisha.com</span></div>
+    <div class="e-c e-free" style="top:530px">100% free · Official links<br>English · తెలుగు · हिन्दी</div>
+    <div class="e-c" style="top:700px"><span class="e-sub">▶ Subscribe <small>@margdishaindia</small></span></div>
+    <div class="e-c" style="top:830px"><span class="e-desc">⬇ Official links in the description</span></div></div>`;
+  body++; const num=`<div class="p-n">PART ${body}</div>`;
+  if(s.type==='calendar'){const [a,b]=G.months;return `<div class="scene" id="sc${i}">${num}<div class="p-h">${esc(s.h)}</div><div class="p-bar"></div>
+    <div class="c-row">${MON.map((m,j)=>`<div class="mo${inWin(j+1,a,b)?' hl':''}">${m}</div>`).join('')}</div>
+    <div class="c-note">${(s.items||[]).slice(0,3).map(x=>`<div class="card"><span class="ic">${CHECK}</span><span>${esc(x)}</span></div>`).join('')}</div></div>`;}
+  return `<div class="scene" id="sc${i}">${num}<div class="p-h">${esc(s.h)}</div><div class="p-bar"></div>
+    <div class="p-list">${s.items.map((x,j)=>`<div class="card"><span class="ic">${s.type==='steps'?j+1:CHECK}</span><span>${esc(x)}</span></div>`).join('')}</div>
+    <div class="p-img"><div style="background-image:url('${s.pic||G.cover}')"></div><span>${esc(G.name)}</span></div></div>`;
+}).join('');
+// Subtitles: about 8 words per chunk, timed by each chunk's share of the scene's characters.
+const SUBS=[];
+const tidy=s=>s.replace(/Marg Disha dot com/g,'MargDisha.com').replace(/Marg Disha India/g,'MargDisha India').replace(/\b([A-Z]) (?=[A-Z]\b)/g,'$1');
+SC.forEach((s,i)=>{const words=tidy(s.sub||s.say).split(/\s+/);
+  const ch=[];for(let k=0;k<words.length;k+=8)ch.push(words.slice(k,k+8));if(ch.length>1&&ch[ch.length-1].length<3){const l=ch.pop();ch[ch.length-1].push(...l);}
+  const tot=ch.reduce((n,c)=>n+c.join(' ').length+1,0);let st=TL.v[i][0];ch.forEach(c=>{const d=TL.v[i][1]*(c.join(' ').length+1)/tot;SUBS.push([st,st+d,c.join(' ')]);st+=d;});});
+$('subs').innerHTML=SUBS.map((s,i)=>`<div class="subt" id="sb${i}">${esc(s[2])}</div>`).join('');
+let seed=17;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
+const P=[...Array(90)].map(()=>({x:rnd()*1920,y:rnd()*1080,vx:(rnd()-.5)*12,vy:8+rnd()*22,r:.7+rnd()*2,ph:rnd()*6.28,sp:1+rnd()*2.5}));
+const cx=$('cv').getContext('2d');
+window.setT=function(t){
+  $('black').style.opacity=Math.max(1-ramp(t,0,.15),ramp(t,END-.7,END));
+  const firstBody=W[1][0], lastStart=W[SC.length-1][0];
+  const bar=Math.min(ramp(t,firstBody,firstBody+.5),1-ramp(t,lastStart-.2,lastStart+.3));
+  $('top').style.opacity=bar;$('prog').style.opacity=bar;$('pi').style.width=(100*ramp(t,firstBody,lastStart))+'%';
+  SC.forEach((s,i)=>{const [a,b,vs,vd]=W[i];const el=$('sc'+i);
+    const o=i==0?1-ramp(t,b-.1,b+.4):Math.min(ramp(t,a,a+.45),i==SC.length-1?1:1-ramp(t,b-.1,b+.35));
+    el.style.opacity=o; if(o<=0){el.style.display='none';return;} el.style.display='';
+    const k=out(ramp(t,a,a+.7));
+    if(s.type==='title'){$('ti'+i).style.transform=`scale(${1.03+.08*ease(ramp(t,0,b))})`;const q0=out(ramp(t,0,.6));$('tc'+i).style.opacity=q0;$('tc'+i).style.transform=`translateX(${(1-q0)*80}px)`;
+      el.querySelectorAll('.t-k,.t-h,.t-s').forEach((e,j)=>{const q=out(ramp(t,j*.2,.35+j*.2));e.style.opacity=q;e.style.transform=`translateY(${(1-q)*30}px)`});}
+    if(s.type==='points'||s.type==='steps'||s.type==='calendar'){
+      el.querySelector('.p-h').style.transform=`translateX(${(1-k)*-40}px)`;el.querySelector('.p-bar').style.width=(120*k)+'px';el.querySelector('.p-n').style.opacity=k;
+      const im=el.querySelector('.p-img');if(im){im.style.transform=`translateX(${(1-k)*80}px)`;im.style.opacity=k;im.firstChild.style.transform=`scale(${1.08+.08*ease(ramp(t,a,b))})`;}
+      el.querySelectorAll('.mo').forEach((m,j)=>{const q=back(ramp(t,a+.2+j*.05,a+.6+j*.05));m.style.opacity=ramp(t,a+.2+j*.05,a+.4+j*.05);m.style.transform=`translateY(${(1-q)*40}px)`});
+      const cards=el.querySelectorAll('.card');const n=cards.length;const s0=s.type==='calendar'?.25:.04;
+      cards.forEach((c,j)=>{const at=vs+vd*(s0+(0.86-s0)*j/n);const q=back(ramp(t,at,at+.45));
+        c.style.opacity=ramp(t,at,at+.2);c.style.transform=`translateX(${(1-q)*-60}px)`;
+        const nx=j+1<n?vs+vd*(s0+(0.86-s0)*(j+1)/n):vs+vd+.4;c.classList.toggle('on',t>=at&&t<nx);});}
+    if(s.type==='end'){el.querySelectorAll('.e-c').forEach((e,j)=>{const at=a+.3+.45*j;const q=out(ramp(t,at,at+.5));e.style.opacity=q;e.style.transform=`translateY(${(1-q)*30}px)`});
+      el.querySelector('.e-row').style.transform=`scale(${.8+.2*back(ramp(t,a,a+.7))})`;}
+  });
+  const le=W[SC.length-1][0];$('flash').style.opacity=Math.exp(-Math.pow((t-(le+.3))/.22,2))*.5;
+  SUBS.forEach((s,i)=>{$('sb'+i).style.opacity=Math.min(ramp(t,s[0],s[0]+.1),1-ramp(t,s[1]-.1,s[1]))});
+  cx.clearRect(0,0,1920,1080);
+  for(const p of P){const x=((p.x+p.vx*t)%1920+1920)%1920,y=((p.y-p.vy*t)%1080+1080)%1080;cx.globalAlpha=.4*(.35+.65*Math.abs(Math.sin(p.ph+t*p.sp)));cx.fillStyle='#ffe2a8';cx.shadowColor='#ffd27a';cx.shadowBlur=8;cx.beginPath();cx.arc(x,y,p.r,0,6.283);cx.fill();}
+};
+setT(0);
+</script></body></html>

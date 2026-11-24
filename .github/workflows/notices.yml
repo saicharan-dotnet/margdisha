@@ -58,3 +58,18 @@ jobs:
             gh api -X POST "repos/${{ github.repository }}/actions/workflows/shorts.yml/dispatches" -f ref=main -f "inputs[main]=true" -f "inputs[count]=3"
             echo "Started the Shorts job for $(cat /tmp/n) new main exam notice(s)." >> "$GITHUB_STEP_SUMMARY"
           fi
+      # A big exam body posted a new notification (not an admit card or result) for one of the main exams in
+      # scripts/explainers/topics.json: also make a long explainer video about that exam, published as a release.
+      - name: Start an explainer video for a new main exam notification
+        if: always() && github.event.inputs.debug != 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p state
+          if git fetch -q origin explainers-state 2>/dev/null; then git show FETCH_HEAD:explainers.json > state/explainers.json || true; fi
+          MAIN=1 CHECK=/tmp/e node --experimental-strip-types --no-warnings scripts/explainers/make.mjs
+          if [ "$(cat /tmp/e)" -gt 0 ]; then
+            gh api -X POST "repos/${{ github.repository }}/actions/workflows/explainers.yml/dispatches" -f ref=main -f "inputs[main]=true" -f "inputs[count]=1"
+            echo "Started the explainer video job for a new main exam notification." >> "$GITHUB_STEP_SUMMARY"
+          fi
