@@ -26,7 +26,25 @@ const JUNK = /^(click here|notice|notices|read more|more|download|view|new|detai
 const MAIN = process.env.MAIN === '1' || process.env.MAIN === 'true';
 const MAIN_IDS = new Set(JSON.parse(readFileSync(new URL('../../src/notices/main-sources.json', import.meta.url), 'utf8')));
 const MAIN_SINCE = Date.now() - Number(process.env.MAIN_HOURS || 12) * 36e5;
-const fresh = all.filter((n) => (!MAIN || (MAIN_IDS.has(n.source_id) && Date.parse(n.first_seen) >= MAIN_SINCE)) && !done.has(n.id) && Date.parse(n.first_seen) >= since && /^https?:\/\//.test(n.url)
+// Old news must not become a Short. A website added recently lists months of old notices that look new to us, so skip:
+// - a notice whose title only mentions dates that have passed (a deadline or exam date already over),
+// - a notice whose address carries an upload time (many sites name files by Unix time) more than 3 weeks ago,
+// - the first batch a new source listed (src/notices/shorts-skip-before.json: source id -> time of that first run).
+const MONTHS = 'jan feb mar apr may jun jul aug sep oct nov dec'.split(' ');
+function titleDates(t) {
+  const out = [];
+  for (const m of t.matchAll(/\b(\d{1,2})[./-](\d{1,2})[./-](20\d{2})\b/g)) out.push(Date.UTC(+m[3], +m[2] - 1, +m[1]));
+  for (const m of t.matchAll(/\b(\d{1,2})(?:st|nd|rd|th)?\s+([a-z]{3})[a-z]*\.?,?\s+(20\d{2})\b/gi)) { const i = MONTHS.indexOf(m[2].toLowerCase()); if (i >= 0) out.push(Date.UTC(+m[3], i, +m[1])); }
+  for (const m of t.matchAll(/\b([a-z]{3})[a-z]*\.?\s+(\d{1,2}),?\s+(20\d{2})\b/gi)) { const i = MONTHS.indexOf(m[1].toLowerCase()); if (i >= 0) out.push(Date.UTC(+m[3], i, +m[2])); }
+  return out.filter((d) => !Number.isNaN(d));
+}
+const DAY = 864e5;
+const pastOnly = (t) => { const d = titleDates(t); return d.length > 0 && d.every((x) => x < Date.now() - DAY); };
+const oldFile = (u) => { const m = /(?:^|[^\d])(1[5-9]\d{8})(?!\d)/.exec(u); return !!m && +m[1] * 1000 < Date.now() - 21 * DAY && +m[1] * 1000 > Date.UTC(2017, 0, 1); };
+const SKIP_BEFORE = JSON.parse(readFileSync(new URL('../../src/notices/shorts-skip-before.json', import.meta.url), 'utf8'));
+const backlog = (n) => SKIP_BEFORE[n.source_id] && Date.parse(n.first_seen) <= Date.parse(SKIP_BEFORE[n.source_id]);
+const stale = (n) => pastOnly(n.title) || oldFile(n.url) || backlog(n);
+const fresh = all.filter((n) => !stale(n) && (!MAIN || (MAIN_IDS.has(n.source_id) && Date.parse(n.first_seen) >= MAIN_SINCE)) && !done.has(n.id) && Date.parse(n.first_seen) >= since && /^https?:\/\//.test(n.url)
   && n.title && n.title.length >= 20 && n.title.length <= 260 && !JUNK.test(n.title.trim()));
 // One per area in turn, so a day's Shorts are not all from the same site.
 const byArea = {}; for (const n of fresh) (byArea[n.area] ??= []).push(n);
@@ -40,9 +58,9 @@ if (process.env.CHECK) { writeFileSync(process.env.CHECK, String(picks.length));
 console.log(`${all.length} notices read, ${fresh.length} new and usable, making ${picks.length}.`);
 
 const RULES = `You write scripts for 15-second vertical YouTube Shorts for MargDisha.com, a free Indian website that helps students and parents find school admissions, entrance exams, scholarships and government and private jobs, and links to official notices.
-Use ONLY the facts in the notice title and source below. Never invent dates, numbers of posts, fees, eligibility or deadlines. Never promise selection, admission or a job. Expand common abbreviations only if certain (for example SSC = Staff Selection Commission). Keep it energetic, clear Indian English.
+Use ONLY the facts in the notice title and source below. Never invent dates, numbers of posts, fees, eligibility or deadlines. Never promise selection, admission or a job. Today is ${new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' })}. Expand common abbreviations only if certain (for example SSC = Staff Selection Commission). Keep it energetic, clear Indian English.
 Return JSON with:
-- usable: true ONLY if the notice is something a student, parent or job seeker can act on: an application or registration opening, recruitment, admission, admit card, exam date or schedule, result, answer key, merit list, counselling, cut-off or scholarship. false for news stories, events, speeches, visits, awards, tenders, RTI, court cases, internal circulars, menu links or unclear text
+- usable: false if the notice is about something already over (an exam, interview, deadline or event whose date in the title is before today). Otherwise true ONLY if the notice is something a student, parent or job seeker can act on: an application or registration opening, recruitment, admission, admit card, exam date or schedule, result, answer key, merit list, counselling, cut-off or scholarship. false for news stories, events, speeches, visits, awards, tenders, RTI, court cases, internal circulars, menu links or unclear text
 - name: the exam, scheme or organisation in at most 22 characters (for example "NVS", "SSC CGL 2026", "TS ePASS")
 - badge: what happened in at most 18 characters, chosen from words in the title (for example "Result Out", "Admit Card", "Apply Now", "Answer Key", "New Notice")
 - hook: a punchy hook of at most 34 characters
