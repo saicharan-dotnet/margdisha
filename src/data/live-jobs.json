@@ -1,6 +1,50 @@
 {
- "updated": "2026-11-25",
+ "updated": "2026-11-26",
  "jobs": [
+  {
+   "id": "gh-razorpaysoftwareprivatelimited-4757678005",
+   "title": "Associate, Business Operations",
+   "company": "Razorpay",
+   "location": "Bengaluru",
+   "url": "https://job-boards.greenhouse.io/razorpaysoftwareprivatelimited/jobs/4757678005",
+   "intern": false,
+   "firstSeen": "2026-11-26",
+   "expires": "2026-12-10",
+   "source": "Razorpay careers"
+  },
+  {
+   "id": "gh-razorpaysoftwareprivatelimited-4731054005",
+   "title": "Frontend Engineer",
+   "company": "Razorpay",
+   "location": "Bengaluru",
+   "url": "https://job-boards.greenhouse.io/razorpaysoftwareprivatelimited/jobs/4731054005",
+   "intern": false,
+   "firstSeen": "2026-11-26",
+   "expires": "2026-12-10",
+   "source": "Razorpay careers"
+  },
+  {
+   "id": "gh-rubrik-8413157",
+   "title": "Software Engineer (UI) - Winter Intern",
+   "company": "Rubrik",
+   "location": "Bangalore",
+   "url": "https://www.rubrik.com/company/careers/departments/job.8413157?gh_jid=8413157",
+   "intern": true,
+   "firstSeen": "2026-11-26",
+   "expires": "2026-12-10",
+   "source": "Rubrik careers"
+  },
+  {
+   "id": "lv-zeta-331526ff-cb2d-4b93-a812-ff37ebb7edc2",
+   "title": "Intern",
+   "company": "Zeta",
+   "location": "Bangalore - WF",
+   "url": "https://jobs.lever.co/zeta/331526ff-cb2d-4b93-a812-ff37ebb7edc2",
+   "intern": true,
+   "firstSeen": "2026-11-26",
+   "expires": "2026-12-10",
+   "source": "Zeta careers"
+  },
   {
    "id": "lv-paytm-088a2cf3-101d-4ce8-91a7-880551d9cfd1",
    "title": "Talent Acquisition Intern- Product  hiring",
@@ -77,17 +121,6 @@
    "firstSeen": "2026-11-19",
    "expires": "2026-12-03",
    "source": "HackerRank careers"
-  },
-  {
-   "id": "lv-mindtickle-6c638c17-cd92-490a-9e0a-00a2492332fc",
-   "title": "Associate Client Partner",
-   "company": "Mindtickle",
-   "location": "Bengaluru, Karnataka, Pune, Maharashtra",
-   "url": "https://jobs.lever.co/mindtickle/6c638c17-cd92-490a-9e0a-00a2492332fc",
-   "intern": false,
-   "firstSeen": "2026-11-19",
-   "expires": "2026-12-03",
-   "source": "Mindtickle careers"
   },
   {
    "id": "lv-mindtickle-d62b36db-b088-48c7-a606-4ed458e30208",
@@ -275,28 +308,6 @@
    "firstSeen": "2026-11-19",
    "expires": "2026-12-03",
    "source": "Sarvam AI careers"
-  },
-  {
-   "id": "gh-stripe-8031833",
-   "title": "Software Engineer, Intern",
-   "company": "Stripe",
-   "location": "Bengaluru",
-   "url": "https://stripe.com/jobs/search?gh_jid=8031833",
-   "intern": true,
-   "firstSeen": "2026-11-19",
-   "expires": "2026-12-03",
-   "source": "Stripe careers"
-  },
-  {
-   "id": "gh-stripe-8130876",
-   "title": "Software Engineer, New Grad",
-   "company": "Stripe",
-   "location": "Bangalore",
-   "url": "https://stripe.com/jobs/search?gh_jid=8130876",
-   "intern": false,
-   "firstSeen": "2026-11-19",
-   "expires": "2026-12-03",
-   "source": "Stripe careers"
   }
  ]
 }
