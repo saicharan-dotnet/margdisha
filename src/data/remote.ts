@@ -74,12 +74,31 @@ export function openUrl(url: string): string {
   return m ? `https://rrb.indianrailways.gov.in/${m[1].toLowerCase()}` : url;
 }
 
+const MONTHS = 'jan feb mar apr may jun jul aug sep oct nov dec'.split(' ');
+const DAY = 864e5;
+/** Dates written in a notice title: 04.10.2026, 4/10/2026, 4 Oct 2026, October 4, 2026. */
+function titleDates(t: string): number[] {
+  const out: number[] = [];
+  for (const m of t.matchAll(/\b(\d{1,2})[./-](\d{1,2})[./-](20\d{2})\b/g)) out.push(Date.UTC(+m[3], +m[2] - 1, +m[1]));
+  for (const m of t.matchAll(/\b(\d{1,2})(?:st|nd|rd|th)?\s+([a-z]{3})[a-z]*\.?,?\s+(20\d{2})\b/gi)) { const i = MONTHS.indexOf(m[2].toLowerCase()); if (i >= 0) out.push(Date.UTC(+m[3], i, +m[1])); }
+  for (const m of t.matchAll(/\b([a-z]{3})[a-z]*\.?\s+(\d{1,2}),?\s+(20\d{2})\b/gi)) { const i = MONTHS.indexOf(m[1].toLowerCase()); if (i >= 0) out.push(Date.UTC(+m[3], i, +m[2])); }
+  return out.filter((d) => !Number.isNaN(d));
+}
+/** Old news that a newly added website listed as if new: every date in the title has passed, or the file's
+ *  name carries an upload time (Unix seconds, as on the AP High Court site) more than 3 weeks ago. */
+export function isOver(n: { title: string; url: string }, now = Date.now()): boolean {
+  const d = titleDates(n.title);
+  if (d.length && d.every((x) => x < now - DAY)) return true;
+  const m = /(?:^|[^\d])(1[5-9]\d{8})(?!\d)/.exec(n.url);
+  return !!m && +m[1] * 1000 < now - 21 * DAY && +m[1] * 1000 > Date.UTC(2017, 0, 1);
+}
+
 /** Latest notices collected from official websites (newest first). Null if the table is not set up yet. */
 export async function fetchNotices(limit = 300): Promise<Notice[] | null> {
   if (!supabase) return null;
   const { data, error } = await supabase.from('official_notices').select('*').order('first_seen', { ascending: false }).order('id', { ascending: true }).limit(limit);
   if (error || !data) return null;
-  return (data as Notice[]).filter((n) => isWebUrl(n.url)).map((n) => ({ ...n, url: openUrl(n.url) }));
+  return (data as Notice[]).filter((n) => isWebUrl(n.url) && !isOver(n)).map((n) => ({ ...n, url: openUrl(n.url) }));
 }
 
 /** Admin-only (enforced by RLS). */
