@@ -68,13 +68,12 @@ export const NOTICE_SOURCES: NoticeSource[] = [
   { id: 'tghc', india: true, name: 'Telangana High Court', url: 'https://tshc.gov.in/', area: 'job', sector: 'Telangana', keywords: ['recruitment', 'vacancy'], linkMust: ['/documents/'] },
   // TG Police RB's page is built by a script that holds every notice link (press notes, notifications, results).
   { id: 'tgprb', india: true, name: 'TG Police Recruitment Board', url: 'https://www.tgprb.in/', area: 'job', sector: 'Telangana', scriptLinks: 'https://(?:www|doc)\\.tgprb\\.in/[^"\'`]+?\\.pdf' },
-  { id: 'apslprb', india: true, name: 'AP Police Recruitment Board', url: 'https://slprb.ap.gov.in/', area: 'job', sector: 'Andhra Pradesh', keywords: ['sct', 'constable', 'press note'] },
+  { id: 'apslprb', india: true, name: 'AP Police Recruitment Board', url: 'https://slprb.ap.gov.in/', area: 'job', sector: 'Andhra Pradesh', scriptLinks: '/20\\d\\d_PDFS/[^"\'`]+?\\.pdf', probe: ['https://apslprb.onlineportal.org.in/apply-online/', 'https://slprb.ap.gov.in/UI/recruitments'] },
   // AP High Court's Recruitment Cell list: Civil Judge, District Judge and district court staff notices.
   { id: 'aphc', india: true, name: 'AP High Court', url: 'https://aphc.gov.in/recruitments.php', area: 'job', sector: 'Andhra Pradesh', linkMust: ['/docs/notification_'], titleDrop: '^.*?\\d{2}/\\d{2}/\\d{4} Recruitment Cell\\.\\s*' },
   // AP Police RB's own recruitment and press note pages (SI, constable, fireman, warder, FSL posts).
   { id: 'apslprb-rec', india: true, name: 'AP Police Recruitment Board', url: 'https://slprb.ap.gov.in/UI/recruitments.aspx', area: 'job', sector: 'Andhra Pradesh', linkMust: ['_PDFS/'] },
   { id: 'apslprb-press', india: true, name: 'AP Police Recruitment Board', url: 'https://slprb.ap.gov.in/UI/pressRelease.aspx', area: 'job', sector: 'Andhra Pradesh', linkMust: ['PDFS/'] },
-  { id: 'z-slprb-js', india: true, name: 'probe', url: 'https://slprb.ap.gov.in/', area: 'job', sector: 'Andhra Pradesh', probe: ['https://slprb.ap.gov.in/assets/index-B0GKgWOz.js||(?:https?:)?//[a-zA-Z0-9.-]+[^"\'`\s]{0,80}|["\'`]/(?:api|Api|API|UI|ui|uploads|PDFS|2026_PDFS)[^"\'`]{0,80}'] },
   { id: 'tgpsc', india: true, name: 'Telangana PSC', url: 'https://www.tgpsc.gov.in/', area: 'job', sector: 'State PSC', keywords: ['group'] },
   { id: 'appsc', india: true, name: 'Andhra Pradesh PSC', url: 'https://portal-psc.ap.gov.in/Default.aspx', area: 'job', sector: 'State PSC', keywords: ['group'] },
   { id: 'army', india: true, name: 'Indian Army', url: 'https://joinindianarmy.nic.in/', area: 'job', sector: 'Defence', keywords: ['agniveer', 'entry'] },
