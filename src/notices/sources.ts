@@ -55,6 +55,9 @@ export const NOTICE_SOURCES: NoticeSource[] = [
   { id: 'z-upsc-gh', name: 'UPSC gh', url: 'https://upsc.gov.in/whats-new', area: 'job', sector: 'UPSC' },
   { id: 'z-upsc-home', india: true, name: 'UPSC home', url: 'https://upsc.gov.in/', area: 'job', sector: 'UPSC' },
   { id: 'z-aissee-gh', name: 'AISSEE gh', url: 'https://exams.nta.nic.in/sainik-school-society/', area: 'school', sector: 'Sainik' },
+  { id: 'z-upsconline', name: 'UPSC online', url: 'https://upsconline.nic.in/', area: 'job', sector: 'UPSC' },
+  { id: 'z-upsconline2', name: 'UPSC online 2', url: 'https://upsconline.gov.in/', area: 'job', sector: 'UPSC' },
+  { id: 'z-aissee-nta', name: 'AISSEE nta', url: 'https://aissee.nta.nic.in/', area: 'school', sector: 'Sainik' },
   { id: 'upsc', india: true, name: 'UPSC', url: 'https://upsc.gov.in/whats-new', area: 'job', sector: 'UPSC' },
   // All RRBs now share one website; the old regional sites (rrbsecunderabad.gov.in, rrbcdg.gov.in ...) fail or block us.
   // Its menu lists every CEN's notices (notification, exam schedule, admit cards, results ...). CEN names: from the notice PDFs.
