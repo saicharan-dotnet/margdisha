@@ -1,0 +1,40 @@
+name: Notice timer
+
+# GitHub often skips frequent schedules (the 30-minute notices schedule ran only 2 or 3 times a day in Nov 2026).
+# Started runs are reliable, so this job starts "Collect official notices" every 30 minutes for about
+# 5.5 hours, then starts itself again. The schedule below only restarts the timer if the chain ever stops;
+# the concurrency group keeps a single timer running. Free, because the repository is public.
+# To switch it off: Actions -> Notice timer -> "..." -> Disable workflow.
+on:
+  schedule:
+    - cron: '13 */3 * * *'
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: notice-timer
+  cancel-in-progress: false
+
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - name: Start the notices job every 30 minutes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          for i in $(seq 1 11); do
+            gh api -X POST "repos/$REPO/actions/workflows/notices.yml/dispatches" -f ref=main && echo "started notices ($i)" || echo "could not start notices ($i)"
+            sleep 1800
+          done
+      - name: Keep the timer going
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: gh api -X POST "repos/$REPO/actions/workflows/ticker.yml/dispatches" -f ref=main
