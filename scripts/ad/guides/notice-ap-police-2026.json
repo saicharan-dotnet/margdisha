@@ -1,0 +1,73 @@
+{
+ "title": "AP Police SI and Constable 2026: apply 27 Nov to 16 Dec",
+ "short": true,
+ "icon": "🚨",
+ "scenes": [
+  {
+   "type": "hook",
+   "bg": "police",
+   "h": "AP Police SI & Constable jobs · apply now",
+   "items": [
+    "SLPRB 2026 · SI 378 · Constable 827 · Firemen 158 · Warders 171"
+   ],
+   "say": "Andhra Pradesh Police jobs are open! Three hundred and seventy eight S I posts, and over eight hundred constable posts, plus firemen and jail warders. Apply from the twenty seventh of November to the sixteenth of December.",
+   "sub": "Andhra Pradesh Police jobs are open! 378 SI posts, and over 800 constable posts, plus firemen and jail warders. Apply from 27 November to 16 December.",
+   "tag": "AP Police jobs"
+  },
+  {
+   "type": "card",
+   "bg": "police",
+   "flag": "⭐",
+   "num": 1,
+   "h": "Sub-Inspector (SI)",
+   "items": [
+    "Civil 253 · RSI AR 116 · SPF 9",
+    "Any degree",
+    "Age 21 to 27 (as on 1 Jul 2026)",
+    "Fee ₹600 · SC/ST ₹300"
+   ],
+   "say": "For Sub Inspector, you need any degree. Age twenty one to twenty seven, as on the first of July twenty twenty six. S C, S T, B C and E W S get five years more. The fee is six hundred rupees, and three hundred for S C and S T.",
+   "sub": "For Sub-Inspector, you need any degree. Age 21 to 27, as on 1 July 2026. SC, ST, BC and EWS get 5 years more. The fee is ₹600, and ₹300 for SC and ST."
+  },
+  {
+   "type": "card",
+   "bg": "police",
+   "flag": "👮",
+   "num": 2,
+   "h": "Constable, Fireman, Warder",
+   "items": [
+    "Constable Civil 542 · AR 285",
+    "Intermediate (12th) pass",
+    "Age 18 to 24 · firemen, warders 18 to 32",
+    "Fee ₹300 · SC/ST ₹150"
+   ],
+   "say": "For constable, fireman and jail warder, you need Intermediate. Constables must be eighteen to twenty four, and firemen and warders eighteen to thirty two. The fee is three hundred rupees, and one hundred and fifty for S C and S T.",
+   "sub": "For constable, fireman and jail warder, you need Intermediate. Constables must be 18 to 24, and firemen and warders 18 to 32. The fee is ₹300, and ₹150 for SC and ST."
+  },
+  {
+   "type": "card",
+   "bg": "police",
+   "flag": "📝",
+   "num": 3,
+   "h": "How to apply",
+   "items": [
+    "Online: 27 Nov, 5 PM to 16 Dec, 5 PM",
+    "Constable prelims: 31 Jan 2027",
+    "SI prelims: 28 Feb 2027",
+    "Then height, running test and final exam"
+   ],
+   "say": "Apply online from five P M on the twenty seventh of November, until five P M on the sixteenth of December. The constable prelims are on the thirty first of January, and the S I prelims on the twenty eighth of February. Then come the height and running tests, and the final exam.",
+   "sub": "Apply online from 5 PM on 27 November, until 5 PM on 16 December. The constable prelims are on 31 January, and the SI prelims on 28 February. Then come the height and running tests, and the final exam."
+  },
+  {
+   "type": "end",
+   "bg": "police",
+   "h": "Official link in the description",
+   "items": [
+    "Subscribe for daily job updates"
+   ],
+   "say": "Read the official notification, linked in the description, before you apply. Subscribe to Marg Disha for daily job updates.",
+   "sub": "Read the official notification, linked in the description, before you apply. Subscribe to MargDisha for daily job updates."
+  }
+ ]
+}
