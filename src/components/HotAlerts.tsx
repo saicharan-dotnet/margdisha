@@ -3,9 +3,9 @@ import { daysLeft } from '../engine/match';
 import { liveAlerts } from '../data/hot-alerts';
 
 /** "Hot job alert" cards for short-lived openings; each disappears after its expiry date. */
-export function HotAlerts() {
+export function HotAlerts({ only }: { only?: 'official' | 'company' } = {}) {
   const { t } = useApp();
-  const alerts = liveAlerts();
+  const alerts = liveAlerts().filter((a) => !only || (only === 'official') === !!a.official);
   if (!alerts.length) return null;
   return (
     <div className="hot-alerts">

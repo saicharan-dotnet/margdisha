@@ -34,12 +34,14 @@ const MONTHS = 'jan feb mar apr may jun jul aug sep oct nov dec'.split(' ');
 function titleDates(t) {
   const out = [];
   for (const m of t.matchAll(/\b(\d{1,2})[./-](\d{1,2})[./-](20\d{2})\b/g)) out.push(Date.UTC(+m[3], +m[2] - 1, +m[1]));
+  for (const m of t.matchAll(/(?:^|[^\d])([0-3]\d)([01]\d)(20\d{2})(?!\d)/g)) if (+m[2] >= 1 && +m[2] <= 12) out.push(Date.UTC(+m[3], +m[2] - 1, +m[1]));
   for (const m of t.matchAll(/\b(\d{1,2})(?:st|nd|rd|th)?\s+([a-z]{3})[a-z]*\.?,?\s+(20\d{2})\b/gi)) { const i = MONTHS.indexOf(m[2].toLowerCase()); if (i >= 0) out.push(Date.UTC(+m[3], i, +m[1])); }
   for (const m of t.matchAll(/\b([a-z]{3})[a-z]*\.?\s+(\d{1,2}),?\s+(20\d{2})\b/gi)) { const i = MONTHS.indexOf(m[1].toLowerCase()); if (i >= 0) out.push(Date.UTC(+m[3], i, +m[2])); }
   return out.filter((d) => !Number.isNaN(d));
 }
 const DAY = 864e5;
-const pastOnly = (t) => { const d = titleDates(t); return d.length > 0 && d.every((x) => x < Date.now() - DAY); };
+// Three days' grace, so a press note dated yesterday is still news.
+const pastOnly = (t) => { const d = titleDates(t); return d.length > 0 && d.every((x) => x < Date.now() - 3 * DAY); };
 const oldFile = (u) => { const m = /(?:^|[^\d])(1[5-9]\d{8})(?!\d)/.exec(u); return !!m && +m[1] * 1000 < Date.now() - 21 * DAY && +m[1] * 1000 > Date.UTC(2017, 0, 1); };
 const SKIP_BEFORE = JSON.parse(readFileSync(new URL('../../src/notices/shorts-skip-before.json', import.meta.url), 'utf8'));
 const backlog = (n) => SKIP_BEFORE[n.source_id] && Date.parse(n.first_seen) <= Date.parse(SKIP_BEFORE[n.source_id]);

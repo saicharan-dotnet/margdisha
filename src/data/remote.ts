@@ -76,10 +76,11 @@ export function openUrl(url: string): string {
 
 const MONTHS = 'jan feb mar apr may jun jul aug sep oct nov dec'.split(' ');
 const DAY = 864e5;
-/** Dates written in a notice title: 04.10.2026, 4/10/2026, 4 Oct 2026, October 4, 2026. */
+/** Dates written in a notice title: 04.10.2026, 4/10/2026, 26112026, 4 Oct 2026, October 4, 2026. */
 function titleDates(t: string): number[] {
   const out: number[] = [];
   for (const m of t.matchAll(/\b(\d{1,2})[./-](\d{1,2})[./-](20\d{2})\b/g)) out.push(Date.UTC(+m[3], +m[2] - 1, +m[1]));
+  for (const m of t.matchAll(/(?:^|[^\d])([0-3]\d)([01]\d)(20\d{2})(?!\d)/g)) if (+m[2] >= 1 && +m[2] <= 12) out.push(Date.UTC(+m[3], +m[2] - 1, +m[1]));
   for (const m of t.matchAll(/\b(\d{1,2})(?:st|nd|rd|th)?\s+([a-z]{3})[a-z]*\.?,?\s+(20\d{2})\b/gi)) { const i = MONTHS.indexOf(m[2].toLowerCase()); if (i >= 0) out.push(Date.UTC(+m[3], i, +m[1])); }
   for (const m of t.matchAll(/\b([a-z]{3})[a-z]*\.?\s+(\d{1,2}),?\s+(20\d{2})\b/gi)) { const i = MONTHS.indexOf(m[1].toLowerCase()); if (i >= 0) out.push(Date.UTC(+m[3], i, +m[2])); }
   return out.filter((d) => !Number.isNaN(d));
@@ -88,7 +89,7 @@ function titleDates(t: string): number[] {
  *  name carries an upload time (Unix seconds, as on the AP High Court site) more than 3 weeks ago. */
 export function isOver(n: { title: string; url: string }, now = Date.now()): boolean {
   const d = titleDates(n.title);
-  if (d.length && d.every((x) => x < now - DAY)) return true;
+  if (d.length && d.every((x) => x < now - 3 * DAY)) return true;
   const m = /(?:^|[^\d])(1[5-9]\d{8})(?!\d)/.exec(n.url);
   return !!m && +m[1] * 1000 < now - 21 * DAY && +m[1] * 1000 > Date.UTC(2017, 0, 1);
 }

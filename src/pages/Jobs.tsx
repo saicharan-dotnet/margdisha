@@ -64,7 +64,8 @@ export function Jobs({ tab }: { tab: 'govt' | 'private' }) {
         <button role="tab" aria-selected={tab === 'govt'} className={tab === 'govt' ? 'on' : ''} onClick={() => { setSector('all'); go('jobs-govt'); }}>{t('govtTab')}</button>
         <button role="tab" aria-selected={tab === 'private'} className={tab === 'private' ? 'on' : ''} onClick={() => { setSector('all'); go('jobs-private'); }}>{t('privateTab')}</button>
       </div>
-      {tab === 'private' && <><HotAlerts /><LiveJobs /></>}
+      {tab === 'private' && <><HotAlerts only="company" /><LiveJobs /></>}
+      {tab === 'govt' && <HotAlerts only="official" />}
       {tab === 'govt' && <>
         <h2 className="section-h"><Icon name="clock" size={20} /> {t('jobCalTitle')}</h2>
         <p className="small muted">{t('jobCalNote')}</p>

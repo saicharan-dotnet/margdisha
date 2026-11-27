@@ -25,6 +25,33 @@ export interface HotAlert {
 
 export const HOT_ALERTS: HotAlert[] = [
   {
+    // Facts from the SLPRB notifications Rc.No.81 and 91/SLPRB/2026 (16 Sep 2026) and the press note of 26 Nov 2026,
+    // as reported by AllExamReview, APTeachers and CareerPower (read 2026-11-27); only figures two sources agree on.
+    id: 'ap-police-si-constable-2026', company: 'AP Police · SI and Constable 2026 (SLPRB)', location: 'Andhra Pradesh',
+    roles: [
+      { title: 'Sub-Inspector (Civil 253, RSI AR 116, SPF 9) · 378 posts', points: [
+        'Any degree',
+        'Age 21 to 27 years as on 1 Jul 2026 (SC, ST, BC, EWS +5 years)',
+        'Fee ₹600; ₹300 for SC/ST of AP',
+        'Preliminary written test on 28 Feb 2027',
+      ] },
+      { title: 'Police Constable (Civil 542, AR 285), Firemen 158, Jail Warders 171', points: [
+        'Intermediate (12th) pass',
+        'Age 18 to 24 for constables, 18 to 32 for firemen and warders, as on 1 Jul 2026 (SC, ST, BC, EWS +5 years)',
+        'Fee ₹300; ₹150 for SC/ST of AP · pay ₹25,220 to ₹80,910',
+        'Preliminary written test on 31 Jan 2027',
+      ] },
+      { title: 'How to apply', points: [
+        'Apply online from 27 Nov 2026, 5 PM to 16 Dec 2026, 5 PM',
+        'Selection: preliminary test (qualifying), height and physical tests, final written exam, documents and medical',
+        'Communication, driver, mechanic, FSL and driver-operator posts: dates to be announced separately',
+      ] },
+    ],
+    applyUrl: { label: 'apslprb.onlineportal.org.in', url: 'https://apslprb.onlineportal.org.in/apply-online/' },
+    source: { label: 'AP Police Recruitment Board website (Recruitment)', url: 'https://slprb.ap.gov.in/' },
+    official: true, posted: '2026-11-27', expires: '2026-12-16',
+  },
+  {
     // Facts from the CEN 08/2026 coverage (Adda247, CareerPower, PW, read 2026-11-23); the RRB sites block our servers.
     id: 'rrb-station-master-cen-08-2026', company: 'Railways · Station Master (RRB CEN 08/2026)', location: 'All India, all RRBs',
     roles: [
