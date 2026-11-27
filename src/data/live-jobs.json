@@ -1,6 +1,39 @@
 {
- "updated": "2026-11-26",
+ "updated": "2026-11-27",
  "jobs": [
+  {
+   "id": "gh-groww-5049076101",
+   "title": "Content - Intern",
+   "company": "Groww",
+   "location": "Bengaluru, India",
+   "url": "https://job-boards.eu.greenhouse.io/groww/jobs/5049076101",
+   "intern": true,
+   "firstSeen": "2026-11-27",
+   "expires": "2026-12-11",
+   "source": "Groww careers"
+  },
+  {
+   "id": "lv-paytm-c6b86cd8-7f07-4469-992b-8968ed92739e",
+   "title": "Talent  Acquisition Internship",
+   "company": "Paytm",
+   "location": "Gurugram, Haryana",
+   "url": "https://jobs.lever.co/paytm/c6b86cd8-7f07-4469-992b-8968ed92739e",
+   "intern": true,
+   "firstSeen": "2026-11-27",
+   "expires": "2026-12-11",
+   "source": "Paytm careers"
+  },
+  {
+   "id": "gh-twilio-8261279",
+   "title": "Onboarding Operations Specialist 1",
+   "company": "Twilio",
+   "location": "Remote - India",
+   "url": "https://job-boards.greenhouse.io/twilio/jobs/8261279",
+   "intern": false,
+   "firstSeen": "2026-11-27",
+   "expires": "2026-12-11",
+   "source": "Twilio careers"
+  },
   {
    "id": "gh-razorpaysoftwareprivatelimited-4757678005",
    "title": "Associate, Business Operations",
