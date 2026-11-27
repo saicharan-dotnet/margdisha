@@ -74,6 +74,7 @@ export const NOTICE_SOURCES: NoticeSource[] = [
   // AP Police RB's own recruitment and press note pages (SI, constable, fireman, warder, FSL posts).
   { id: 'apslprb-rec', india: true, name: 'AP Police Recruitment Board', url: 'https://slprb.ap.gov.in/UI/recruitments.aspx', area: 'job', sector: 'Andhra Pradesh', linkMust: ['_PDFS/'] },
   { id: 'apslprb-press', india: true, name: 'AP Police Recruitment Board', url: 'https://slprb.ap.gov.in/UI/pressRelease.aspx', area: 'job', sector: 'Andhra Pradesh', linkMust: ['PDFS/'] },
+  { id: 'z-slprb-js', india: true, name: 'probe', url: 'https://slprb.ap.gov.in/', area: 'job', sector: 'Andhra Pradesh', probe: ['https://slprb.ap.gov.in/assets/index-B0GKgWOz.js||(?:https?:)?//[a-zA-Z0-9.-]+[^"\'`\s]{0,80}|["\'`]/(?:api|Api|API|UI|ui|uploads|PDFS|2026_PDFS)[^"\'`]{0,80}'] },
   { id: 'tgpsc', india: true, name: 'Telangana PSC', url: 'https://www.tgpsc.gov.in/', area: 'job', sector: 'State PSC', keywords: ['group'] },
   { id: 'appsc', india: true, name: 'Andhra Pradesh PSC', url: 'https://portal-psc.ap.gov.in/Default.aspx', area: 'job', sector: 'State PSC', keywords: ['group'] },
   { id: 'army', india: true, name: 'Indian Army', url: 'https://joinindianarmy.nic.in/', area: 'job', sector: 'Defence', keywords: ['agniveer', 'entry'] },
