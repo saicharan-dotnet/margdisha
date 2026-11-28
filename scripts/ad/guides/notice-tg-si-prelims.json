@@ -1,0 +1,97 @@
+{
+ "title": "Telangana SI Prelims 2026: negative marking, pass marks, hall ticket",
+ "short": true,
+ "icon": "🚨",
+ "scenes": [
+  {
+   "type": "hook",
+   "bg": "police",
+   "tag": "Telangana SI",
+   "h": "SI Prelims has",
+   "hl": "Negative marks",
+   "items": [
+    "275 SCT SI posts · Sunday 29 Nov 2026"
+   ],
+   "say": "Telangana S I prelims aspirants, careful! Wrong answers will cost you marks. Here is what the official notice says.",
+   "sub": "Telangana SI prelims aspirants, careful! Wrong answers will cost you marks. Here is what the official notice says."
+  },
+  {
+   "type": "list",
+   "bg": "exam",
+   "num": 1,
+   "h": "Exam pattern",
+   "items": [
+    "200 questions · 200 marks · 3 hours",
+    "Arithmetic & Reasoning: 100 questions",
+    "General Studies: 100 questions",
+    "Paper in English-Telugu or English-Urdu"
+   ],
+   "say": "One. Exam pattern. Two hundred questions for two hundred marks, in three hours. One hundred questions on arithmetic and reasoning, and one hundred on general studies. The paper comes in English with Telugu, or English with Urdu.",
+   "sub": "One. Exam pattern. 200 questions for 200 marks, in 3 hours. 100 questions on arithmetic and reasoning, and 100 on general studies. The paper comes in English with Telugu, or English with Urdu."
+  },
+  {
+   "type": "list",
+   "bg": "examhall",
+   "num": 2,
+   "h": "Negative marking",
+   "items": [
+    "Correct answer: +1 mark",
+    "Wrong answer: minus 0.2 mark (20%)",
+    "Two bubbles darkened: minus 0.2 too",
+    "Left blank: zero, no cut"
+   ],
+   "say": "Two. Negative marking. A correct answer gets one mark. A wrong answer, or more than one bubble darkened, cuts zero point two marks, that is twenty percent. A question left blank gets zero, with no cut. Five wrong answers wipe out one right answer, so don't guess blindly.",
+   "sub": "Two. Negative marking. A correct answer gets 1 mark. A wrong answer, or more than one bubble darkened, cuts 0.2 marks, that is 20%. A question left blank gets zero, with no cut. Five wrong answers wipe out one right answer, so don't guess blindly."
+  },
+  {
+   "type": "card",
+   "bg": "examhall",
+   "num": 3,
+   "h": "Pass marks in prelims",
+   "items": [
+    "OC and EWS: 30% = 60 of 200",
+    "BC: 25% = 50 of 200",
+    "SC, ST, Ex-servicemen: 20% = 40 of 200"
+   ],
+   "say": "Three. Minimum marks to qualify. Thirty percent, that is sixty marks, for O C and E W S. Twenty five percent, fifty marks, for B C. And twenty percent, forty marks, for S C, S T and ex-servicemen.",
+   "sub": "Three. Minimum marks to qualify. 30%, that is 60 marks, for OC and EWS. 25%, 50 marks, for BC. And 20%, 40 marks, for SC, ST and ex-servicemen."
+  },
+  {
+   "type": "card",
+   "bg": "police",
+   "num": 4,
+   "h": "Exam day",
+   "items": [
+    "Sunday 29 Nov 2026, 10 AM to 1 PM",
+    "1,60,712 candidates · about 335 centres",
+    "Entry 1 hour early · 1 minute late = no entry",
+    "Carry only hall ticket + blue/black ball pen"
+   ],
+   "say": "Four. The exam is on Sunday, twenty ninth November, from ten A M to one P M. Over one lakh sixty thousand candidates, in about three hundred thirty five centres. Entry starts one hour early, and even one minute late means no entry. Carry only your hall ticket and a blue or black ball pen. No phones or watches.",
+   "sub": "Four. The exam is on Sunday, 29 November, from 10 AM to 1 PM. Over 1,60,000 candidates, in about 335 centres. Entry starts one hour early, and even one minute late means no entry. Carry only your hall ticket and a blue or black ball pen. No phones or watches."
+  },
+  {
+   "type": "card",
+   "bg": "admit",
+   "num": 5,
+   "h": "Hall ticket",
+   "items": [
+    "Download from tgprb.in",
+    "22 Nov, 8 AM to 28 Nov, midnight",
+    "Paste your photo with gum, not pins",
+    "Helpline: 040-41895151"
+   ],
+   "say": "Five. Download your hall ticket from T G P R B dot in, from twenty second November, eight A M, till twenty eighth November midnight. Paste your photo on it with gum, not pins or staples.",
+   "sub": "Five. Download your hall ticket from tgprb.in, from 22 November, 8 AM, till 28 November midnight. Paste your photo on it with gum, not pins or staples."
+  },
+  {
+   "type": "end",
+   "bg": "police",
+   "h": "Official notice in the description",
+   "items": [
+    "More free updates on MargDisha.com"
+   ],
+   "say": "The official notice link is in the description. More free updates on Marg Disha dot com."
+  }
+ ]
+}
