@@ -1,6 +1,17 @@
 {
- "updated": "2026-11-27",
+ "updated": "2026-11-28",
  "jobs": [
+  {
+   "id": "lv-meesho-73db1822-f3de-4f9f-a2b3-944ea0b03702",
+   "title": "Software Engineer I - Backend  (Kirana Club)",
+   "company": "Meesho",
+   "location": "Bangalore, Karnataka",
+   "url": "https://jobs.lever.co/meesho/73db1822-f3de-4f9f-a2b3-944ea0b03702",
+   "intern": false,
+   "firstSeen": "2026-11-28",
+   "expires": "2026-12-12",
+   "source": "Meesho careers"
+  },
   {
    "id": "gh-groww-5049076101",
    "title": "Content - Intern",
@@ -110,17 +121,6 @@
    "firstSeen": "2026-11-23",
    "expires": "2026-12-07",
    "source": "CRED careers"
-  },
-  {
-   "id": "ab-sarvam-0a5bf81d-3370-47e6-88f4-14aa5102ba72",
-   "title": "Product User Research, Intern",
-   "company": "Sarvam AI",
-   "location": "Bengaluru",
-   "url": "https://jobs.ashbyhq.com/sarvam/0a5bf81d-3370-47e6-88f4-14aa5102ba72",
-   "intern": true,
-   "firstSeen": "2026-11-20",
-   "expires": "2026-12-04",
-   "source": "Sarvam AI careers"
   },
   {
    "id": "gh-toast-8348999",
