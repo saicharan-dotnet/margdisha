@@ -45,7 +45,9 @@ const pastOnly = (t) => { const d = titleDates(t); return d.length > 0 && d.ever
 const oldFile = (u) => { const m = /(?:^|[^\d])(1[5-9]\d{8})(?!\d)/.exec(u); return !!m && +m[1] * 1000 < Date.now() - 21 * DAY && +m[1] * 1000 > Date.UTC(2017, 0, 1); };
 const SKIP_BEFORE = JSON.parse(readFileSync(new URL('../../src/notices/shorts-skip-before.json', import.meta.url), 'utf8'));
 const backlog = (n) => SKIP_BEFORE[n.source_id] && Date.parse(n.first_seen) <= Date.parse(SKIP_BEFORE[n.source_id]);
-const stale = (n) => pastOnly(n.title) || oldFile(n.url) || backlog(n);
+// How-to-fill guides and manuals are not news; they repeat the notification they belong to.
+const howTo = (n) => /user[\s_-]*guide|user[\s_-]*manual|guidelines?[\s_-]*for[\s_-]*filling|how[\s_-]*to[\s_-]*apply/i.test(`${n.title} ${n.url}`);
+const stale = (n) => pastOnly(n.title) || oldFile(n.url) || backlog(n) || howTo(n);
 const fresh = all.filter((n) => !stale(n) && (!MAIN || (MAIN_IDS.has(n.source_id) && Date.parse(n.first_seen) >= MAIN_SINCE)) && !done.has(n.id) && Date.parse(n.first_seen) >= since && /^https?:\/\//.test(n.url)
   && n.title && n.title.length >= 20 && n.title.length <= 260 && !JUNK.test(n.title.trim()));
 // One per area in turn, so a day's Shorts are not all from the same site.
@@ -62,7 +64,7 @@ console.log(`${all.length} notices read, ${fresh.length} new and usable, making 
 const RULES = `You write scripts for 15-second vertical YouTube Shorts for MargDisha.com, a free Indian website that helps students and parents find school admissions, entrance exams, scholarships and government and private jobs, and links to official notices.
 Use ONLY the facts in the notice title and source below. Never invent dates, numbers of posts, fees, eligibility or deadlines. Never promise selection, admission or a job. Today is ${new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' })}. Expand common abbreviations only if certain (for example SSC = Staff Selection Commission). Keep it energetic, clear Indian English.
 Return JSON with:
-- usable: false if the notice is about something already over (an exam, interview, deadline or event whose date in the title is before today). Otherwise true ONLY if the notice is something a student, parent or job seeker can act on: an application or registration opening, recruitment, admission, admit card, exam date or schedule, result, answer key, merit list, counselling, cut-off or scholarship. false for news stories, events, speeches, visits, awards, tenders, RTI, court cases, internal circulars, menu links or unclear text
+- usable: false if the notice is about something already over (an exam, interview, deadline or event whose date in the title is before today). Otherwise true ONLY if the notice is something a student, parent or job seeker can act on: an application or registration opening, recruitment, admission, admit card, exam date or schedule, result, answer key, merit list, counselling, cut-off or scholarship. false for news stories, events, speeches, visits, awards, tenders, RTI, court cases, internal circulars, user guides or manuals on how to fill a form, menu links or unclear text
 - name: the exam, scheme or organisation in at most 22 characters (for example "NVS", "SSC CGL 2026", "TS ePASS")
 - badge: what happened in at most 18 characters, chosen from words in the title (for example "Result Out", "Admit Card", "Apply Now", "Answer Key", "New Notice")
 - hook: a punchy hook of at most 34 characters
